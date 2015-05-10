@@ -20,10 +20,17 @@
 
 package com.chiralbehaviors.northwind.locations;
 
+import com.chiralbehaviors.CoRE.location.Location;
+import com.chiralbehaviors.CoRE.phantasm.Phantasm;
+import com.chiralbehaviors.annotations.Facet;
+import com.chiralbehaviors.annotations.Key;
+import com.chiralbehaviors.annotations.State;
+
 /**
  * @author hhildebrand
  *
  */
-public interface Street {
+@State(facets = { @Facet(classification = @Key(namespace = "kernel", name = "IsA"), classifier = @Key(name = "Street")) }, workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
+public interface Street extends Phantasm<Location> {
 
 }
