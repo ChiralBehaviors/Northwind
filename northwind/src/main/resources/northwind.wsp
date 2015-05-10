@@ -6,10 +6,10 @@ imports {
 }
 
 agencies {
-    customer = "Northwind Customer" "A customer of Northwind";
-    employee = "Northwind Employee" "An employee of Northwind";
-    shipper = "Shipper" "An agency that ships products";
-    supplier = "Supplier" "An agency that supplies products";
+    Customer = "Northwind Customer" "A customer of Northwind";
+    Employee = "Northwind Employee" "An employee of Northwind";
+    Shipper = "Shipper" "An agency that ships products";
+    Supplier = "Supplier" "An agency that supplies products";
 }
 
 locations {
@@ -22,14 +22,14 @@ locations {
 }
 
 relationships {
-    area = "Area" "A is a member of the economic community B" | areaOf = "Area Of" "A is economic community of B";
-    country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
-    region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
-    state = "State" "A is located in the state B" | stateOf = "State Of" "A is the state of B";
-    city = "City" "A is located in the City B" | cityOf = "City Of" "A is the city of B";
-    street = "Stree" "A is located on the Street B" | streetOf = "Stree Of" "A is the street of B";
-    customerType = "Customer Type" "A has customer type of B" | customerTypeOf = "Customer Type Of" "A is the customer type of B";
-    salesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | salesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
-    storageType = "StorageType" "The type of storage required for A is B" | storageTypeOf = "StorageType Of" "A is the storage type of B";
-    physicalAddress = "Physical Address" "the phyiscal address of A is B" | physicalAddressOf ="Physical Address Of" "A is the physical address of B";
+    Area = "Area" "A is a member of the economic community B" | areaOf = "Area Of" "A is economic community of B";
+    Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
+    Region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
+    State = "State" "A is located in the state B" | stateOf = "State Of" "A is the state of B";
+    City = "City" "A is located in the City B" | cityOf = "City Of" "A is the city of B";
+    Street = "Stree" "A is located on the Street B" | streetOf = "Stree Of" "A is the street of B";
+    CustomerType = "Customer Type" "A has customer type of B" | customerTypeOf = "Customer Type Of" "A is the customer type of B";
+    SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | salesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
+    StorageType = "StorageType" "The type of storage required for A is B" | storageTypeOf = "StorageType Of" "A is the storage type of B";
+    PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | physicalAddressOf ="Physical Address Of" "A is the physical address of B";
 }
