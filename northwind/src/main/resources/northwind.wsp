@@ -10,6 +10,19 @@ agencies {
     Employee = "Northwind Employee" "An employee of Northwind";
     Shipper = "Shipper" "An agency that ships products";
     Supplier = "Supplier" "An agency that supplies products";
+    ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can ship to";
+    SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we ship from";
+}
+
+attributes {
+    lastName = "Last Name" "the last name" text;
+    firstName = "First Name" "the first name" text;
+    title = "Title" "Official title" text;
+    titleOfCourtesy = "Title of Courtesy" "Informal title" text;
+    birthDate = "Birthdate" "Birthdate" timestamp;
+    hireDate = "Hire Date" "Hire date" timestamp;
+    
+    streetNumber = "Street Number" "The number on a street" text;
 }
 
 locations {
@@ -27,9 +40,10 @@ relationships {
     Region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
     State = "State" "A is located in the state B" | stateOf = "State Of" "A is the state of B";
     City = "City" "A is located in the City B" | cityOf = "City Of" "A is the city of B";
-    Street = "Stree" "A is located on the Street B" | streetOf = "Stree Of" "A is the street of B";
-    CustomerType = "Customer Type" "A has customer type of B" | customerTypeOf = "Customer Type Of" "A is the customer type of B";
-    SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | salesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
-    StorageType = "StorageType" "The type of storage required for A is B" | storageTypeOf = "StorageType Of" "A is the storage type of B";
-    PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | physicalAddressOf ="Physical Address Of" "A is the physical address of B";
+    Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
+    CustomerType = "Customer Type" "A has customer type of B" | CustomerTypeOf = "Customer Type Of" "A is the customer type of B";
+    SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | SalesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
+    StorageType = "StorageType" "The type of storage required for A is B" | StorageTypeOf = "StorageType Of" "A is the storage type of B";
+    PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | PhysicalAddressOf ="Physical Address Of" "A is the physical address of B";
+    PostalCode = "Postal Code" "the postal code of A is B" | postalCodeOf ="Postal Code Of" "A is the postal code of B";
 }
