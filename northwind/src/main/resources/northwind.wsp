@@ -27,7 +27,8 @@ attributes {
 
 locations {
     dc = "DC" "District of Columbia";
-    eastCoast = "EAST_COAST" "East Coast";
+    eastCoast = "East Coast" "East Coast";
+    westCoast = "West Coast" "The Left Coast";
     france = "France" "The country of France";
     paris = "Paris" "The city Paris";
     us = "United States" "US locations";
