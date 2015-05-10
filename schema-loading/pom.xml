@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.chiralbehaviors.northwind</groupId>
+        <artifactId>northwind.app</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>schema-loading</artifactId>
+    <name>Ultrastructure Schema Loading</name>
+    <description>A module to control initialization and loading of the Ultrastructure database schema</description>
+    <profiles>
+        <profile>
+            <id>database.active</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>load</goal>
+                                </goals>
+                                <configuration>
+                                    <loader>
+                                        <dbaServer>${dba.db.server}</dbaServer>
+                                        <dbaPort>${dba.db.port}</dbaPort>
+                                        <dbaUsername>${dba.db.password}</dbaUsername>
+                                        <dbaPassword>${dba.db.login}</dbaPassword>
+
+                                        <coreServer>${db.server}</coreServer>
+                                        <corePort>${db.port}</corePort>
+                                        <coreUsername>${db.login}</coreUsername>
+                                        <corePassword>${db.password}</corePassword>
+
+                                        <dropDatabase>${drop}</dropDatabase>
+                                    </loader>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <groupId>com.chiralbehaviors.CoRE</groupId>
+                        <artifactId>loader-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
