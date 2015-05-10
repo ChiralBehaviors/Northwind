@@ -22,6 +22,9 @@ attributes {
     birthDate = "Birthdate" "Birthdate" timestamp;
     hireDate = "Hire Date" "Hire date" timestamp;
     
+    primaryEmail = "Primary Email" "Primary email address for contact" text;
+    additionalEmail = "Additional Email" "Additional email contact addresses" text;
+    
     streetNumber = "Street Number" "The number on a street" text;
 }
 
