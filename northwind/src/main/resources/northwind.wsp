@@ -51,5 +51,7 @@ relationships {
     SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | SalesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
     StorageType = "StorageType" "The type of storage required for A is B" | StorageTypeOf = "StorageType Of" "A is the storage type of B";
     PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | PhysicalAddressOf ="Physical Address Of" "A is the physical address of B";
-    PostalCode = "Postal Code" "the postal code of A is B" | postalCodeOf ="Postal Code Of" "A is the postal code of B";
+    PostalCode = "Postal Code" "the postal code of A is B" | PostalCodeOf ="Postal Code Of" "A is the postal code of B";
+    
+    ReportsTo = "Reports To" "A reports to B" | HasReport = "Has Report" "A has report B";
 }

@@ -22,6 +22,7 @@ package com.chiralbehaviors.northwind.agencies;
 
 import com.chiralbehaviors.CoRE.agency.Agency;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
+import com.chiralbehaviors.annotations.Edge;
 import com.chiralbehaviors.annotations.Facet;
 import com.chiralbehaviors.annotations.Key;
 import com.chiralbehaviors.annotations.State;
@@ -33,6 +34,10 @@ import com.chiralbehaviors.annotations.State;
  *
  */
 @State(facets = { @Facet(classification = @Key(namespace = "kernel", name = "IsA"), classifier = @Key(name = "NorthwindEmployee")) }, workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
-public interface NorthwindEmployee extends Phantasm<Agency> {
+public interface Employee extends Phantasm<Agency> {
+    @Edge(@Key(name = "ReportsTo"))
+    Employee getReportsTo();
 
+    @Edge(@Key(name = "ReportsTo"))
+    void setReportsTo(Employee manager);
 }
