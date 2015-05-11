@@ -22,6 +22,8 @@ attributes {
     birthDate = "Birthdate" "Birthdate" timestamp;
     hireDate = "Hire Date" "Hire date" timestamp;
     
+    PrimaryPhoneNumber = "Primary phone number" "Primary phone number for contact" text;
+    AdditionalPhoneNumber = "Additional phone number" "Additional phone numbers for contact" text;
     primaryEmail = "Primary Email" "Primary email address for contact" text;
     additionalEmail = "Additional Email" "Additional email contact addresses" text;
     

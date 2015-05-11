@@ -26,6 +26,7 @@ import com.chiralbehaviors.annotations.Facet;
 import com.chiralbehaviors.annotations.Key;
 import com.chiralbehaviors.annotations.State;
 import com.chiralbehaviors.northwind.locations.PhysicalAddress;
+import com.chiralbehaviors.northwind.locations.ShippingAddress;
 
 /**
  * Represents the facet that classifies an agency as a Northwind Customer
@@ -37,7 +38,7 @@ import com.chiralbehaviors.northwind.locations.PhysicalAddress;
 public interface Customer extends Phantasm<Agency> {
 
     @Key(name = "ShippingAddress")
-    PhysicalAddress getShippingAddress();
+    ShippingAddress getShippingAddress();
 
     @Key(name = "ShippingAddress")
     void setShippingAddress(PhysicalAddress address);
