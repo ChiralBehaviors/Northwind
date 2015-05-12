@@ -6,6 +6,8 @@ imports {
 }
 
 agencies {
+    Northwind = "Northwind" "Northwind, inc";
+    Company = "Company" "A company";
     Customer = "Northwind Customer" "A customer of Northwind";
     Employee = "Northwind Employee" "An employee of Northwind";
     Shipper = "Shipper" "An agency that ships products";
@@ -44,6 +46,7 @@ relationships {
     Area = "Area" "A is a member of the economic community B" | areaOf = "Area Of" "A is economic community of B";
     Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
     Region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
+    Territory = "Territory" "The territory of a A is B" | TerritoryOf "Territory Of" "A is the territory of B";
     State = "State" "A is located in the state B" | stateOf = "State Of" "A is the state of B";
     City = "City" "A is located in the City B" | cityOf = "City Of" "A is the city of B";
     Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
@@ -54,4 +57,7 @@ relationships {
     PostalCode = "Postal Code" "the postal code of A is B" | PostalCodeOf ="Postal Code Of" "A is the postal code of B";
     
     ReportsTo = "Reports To" "A reports to B" | HasReport = "Has Report" "A has report B";
+    EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee "Has Employee" "A has employee B";
+    SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier "Has Supplier" "A has supplier B";
+    Ships = "Ships" "A ships B" | HasShipper "Has Shipper" "A has shipper B"
 }
