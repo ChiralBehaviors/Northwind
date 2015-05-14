@@ -6,6 +6,18 @@ imports {
 }
 
 agencies {
+    BillingComputer = "Billing CPU" "Billing computer";
+    CPU = "CPU" "General purpose computer";
+    CreditDept = "Credit Department" "The credit department";
+    ExternalCust = "External Customer" "External (paying) customer";
+    Factory1Agency = "Factory 1" "Factory #1";
+    GeorgeTownUniversity = "GU" "Georgetown University";
+    CafleurBon = "carfleurBon" "Carfleur Bon";
+    Manufacturer = "MNFR" "Manufacturer";
+    NonExemptAgency = "Non Exempt" "Non tax exempt";
+    OrgA = "OrgA" "Organization A";
+    OrderFullfillment = "Order Fullfillment" "Order Fullfillment";
+    
     Exempt = "Exempt" "Exempt from sales tax";
     Northwind = "Northwind" "Northwind, inc";
     Company = "Company" "A company";
@@ -40,7 +52,7 @@ attributes {
     
     Price = "price"  "price" int; 
     TaxRate = "tax rate" "tax rate" numeric;
-    DiscountRate = "discount" "discount" numeric;
+    DiscountRate = "Discount" "Discount" numeric;
 }
 
 locations {
@@ -52,24 +64,24 @@ locations {
     US = "United States" "US locations";
     Euro = "Europe" "EU locations";
     
-    ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can ship to";
-    SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we ship from";
+    ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can Ship to";
+    SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we Ship from";
 }
 
 products {
     PricedProduct = "Priced Product" "A product we sell";
-    Abc486 = "abc486" "Laptop computer";
+    Abc486 = "Abc486" "Laptop computer";
     Frozen = "frozen" "Frozen Products";
     ChemB = "ChemB" "Chemical B";
     RoomTemp = "RoomTemp" "Room temperature products";
-    NonExempt = "nonExempt" "Non tax exempt products";
+    NonExempt = "NonExempt" "Non tax exempt products";
     Deliver = "Deliver" "Deliver product";
     Pick = "Pick" "Pick inventory";
     Ship = "Ship" "Ship inventory";
     CheckCredit = "CheckCredit" "Check customer in-house credit";
     CheckLetterOfCredit = "CheckLetterOfCredit" "Check customer letter of credit";
-    Discount = "Discount" "Compute fee discount";
-    Fee = "Fee" "Compute fee";
+    Discount = "Discount" "Compute Fee Discount";
+    Fee = "Fee" "Compute Fee";
     PrintCustomsDeclaration = "PrintCustomsDeclaration" "Print the customs declaration";
     PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
     SalesTax = "SalesTax" "Compute sales tax";
@@ -84,11 +96,11 @@ products {
 }
 
 relationships {
-    Area = "Area" "A is a member of the economic community B" | areaOf = "Area Of" "A is economic community of B";
+    Area = "Area" "A is a member of the economic community B" | AreaOf = "Area Of" "A is economic community of B";
     Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
-    Region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
+    Region = "Region" "The general region of A is B" | RegionOf = "Region Of" "A is the general region of B";
     Territory = "Territory" "The territory of a A is B" | TerritoryOf = "Territory Of" "A is the territory of B";
-    State = "State" "A is located in the state B" | StateOf = "State Of" "A is the state of B";
+    State = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
     City = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
     Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
     
@@ -106,16 +118,16 @@ relationships {
 
 
 status codes {
-    Available = "Available"  "Job is available for processing";
+    Available = "Available"  "Job is Available for processing";
     Active = "Active" "Working on it now";
-    WaitingOnCreditCheck = "Waiting on Credit Check" "Waiting on credit check to be completed";
+    WaitingOnCreditCheck = "Waiting on Credit Check" "Waiting on credit check to be Completed";
     Completed = "Completed" "Completed job";
     Failure = "Failure" "Something went pear shaped";
-    PickCompleted = "Pick Completed" "Pick product has been completed";
+    PickCompleted = "Pick Completed" "Pick product has been Completed";
     WaitingOnPurchaseOrder = "Waiting on the purchace order" "Waiting for the purchase order to be complete";
-    WaitingOnPricing = "Waiting on pricing" "Waiting for pricing to be completed";
-    WaitingOnFee = "Waiting on fee calculation" "Waiting for fee calculation to be completed";
-    Abandoned = "Job abandoned"  "We were going to do it, something happened in earlier processing that will prevent us from proceeding";
+    WaitingOnPricing = "Waiting on pricing" "Waiting for pricing to be Completed";
+    WaitingOnFee = "Waiting on Fee calculation" "Waiting for Fee calculation to be Completed";
+    Abandoned = "Job abandoned"  "We were going to do it, something happened in earlier processing that will prevent US from proceeding";
 }
 status code sequencings {
     Pick: {
@@ -162,4 +174,159 @@ status code sequencings {
         Available Active
         Active Completed
         }
+}
+
+sequencing auths {
+    parent {
+        service: Pick
+        status: Completed
+        parent: Deliver
+        next: Completed
+        activeSiblings: false
+        
+        service: CheckCredit
+        status: Completed
+        parent: Pick
+        next: Available
+        activeSiblings: false
+        
+        service: PrintCustomsDeclaration
+        status: Completed
+        parent: Ship
+        next: Available
+        activeSiblings: false
+        
+        service: PrintPurchaseOrder
+        status: Completed
+        parent: Ship
+        next: Available
+        activeSiblings: false
+        
+        service: Discount
+        status: Completed
+        parent: PrintPurchaseOrder
+        next: Available
+        activeSiblings: false
+        
+        service: Ship
+        status: Completed
+        parent: Deliver
+        next: Completed
+        activeSiblings: false
+    }
+    sibling {
+        parent: PrintPurchaseOrder
+        status: Completed
+        sibling: Deliver
+        next: Completed
+        
+        parent: Fee
+        status: Completed
+        sibling: Discount
+        next: Available
+    }
+    child {
+        parent: Ship
+        status: WaitingOnPurchaseOrder
+        child: PrintPurchaseOrder
+        next: WaitingOnFee
+        
+        parent: Pick
+        status: WaitingOnCreditCheck
+        child: CheckCredit
+        next: Available
+        
+        parent: PrintPurchaseOrder
+        status: WaitingOnFee
+        child: Fee
+        next: Available
+        
+        parent: Deliver
+        status: Available
+        child: Pick
+        next: WaitingOnCreditCheck
+    }
+}
+inferences {
+    AreaOf.RegionOf.AreaOf
+    AreaOf.StateOf.AreaOf
+    AreaOf.CityOf.AreaOf
+    AreaOf.StreetOf.AreaOf
+    RegionOf.StateOf.RegionOf
+    RegionOf.CityOf.RegionOf
+    RegionOf.StreetOf.RegionOf
+    StateOf.CityOf.StateOf
+    StateOf.StreetOf.StateOf
+    CityOf.StreetOf.CityOf
+}
+protocols {
+        service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation
+        ->
+        service: Pick product: kernel::SameProduct assign: Factory1Agency
+        
+        service: Pick product: kernel::AnyProduct from: US to: US requester: ExternalCust
+        ->
+        service: CheckCredit product: kernel::SameProduct assign: CPU
+        
+        service: Pick product: kernel::AnyProduct from: US to: Euro
+        ->
+        service: CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
+        
+        service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
+        requester: kernel::AnyAgency
+        ->
+        service: Ship product: kernel::SameProduct assign: Factory1Agency
+        
+        service: Ship product: Abc486 from: US to: Euro
+        ->
+        service: PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
+        
+        service: Ship product: Abc486 from: US to: kernel::AnyLocation
+        ->
+        service: PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
+        
+        service: PrintPurchaseOrder product: Abc486 from: US to: kernel::AnyLocation requester: kernel::AnyAgency
+        -> 
+        service: Fee product: kernel::SameProduct assign: BillingComputer
+        
+        service: Fee product: NonExempt from: kernel::AnyLocation to: DC requester: NonExemptAgency 
+        ->
+        service: SalesTax product: kernel::SameProduct assign: BillingComputer
+        
+        service: Fee product: Abc486 from: US to: Euro requester: ExternalCust
+        ->
+        service: Discount product: kernel::SameProduct assign: BillingComputer
+        
+        service: Fee product: Abc486 from: US to: DC requester: GeorgeTownUniversity
+        ->
+        service: SalesTax product: kernel::SameProduct assign: BillingComputer
+}
+meta protocols {
+        transform: Deliver
+        product: kernel::AnyRelationship
+        from: Area
+        to: State
+        
+        transform: Pick
+        product: kernel::AnyRelationship
+        from: Area
+        to: Area 
+        requester: CustomerType
+        
+        transform: Ship
+        product: kernel::AnyRelationship
+        from: Area
+        to: Area 
+        requester: CustomerType
+        
+        transform: Fee
+        product: kernel::AnyRelationship
+        to: City
+        requester: SalesTaxStatus 
+        
+        transform: PrintPurchaseOrder
+        product: kernel::AnyRelationship
+        from: Area
+        to: kernel::AnyRelationship
+        requester: kernel::AnyRelationship
 }
