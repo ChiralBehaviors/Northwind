@@ -11,7 +11,7 @@ agencies {
     CreditDept = "Credit Department" "The credit department";
     ExternalCust = "External Customer" "External (paying) customer";
     Factory1Agency = "Factory 1" "Factory #1";
-    GeorgeTownUniversity = "GU" "Georgetown University";
+    GeorgetownUniversity = "GU" "Georgetown University";
     CafleurBon = "carfleurBon" "Carfleur Bon";
     Manufacturer = "MNFR" "Manufacturer";
     NonExemptAgency = "Non Exempt" "Non tax exempt";
@@ -57,7 +57,7 @@ attributes {
 
 locations {
     DC = "DC" "District of Columbia";
-    eastCoast = "East Coast" "East Coast";
+    EastCoast = "East Coast" "East Coast";
     WestCoast = "West Coast" "The Left Coast";
     France = "France" "The country of France";
     Paris = "Paris" "The city Paris";
@@ -66,6 +66,24 @@ locations {
     
     ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can Ship to";
     SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we Ship from";
+    
+    Rsb225 = "225RSB" "225 Reiss Science Bldg";
+    Bht37 = "37BHT" "37 Bret Harte Terrace";
+    Rc31 = "31rc" "1 Rue Cambon"; 
+    Factory1 = "Factory 1" "Factory #1";
+    Bin1 = "Bin 1";
+    Bin15 = "Bin 15";
+    edges {
+        Bin1.Area.Factory1
+        Bin15.Area.Factory1
+        Rsb225.City.DC
+        Bht37.City.DC
+        Rc31.City.Paris
+        DC.Region.EastCoast
+        EastCoast.Area.US
+        Paris.Region.France
+        France.Area.Euro
+    }
 }
 
 products {
@@ -297,7 +315,7 @@ protocols {
         ->
         service: Discount product: kernel::SameProduct assign: BillingComputer
         
-        service: Fee product: Abc486 from: US to: DC requester: GeorgeTownUniversity
+        service: Fee product: Abc486 from: US to: DC requester: GeorgetownUniversity
         ->
         service: SalesTax product: kernel::SameProduct assign: BillingComputer
 }
