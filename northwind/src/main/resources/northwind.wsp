@@ -6,58 +6,160 @@ imports {
 }
 
 agencies {
+    Exempt = "Exempt" "Exempt from sales tax";
     Northwind = "Northwind" "Northwind, inc";
     Company = "Company" "A company";
     Customer = "Northwind Customer" "A customer of Northwind";
     Employee = "Northwind Employee" "An employee of Northwind";
     Shipper = "Shipper" "An agency that ships products";
     Supplier = "Supplier" "An agency that supplies products";
+    
+    edges {
+        Northwind.kernel::IsA.Company
+        Shipper.kernel::IsA.Company
+        Supplier.kernel::IsA.Company
+        
+    }
+}
+
+attributes {
+    LastName = "Last Name" "the last name" text;
+    FirstName = "First Name" "the first name" text;
+    Title = "Title" "Official title" text;
+    TitleOfCourtesy = "Title of Courtesy" "Informal title" text;
+    BirthDate = "Birthdate" "Birthdate" timestamp;
+    HireDate = "Hire Date" "Hire date" timestamp;
+    
+    PrimaryPhoneNumber = "Primary phone number" "Primary phone number for contact" text;
+    AdditionalPhoneNumber = "Additional phone number" "Additional phone numbers for contact" text;
+    PrimaryEmail = "Primary Email" "Primary email address for contact" text;
+    AdditionalEmail = "Additional Email" "Additional email contact addresses" text;
+    
+    StreetNumber = "Street Number" "The number on a street" text;
+    PostalCode = "Postal Code" "The postal routing code" text;
+    
+    Price = "price"  "price" int; 
+    TaxRate = "tax rate" "tax rate" numeric;
+    DiscountRate = "discount" "discount" numeric;
+}
+
+locations {
+    DC = "DC" "District of Columbia";
+    eastCoast = "East Coast" "East Coast";
+    WestCoast = "West Coast" "The Left Coast";
+    France = "France" "The country of France";
+    Paris = "Paris" "The city Paris";
+    US = "United States" "US locations";
+    Euro = "Europe" "EU locations";
+    
     ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can ship to";
     SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we ship from";
 }
 
-attributes {
-    lastName = "Last Name" "the last name" text;
-    firstName = "First Name" "the first name" text;
-    title = "Title" "Official title" text;
-    titleOfCourtesy = "Title of Courtesy" "Informal title" text;
-    birthDate = "Birthdate" "Birthdate" timestamp;
-    hireDate = "Hire Date" "Hire date" timestamp;
-    
-    PrimaryPhoneNumber = "Primary phone number" "Primary phone number for contact" text;
-    AdditionalPhoneNumber = "Additional phone number" "Additional phone numbers for contact" text;
-    primaryEmail = "Primary Email" "Primary email address for contact" text;
-    additionalEmail = "Additional Email" "Additional email contact addresses" text;
-    
-    streetNumber = "Street Number" "The number on a street" text;
-}
-
-locations {
-    dc = "DC" "District of Columbia";
-    eastCoast = "East Coast" "East Coast";
-    westCoast = "West Coast" "The Left Coast";
-    france = "France" "The country of France";
-    paris = "Paris" "The city Paris";
-    us = "United States" "US locations";
-    euro = "Europe" "EU locations";
+products {
+    PricedProduct = "Priced Product" "A product we sell";
+    Abc486 = "abc486" "Laptop computer";
+    Frozen = "frozen" "Frozen Products";
+    ChemB = "ChemB" "Chemical B";
+    RoomTemp = "RoomTemp" "Room temperature products";
+    NonExempt = "nonExempt" "Non tax exempt products";
+    Deliver = "Deliver" "Deliver product";
+    Pick = "Pick" "Pick inventory";
+    Ship = "Ship" "Ship inventory";
+    CheckCredit = "CheckCredit" "Check customer in-house credit";
+    CheckLetterOfCredit = "CheckLetterOfCredit" "Check customer letter of credit";
+    Discount = "Discount" "Compute fee discount";
+    Fee = "Fee" "Compute fee";
+    PrintCustomsDeclaration = "PrintCustomsDeclaration" "Print the customs declaration";
+    PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
+    SalesTax = "SalesTax" "Compute sales tax";
+    edges {
+        Abc486.StorageType.RoomTemp
+        Abc486.SalesTaxStatus.NonExempt
+        ChemB.StorageType.Frozen
+    }
+    classified attributes {
+        kernel::IsA.PricedProduct Price 
+    }
 }
 
 relationships {
     Area = "Area" "A is a member of the economic community B" | areaOf = "Area Of" "A is economic community of B";
     Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
     Region = "Region" "The general region of A is B" | regionOf = "Region Of" "A is the general region of B";
-    Territory = "Territory" "The territory of a A is B" | TerritoryOf "Territory Of" "A is the territory of B";
-    State = "State" "A is located in the state B" | stateOf = "State Of" "A is the state of B";
-    City = "City" "A is located in the City B" | cityOf = "City Of" "A is the city of B";
+    Territory = "Territory" "The territory of a A is B" | TerritoryOf = "Territory Of" "A is the territory of B";
+    State = "State" "A is located in the state B" | StateOf = "State Of" "A is the state of B";
+    City = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
     Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
+    
     CustomerType = "Customer Type" "A has customer type of B" | CustomerTypeOf = "Customer Type Of" "A is the customer type of B";
     SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | SalesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
+    
     StorageType = "StorageType" "The type of storage required for A is B" | StorageTypeOf = "StorageType Of" "A is the storage type of B";
     PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | PhysicalAddressOf ="Physical Address Of" "A is the physical address of B";
-    PostalCode = "Postal Code" "the postal code of A is B" | PostalCodeOf ="Postal Code Of" "A is the postal code of B";
-    
+   
     ReportsTo = "Reports To" "A reports to B" | HasReport = "Has Report" "A has report B";
-    EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee "Has Employee" "A has employee B";
-    SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier "Has Supplier" "A has supplier B";
-    Ships = "Ships" "A ships B" | HasShipper "Has Shipper" "A has shipper B"
+    EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee = "Has Employee" "A has employee B";
+    SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier = "Has Supplier" "A has supplier B";
+    Ships = "Ships" "A ships B" | HasShipper = "Has Shipper" "A has shipper B";
+}
+
+
+status codes {
+    Available = "Available"  "Job is available for processing";
+    Active = "Active" "Working on it now";
+    WaitingOnCreditCheck = "Waiting on Credit Check" "Waiting on credit check to be completed";
+    Completed = "Completed" "Completed job";
+    Failure = "Failure" "Something went pear shaped";
+    PickCompleted = "Pick Completed" "Pick product has been completed";
+    WaitingOnPurchaseOrder = "Waiting on the purchace order" "Waiting for the purchase order to be complete";
+    WaitingOnPricing = "Waiting on pricing" "Waiting for pricing to be completed";
+    WaitingOnFee = "Waiting on fee calculation" "Waiting for fee calculation to be completed";
+    Abandoned = "Job abandoned"  "We were going to do it, something happened in earlier processing that will prevent us from proceeding";
+}
+status code sequencings {
+    Pick: {
+           WaitingOnCreditCheck Available
+           Available Active 
+           Active Completed
+           }
+    Ship: {
+        WaitingOnPurchaseOrder Available 
+        Available Active 
+        Active Completed
+        }
+    Deliver: {
+        Available Active
+        Active Completed
+        }
+    CheckCredit: {
+        Available Active
+        Active Completed
+        }
+    CheckLetterOfCredit: {
+        Available Active
+        Active Completed
+        }
+    Discount: {
+        Available Active
+        Active Completed
+        }
+    Fee: {
+        Available Active
+        Active Completed
+        }
+    PrintCustomsDeclaration: {
+        WaitingOnFee Available
+        Available Active
+        Active Completed
+        }
+    PrintPurchaseOrder: {
+        WaitingOnFee Available
+        Available Active
+        Active Completed
+        }
+    SalesTax: {
+        Available Active
+        Active Completed
+        }
 }
