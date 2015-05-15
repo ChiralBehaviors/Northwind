@@ -201,17 +201,16 @@ status code sequencings {
 
 sequencing auths {
     parent {
-        service: Pick
-        status: Completed
-        parent: Deliver
-        next: Completed
-        activeSiblings: false
         
         service: CheckCredit
         status: Completed
         parent: Pick
         next: Available
-        activeSiblings: false
+        
+        service: CheckLetterOfCredit
+        status: Completed
+        parent: Pick
+        next: Available
         
         service: PrintCustomsDeclaration
         status: Completed
@@ -227,7 +226,13 @@ sequencing auths {
         
         service: Discount
         status: Completed
-        parent: PrintPurchaseOrder
+        parent: Fee
+        next: Available
+        activeSiblings: false
+        
+        service: SalesTax
+        status: Completed
+        parent: Fee
         next: Available
         activeSiblings: false
         
@@ -236,16 +241,22 @@ sequencing auths {
         parent: Deliver
         next: Completed
         activeSiblings: false
+        
+        service: Fee
+        status: Completed
+        parent: PrintPurchaseOrder
+        next: Available
+        activeSiblings: false
     }
     sibling {
+        parent: Pick
+        status: Completed
+        sibling: Ship
+        next: WaitingOnPurchaseOrder
+        
         parent: PrintPurchaseOrder
         status: Completed
-        sibling: Deliver
-        next: Completed
-        
-        parent: Fee
-        status: Completed
-        sibling: Discount
+        sibling: PrintCustomsDeclaration
         next: Available
     }
     child {
@@ -265,6 +276,11 @@ sequencing auths {
         next: Available
         
         parent: Deliver
+        status: Available
+        child: Pick
+        next: WaitingOnCreditCheck
+        
+        parent: Fee
         status: Available
         child: Pick
         next: WaitingOnCreditCheck
