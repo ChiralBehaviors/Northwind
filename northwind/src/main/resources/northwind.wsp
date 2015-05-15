@@ -30,7 +30,11 @@ agencies {
         Northwind.kernel::IsA.Company
         Shipper.kernel::IsA.Company
         Supplier.kernel::IsA.Company
-        
+        GeorgetownUniversity.CustomerType.ExternalCust
+        GeorgetownUniversity.SalesTaxStatus.Exempt
+        OrgA.CustomerType.ExternalCust
+        CafleurBon.CustomerType.ExternalCust
+        OrgA.SalesTaxStatus.NonExemptAgency
     }
 }
 
@@ -69,7 +73,7 @@ locations {
     
     Rsb225 = "225RSB" "225 Reiss Science Bldg";
     Bht37 = "37BHT" "37 Bret Harte Terrace";
-    Rc31 = "31rc" "1 Rue Cambon"; 
+    Rc31 = "31rc" "31 Rue Cambon"; 
     Factory1 = "Factory 1" "Factory #1";
     Bin1 = "Bin 1";
     Bin15 = "Bin 15";
@@ -83,6 +87,7 @@ locations {
         EastCoast.Area.US
         Paris.Region.France
         France.Area.Euro
+        Factory1.Street.Bht37
     }
 }
 
@@ -282,7 +287,7 @@ protocols {
         ->
         service: Pick product: kernel::SameProduct assign: Factory1Agency
         
-        service: Pick product: kernel::AnyProduct from: US to: US requester: ExternalCust
+        service: Pick product: kernel::AnyProduct from: US to: US
         ->
         service: CheckCredit product: kernel::SameProduct assign: CPU
         
