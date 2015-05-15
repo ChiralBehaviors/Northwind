@@ -54,9 +54,15 @@ attributes {
     StreetNumber = "Street Number" "The number on a street" text;
     PostalCode = "Postal Code" "The postal routing code" text;
     
-    Price = "price"  "price" int; 
+    OrderDate = "Order Date" "Date of order" timestamp;
+    RequiredDate = "Required Date" "Date required" timestamp;
+    ShipDate = "Ship Date" "Date shipped" timestamp;
+    
+    DiscountPercentage = "discount" "discount percentage" numeric;
+    Quantity = "quantity" "quantity ordered" int; 
+    UnitPrice = "unit price"  "unit price" numeric; 
     TaxRate = "tax rate" "tax rate" numeric;
-    DiscountRate = "Discount" "Discount" numeric;
+    
 }
 
 locations {
@@ -108,13 +114,26 @@ products {
     PrintCustomsDeclaration = "PrintCustomsDeclaration" "Print the customs declaration";
     PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
     SalesTax = "SalesTax" "Compute sales tax";
+    Order = "Order" "An Order";
+    ItemDetail = "Order Item Detail" "Detail on item";
+    
     edges {
         Abc486.StorageType.RoomTemp
         Abc486.SalesTaxStatus.NonExempt
         ChemB.StorageType.Frozen
     }
     classified attributes {
-        kernel::IsA.PricedProduct Price 
+        kernel::IsA.PricedProduct UnitPrice 
+        
+        kernel::IsA.ItemDetail UnitPrice
+        kernel::IsA.ItemDetail Quantity
+        kernel::IsA.ItemDetail DiscountPercentage
+        kernel::IsA.ItemDetail TaxRate
+        
+        kernel::IsA.Order RequiredDate
+        kernel::IsA.Order OrderDate
+        kernel::IsA.Order ShipDate
+        
     }
 }
 
@@ -137,6 +156,11 @@ relationships {
     EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee = "Has Employee" "A has employee B";
     SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier = "Has Supplier" "A has supplier B";
     Ships = "Ships" "A ships B" | HasShipper = "Has Shipper" "A has shipper B";
+    
+    ShippedBy = "Shipped By" "A was shipped by B" | Shipped = "Shipped" "A shipped B";
+    DeliveredTo = "Delivered To" "A was delivered to B" | Recieved = "Received" "A recieved B";
+    OrderedBy = "Ordered By" "A was ordered by B" | Ordered = "Ordered" "A ordered B";
+    
 }
 
 

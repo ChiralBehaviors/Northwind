@@ -18,25 +18,17 @@
  *  along with Ultrastructure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.chiralbehaviors.northwind.agencies;
+package com.chiralbehaviors.northwind.products;
 
-import com.chiralbehaviors.CoRE.agency.Agency;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.Edge;
-import com.chiralbehaviors.annotations.Key;
+import com.chiralbehaviors.CoRE.product.Product;
 import com.chiralbehaviors.annotations.State;
 
 /**
- * Represents the aspect that determines what a Northwind Employee is all about.
- * 
  * @author hhildebrand
  *
  */
 @State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
-public interface Employee extends Phantasm<Agency> {
-    @Edge(@Key(name = "ReportsTo"))
-    Employee getReportsTo();
+public interface OrderItem extends Phantasm<Product> {
 
-    @Edge(@Key(name = "ReportsTo"))
-    void setReportsTo(Employee manager);
 }

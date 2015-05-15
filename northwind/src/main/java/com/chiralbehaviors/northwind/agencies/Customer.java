@@ -22,11 +22,7 @@ package com.chiralbehaviors.northwind.agencies;
 
 import com.chiralbehaviors.CoRE.agency.Agency;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.Facet;
-import com.chiralbehaviors.annotations.Key;
 import com.chiralbehaviors.annotations.State;
-import com.chiralbehaviors.northwind.locations.PhysicalAddress;
-import com.chiralbehaviors.northwind.locations.ShippingAddress;
 
 /**
  * Represents the facet that classifies an agency as a Northwind Customer
@@ -34,12 +30,6 @@ import com.chiralbehaviors.northwind.locations.ShippingAddress;
  * @author hhildebrand
  *
  */
-@State(facets = { @Facet(classification = @Key(namespace = "kernel", name = "IsA"), classifier = @Key(name = "Customer")) }, workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
+@State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
 public interface Customer extends Phantasm<Agency> {
-
-    @Key(name = "ShippingAddress")
-    ShippingAddress getShippingAddress();
-
-    @Key(name = "ShippingAddress")
-    void setShippingAddress(PhysicalAddress address);
 }

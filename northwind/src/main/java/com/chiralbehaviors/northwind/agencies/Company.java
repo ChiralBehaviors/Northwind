@@ -20,8 +20,6 @@
 
 package com.chiralbehaviors.northwind.agencies;
 
-import com.chiralbehaviors.annotations.Facet;
-import com.chiralbehaviors.annotations.Key;
 import com.chiralbehaviors.annotations.State;
 
 /**
@@ -30,7 +28,7 @@ import com.chiralbehaviors.annotations.State;
  * @author hhildebrand
  *
  */
-@State(facets = { @Facet(classification = @Key(namespace = "kernel", name = "IsA"), classifier = @Key(name = "Company")) }, workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
+@State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
 public interface Company {
 
 }

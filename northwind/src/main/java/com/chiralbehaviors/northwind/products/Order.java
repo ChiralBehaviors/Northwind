@@ -18,15 +18,17 @@
  *  along with Ultrastructure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.chiralbehaviors.northwind.locations;
+package com.chiralbehaviors.northwind.products;
 
-import com.chiralbehaviors.CoRE.location.Location;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
+import com.chiralbehaviors.CoRE.product.Product;
+import com.chiralbehaviors.annotations.State;
 
 /**
  * @author hhildebrand
  *
  */
-public interface ShippingAddress extends Phantasm<Location> {
+@State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
+public interface Order extends Phantasm<Product> {
 
 }
