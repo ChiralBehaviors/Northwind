@@ -166,8 +166,6 @@ public class NorthwindTest extends AbstractModelTest {
         jobModel.changeStatus(pick, scenario.getCompleted(), kernel.getCore(),
                               "transition during test");
         em.flush();
-        txn.commit();
-        txn.begin();
         em.clear();
         query.setParameter("service", scenario.getPick());
         pick = query.getSingleResult();
