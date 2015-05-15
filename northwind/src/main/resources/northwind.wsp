@@ -157,46 +157,46 @@ status code sequencings {
            WaitingOnCreditCheck Available
            Available Active 
            Active Completed
-           }
+    }
     Ship: {
         WaitingOnPurchaseOrder Available 
         Available Active 
         Active Completed
-        }
+    }
     Deliver: {
         Available Active
         Active Completed
-        }
+    }
     CheckCredit: {
         Available Active
         Active Completed
-        }
+    }
     CheckLetterOfCredit: {
         Available Active
         Active Completed
-        }
+    }
     Discount: {
         Available Active
         Active Completed
-        }
+    }
     Fee: {
         Available Active
         Active Completed
-        }
+    }
     PrintCustomsDeclaration: {
         WaitingOnFee Available
         Available Active
         Active Completed
-        }
+    }
     PrintPurchaseOrder: {
         WaitingOnFee Available
         Available Active
         Active Completed
-        }
+    }
     SalesTax: {
         Available Active
         Active Completed
-        }
+    }
 }
 
 sequencing auths {
@@ -282,8 +282,13 @@ sequencing auths {
         
         parent: Fee
         status: Available
-        child: Pick
-        next: WaitingOnCreditCheck
+        child: SalesTax
+        next: Available
+        
+        parent: Fee
+        status: Available
+        child: Discount
+        next: Available
     }
 }
 inferences {
