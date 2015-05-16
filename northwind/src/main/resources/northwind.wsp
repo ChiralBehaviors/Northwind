@@ -46,11 +46,6 @@ attributes {
     BirthDate = "Birthdate" "Birthdate" timestamp;
     HireDate = "Hire Date" "Hire date" timestamp;
     
-    PrimaryPhoneNumber = "Primary phone number" "Primary phone number for contact" text;
-    AdditionalPhoneNumber = "Additional phone number" "Additional phone numbers for contact" text;
-    PrimaryEmail = "Primary Email" "Primary email address for contact" text;
-    AdditionalEmail = "Additional Email" "Additional email contact addresses" text;
-    
     StreetNumber = "Street Number" "The number on a street" text;
     PostalCode = "Postal Code" "The postal routing code" text;
     
