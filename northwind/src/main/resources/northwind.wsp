@@ -122,18 +122,10 @@ products {
         Abc486.SalesTaxStatus.NonExempt
         ChemB.StorageType.Frozen
     }
-    classified attributes {
-        kernel::IsA.PricedProduct UnitPrice 
-        
-        kernel::IsA.ItemDetail UnitPrice
-        kernel::IsA.ItemDetail Quantity
-        kernel::IsA.ItemDetail DiscountPercentage
-        kernel::IsA.ItemDetail TaxRate
-        
-        kernel::IsA.Order RequiredDate
-        kernel::IsA.Order OrderDate
-        kernel::IsA.Order ShipDate
-        
+    facets {
+        kernel::IsA.PricedProduct attributes { UnitPrice }
+        kernel::IsA.ItemDetail attributes { UnitPrice Quantity DiscountPercentage TaxRate }
+        kernel::IsA.Order attributes { RequiredDate OrderDate ShipDate }
     }
 }
 
