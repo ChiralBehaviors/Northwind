@@ -52,4 +52,7 @@ public interface ItemDetail extends Phantasm<Product> {
 
     @Edge(@Key(name = ""))
     PricedProduct getProduct();
+
+    @Edge(@Key(name = "ItemDetail"))
+    Order getOrder();
 }

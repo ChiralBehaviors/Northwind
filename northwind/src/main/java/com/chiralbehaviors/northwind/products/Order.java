@@ -20,8 +20,12 @@
 
 package com.chiralbehaviors.northwind.products;
 
+import java.util.List;
+
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
 import com.chiralbehaviors.CoRE.product.Product;
+import com.chiralbehaviors.annotations.Edge;
+import com.chiralbehaviors.annotations.Key;
 import com.chiralbehaviors.annotations.State;
 
 /**
@@ -30,5 +34,12 @@ import com.chiralbehaviors.annotations.State;
  */
 @State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
 public interface Order extends Phantasm<Product> {
+    @Edge(@Key(name = "ItemDetailOf"))
+    List<ItemDetail> getItemDetails();
 
+    @Edge(@Key(name = "ItemDetailOf"))
+    void addItemDetail(ItemDetail item);
+
+    @Edge(@Key(name = "ItemDetailOf"))
+    void setItemDetails(List<ItemDetail> items);
 }

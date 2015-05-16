@@ -123,9 +123,29 @@ products {
         ChemB.StorageType.Frozen
     }
     facets {
-        kernel::IsA.PricedProduct attributes { UnitPrice }
-        kernel::IsA.ItemDetail attributes { UnitPrice Quantity DiscountPercentage TaxRate }
-        kernel::IsA.Order attributes { RequiredDate OrderDate ShipDate }
+        kernel::IsA.PricedProduct
+            attributes { UnitPrice }
+        kernel::IsA.ItemDetail
+            attributes { UnitPrice Quantity DiscountPercentage TaxRate }
+            constraints {
+                childRelationship OrderedProductOf
+                    authorizedRelationship kernel::IsA
+                    authorizedParent PricedProduct
+                    cardinality 1
+                    
+                childRelationship ItemDetailOf
+                    authorizedRelationship kernel::IsA
+                    authorizedParent Order
+                    cardinality 1
+            }
+        kernel::IsA.Order 
+            attributes { RequiredDate OrderDate ShipDate }
+            constraints {
+                childRelationship HasItemDetail
+                    authorizedRelationship kernel::IsA
+                    authorizedParent ItemDetail
+                    cardinality 0 
+            }
     }
 }
 
@@ -153,6 +173,8 @@ relationships {
     DeliveredTo = "Delivered To" "A was delivered to B" | Recieved = "Received" "A recieved B";
     OrderedBy = "Ordered By" "A was ordered by B" | Ordered = "Ordered" "A ordered B";
     
+    ItemDetailOf = "Item Detail Of" "A is an item detail of B" | HasItemDetail = "Has Item Detail" "A has item detail B";
+    OrderedProductOf = "Ordered Product Of" "A is the ordered product of B" | ProductOrdered = "Product Ordered" "A is a product order of B"; 
 }
 
 
