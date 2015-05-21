@@ -126,6 +126,12 @@ locations {
     facets {
         kernel::IsA.Territory
         kernel::IsA.RegionServed
+        
+        kernel::IsA.City
+        kernel::IsA.Country
+        kernel::IsA.Region
+        kernel::IsA.StateOrProvinces
+        kernel::IsA.Street
     }
 }
 
