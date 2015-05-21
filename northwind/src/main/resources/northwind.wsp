@@ -9,15 +9,17 @@ agencies {
     BillingComputer = "Billing CPU" "Billing computer";
     CPU = "CPU" "General purpose computer";
     CreditDept = "Credit Department" "The credit department";
-    ExternalCust = "External Customer" "External (paying) customer";
     Factory1Agency = "Factory 1" "Factory #1";
     GeorgetownUniversity = "GU" "Georgetown University";
     CafleurBon = "carfleurBon" "Carfleur Bon";
     Manufacturer = "MNFR" "Manufacturer";
-    NonExemptAgency = "Non Exempt" "Non tax exempt";
     OrgA = "OrgA" "Organization A";
     OrderFullfillment = "Order Fullfillment" "Order Fullfillment";
     
+    NonExempt = "Non Exempt" "Non tax exempt";
+    ExternalCust = "External Customer" "External (paying) customer";
+    InternalCust = "Internal Customer" "Internal (non paying) customer";
+    AbstractCustomerType = "Customer Type" "Common super typeof customer's type";
     Exempt = "Exempt" "Exempt from sales tax";
     Northwind = "Northwind" "Northwind, inc";
     Company = "Company" "A company";
@@ -26,17 +28,23 @@ agencies {
     Manager = "Northwind Manager" "An manager of Northwind";
     Shipper = "Shipper" "An agency that ships products";
     Supplier = "Supplier" "An agency that supplies products";
+    TaxStatus = "Tax Status" "The abstract tax status of an agency";
     
     edges {
+        ExternalCust.kernel::IsA.AbstractCustomerType
+        InternalCust.kernel::IsA.AbstractCustomerType
+        Exempt.kernel::IsA.TaxStatus
+        NonExempt.kernel::IsA.TaxStatus
         Northwind.kernel::IsA.Company
         Shipper.kernel::IsA.Company
         Supplier.kernel::IsA.Company
+        Manager.kernel::IsA.Employee
+        
         GeorgetownUniversity.CustomerType.ExternalCust
         GeorgetownUniversity.SalesTaxStatus.Exempt
         OrgA.CustomerType.ExternalCust
         CafleurBon.CustomerType.ExternalCust
         OrgA.SalesTaxStatus.NonExemptAgency
-        Manager.kernel::IsA.Employee
     }
     facets {
         kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
@@ -46,9 +54,14 @@ agencies {
                 3 Territory: kernel::IsA.Territory
             }
         kernel::IsA.Customer
+            constraints {
+                1 CustomerType method: relationship : kernel::IsA.AbstractCustomerType
+                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
+            }
         kernel::IsA.Company
             constraints {
                 1 Contact method: relationship : kernel::IsA.Employee
+                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
             }
         kernel::IsA.Supplier
             constraints {
@@ -59,6 +72,8 @@ agencies {
                 3 InRegion: kernel::IsA.Region
             }
         kernel::IsA.Manager
+        kernel::IsA.TaxStatus
+        kernel::IsA.AbstractCustomerType
     }
 }
 
@@ -173,6 +188,7 @@ products {
         kernel::IsA.PricedProduct { UnitPrice }
             constraints {
                 3 IsCategorizedAs: kernel::IsA.Category
+                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             constraints {
