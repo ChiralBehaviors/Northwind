@@ -43,7 +43,7 @@ agencies {
             constraints {
                 1 EmployeeOf: kernel::IsA.Company 
                 1 ReportsTo: kernel::IsA.Manager
-                3 HasTerritory: kernel::IsA.Territory
+                3 Territory: kernel::IsA.Territory
             }
         kernel::IsA.Customer
         kernel::IsA.Company
@@ -52,11 +52,11 @@ agencies {
             }
         kernel::IsA.Supplier
             constraints {
-                3 Region method: relationship : kernel::IsA.RegionServed
+                3 InRegion: kernel::IsA.Region
             }
         kernel::IsA.Shipper
             constraints { 
-                3 Region method: relationship : kernel::IsA.RegionServed
+                3 InRegion: kernel::IsA.Region
             }
         kernel::IsA.Manager
     }
@@ -85,9 +85,8 @@ attributes {
     Picture = "picture" "A digital picture" binary;
 }
 
-locations {
-    Territory = "Territory" "The territory";
-    RegionServed = "Region Service" "The regional group served";
+locations { 
+    Address = "Address" "The address";
     DC = "DC" "District of Columbia";
     EastCoast = "East Coast" "East Coast";
     WestCoast = "West Coast" "The Left Coast";
@@ -96,8 +95,13 @@ locations {
     US = "United States" "US locations";
     Euro = "Europe" "EU locations";
     
-    ShippingAddress = "The association with a shipping address" "An aspect for referring to a physical address that we can Ship to";
-    SourceAddress = "The association with a source address" "An aspect for referring to a physical address that we Ship from";
+    Region = "Region" "A Region";
+    Area = "Area" "An Area";
+    StateOrProvince = "State or Province" "A state or province";
+    City = "City" "A City";
+    Country = "Country" "A Country";
+    Street = "Street" "A Street";
+    Territory = "Territory" "A territory";
     
     Rsb225 = "225RSB" "225 Reiss Science Bldg";
     Bht37 = "37BHT" "37 Bret Harte Terrace";
@@ -106,27 +110,36 @@ locations {
     Bin1 = "Bin 1";
     Bin15 = "Bin 15";
     edges {
-        Bin1.Area.Factory1
-        Bin15.Area.Factory1
-        Rsb225.City.DC
-        Bht37.City.DC
-        Rc31.City.Paris
-        DC.Region.EastCoast
-        EastCoast.Area.US
-        Paris.Region.France
-        France.Area.Euro
-        Factory1.Street.Bht37
+        EastCoast.kernel::IsA.Region
+        WestCoast.kernel::IsA.Region
+        Factory1.kernel::IsA.Area
+        DC.kernel::IsA.City
+        Paris.kernel::IsA.City
+        US.kernel::IsA.Country
+        US.kernel::IsA.Area
+        France.kernel::IsA.Region
+        Euro.kernel::IsA.Area
+    
+        Bin1.InArea.Factory1
+        Bin15.InArea.Factory1
+        Rsb225.InCity.DC
+        Bht37.InCity.DC
+        Rc31.InCity.Paris
+        DC.InRegion.EastCoast
+        EastCoast.InArea.US
+        Paris.InRegion.France
+        France.InArea.Euro
+        Factory1.OnStreet.Bht37
     }
     
     facets {
-        kernel::IsA.Territory
-        kernel::IsA.RegionServed
-        
+        kernel::IsA.Region
+        kernel::IsA.Area
+        kernel::IsA.StateOrProvince
         kernel::IsA.City
         kernel::IsA.Country
-        kernel::IsA.Region
-        kernel::IsA.StateOrProvinces
         kernel::IsA.Street
+        kernel::IsA.Territory
     }
 }
 
@@ -177,13 +190,13 @@ products {
 }
 
 relationships {
-    Area = "Area" "A is a member of the economic community B" | AreaOf = "Area Of" "A is economic community of B";
-    Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
-    Region = "Region" "The general region of A is B" | RegionOf = "Region Of" "A is the general region of B";
+    InArea = "Area" "A is a member of the economic community B" | AreaOf = "Area Of" "A is economic community of B";
+    InCountry = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
+    InRegion = "Region" "The general region of A is B" | RegionOf = "Region Of" "A is the general region of B";
     HasTerritory = "Territory" "A has territory B" | TerritoryOf = "Territory Of" "A is a territory of B";
-    State = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
-    City = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
-    Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
+    InState = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
+    InCity = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
+    OnStreet = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
     
     CustomerType = "Customer Type" "A has customer type of B" | CustomerTypeOf = "Customer Type Of" "A is the customer type of B";
     SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | SalesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
@@ -416,29 +429,29 @@ protocols {
 meta protocols {
         transform: Deliver
         product: kernel::AnyRelationship
-        from: Area
-        to: State
+        from: InArea
+        to: InState
         
         transform: Pick
         product: kernel::AnyRelationship
-        from: Area
-        to: Area 
+        from: InArea
+        to: InArea 
         requester: CustomerType
         
         transform: Ship
         product: kernel::AnyRelationship
-        from: Area
-        to: Area 
+        from: InArea
+        to: InArea 
         requester: CustomerType
         
         transform: Fee
         product: kernel::AnyRelationship
-        to: City
+        to: InCity
         requester: SalesTaxStatus 
         
         transform: PrintPurchaseOrder
         product: kernel::AnyRelationship
-        from: Area
+        from: InArea
         to: kernel::AnyRelationship
         requester: kernel::AnyRelationship
 }
