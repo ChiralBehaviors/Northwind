@@ -45,11 +45,20 @@ agencies {
                 1 ReportsTo: kernel::IsA.Manager
                 3 HasTerritory: kernel::IsA.Territory
             }
+        kernel::IsA.Customer
+            constraints {
+                1 ContactFor: kernel::IsA.Employee
+            }
         kernel::IsA.Company
             constraints {
                 1 ContactFor: kernel::IsA.Employee
             }
         kernel::IsA.Supplier
+            constraints {
+                1 ContactOf: kernel::IsA.Employee 
+                3 Region: kernel::IsA.RegionServed
+            }
+        kernel::IsA.Shipper
             constraints {
                 1 ContactOf: kernel::IsA.Employee 
                 3 Region: kernel::IsA.RegionServed
