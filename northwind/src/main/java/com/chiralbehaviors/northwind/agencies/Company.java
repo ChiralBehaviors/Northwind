@@ -20,7 +20,7 @@
 
 package com.chiralbehaviors.northwind.agencies;
 
-import com.chiralbehaviors.annotations.State;
+import com.chiralbehaviors.CoRE.annotations.State;
 
 /**
  * Represents the facet of an agency that is a company

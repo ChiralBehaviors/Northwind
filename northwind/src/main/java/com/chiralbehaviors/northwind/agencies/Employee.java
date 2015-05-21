@@ -21,10 +21,10 @@
 package com.chiralbehaviors.northwind.agencies;
 
 import com.chiralbehaviors.CoRE.agency.Agency;
+import com.chiralbehaviors.CoRE.annotations.Edge;
+import com.chiralbehaviors.CoRE.annotations.Key;
+import com.chiralbehaviors.CoRE.annotations.State;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.Edge;
-import com.chiralbehaviors.annotations.Key;
-import com.chiralbehaviors.annotations.State;
 
 /**
  * Represents the aspect that determines what a Northwind Employee is all about.

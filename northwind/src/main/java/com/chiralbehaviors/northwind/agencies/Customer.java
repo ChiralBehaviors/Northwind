@@ -21,8 +21,8 @@
 package com.chiralbehaviors.northwind.agencies;
 
 import com.chiralbehaviors.CoRE.agency.Agency;
+import com.chiralbehaviors.CoRE.annotations.State;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.State;
 
 /**
  * Represents the facet that classifies an agency as a Northwind Customer

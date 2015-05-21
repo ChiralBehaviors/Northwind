@@ -20,9 +20,9 @@
 
 package com.chiralbehaviors.northwind.locations;
 
+import com.chiralbehaviors.CoRE.annotations.State;
 import com.chiralbehaviors.CoRE.location.Location;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.State;
 
 /**
  * @author hhildebrand

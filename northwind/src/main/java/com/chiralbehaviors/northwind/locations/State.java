@@ -27,7 +27,7 @@ import com.chiralbehaviors.CoRE.phantasm.Phantasm;
  * @author hhildebrand
  *
  */
-@com.chiralbehaviors.annotations.State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
+@com.chiralbehaviors.CoRE.annotations.State(workspace = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1")
 public interface State extends Phantasm<Location> {
 
 }

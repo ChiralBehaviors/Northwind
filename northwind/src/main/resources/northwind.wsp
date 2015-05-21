@@ -23,6 +23,7 @@ agencies {
     Company = "Company" "A company";
     Customer = "Northwind Customer" "A customer of Northwind";
     Employee = "Northwind Employee" "An employee of Northwind";
+    Manager = "Northwind Manager" "An manager of Northwind";
     Shipper = "Shipper" "An agency that ships products";
     Supplier = "Supplier" "An agency that supplies products";
     
@@ -35,6 +36,25 @@ agencies {
         OrgA.CustomerType.ExternalCust
         CafleurBon.CustomerType.ExternalCust
         OrgA.SalesTaxStatus.NonExemptAgency
+        Manager.kernel::IsA.Employee
+    }
+    facets {
+        kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
+            constraints {
+                1 EmployeeOf: kernel::IsA.Company 
+                1 ReportsTo: kernel::IsA.Manager
+                3 HasTerritory: kernel::IsA.Territory
+            }
+        kernel::IsA.Company
+            constraints {
+                1 ContactFor: kernel::IsA.Employee
+            }
+        kernel::IsA.Supplier
+            constraints {
+                1 ContactOf: kernel::IsA.Employee 
+                3 Region: kernel::IsA.RegionServed
+            }
+        kernel::IsA.Manager
     }
 }
 
@@ -58,9 +78,12 @@ attributes {
     UnitPrice = "unit price"  "unit price" numeric; 
     TaxRate = "tax rate" "tax rate" numeric;
     
+    Picture = "picture" "A digital picture" binary;
 }
 
 locations {
+    Territory = "Territory" "The territory";
+    RegionServed = "Region Service" "The regional group served";
     DC = "DC" "District of Columbia";
     EastCoast = "East Coast" "East Coast";
     WestCoast = "West Coast" "The Left Coast";
@@ -90,9 +113,15 @@ locations {
         France.Area.Euro
         Factory1.Street.Bht37
     }
+    
+    facets {
+        kernel::IsA.Territory
+        kernel::IsA.RegionServed
+    }
 }
 
 products {
+    Category = "Product Category" "A category of products";
     PricedProduct = "Priced Product" "A product we sell";
     Abc486 = "Abc486" "Laptop computer";
     Frozen = "frozen" "Frozen Products";
@@ -118,29 +147,20 @@ products {
         ChemB.StorageType.Frozen
     }
     facets {
-        kernel::IsA.PricedProduct
-            attributes { UnitPrice }
-        kernel::IsA.ItemDetail
-            attributes { UnitPrice Quantity DiscountPercentage TaxRate }
+        kernel::IsA.PricedProduct { UnitPrice }
             constraints {
-                childRelationship OrderedProductOf
-                    authorizedRelationship kernel::IsA
-                    authorizedParent PricedProduct
-                    cardinality 1
-                    
-                childRelationship ItemDetailOf
-                    authorizedRelationship kernel::IsA
-                    authorizedParent Order
-                    cardinality 1
+                3 IsCategorizedAs: kernel::IsA.Category
             }
-        kernel::IsA.Order 
-            attributes { RequiredDate OrderDate ShipDate }
+        kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             constraints {
-                childRelationship HasItemDetail
-                    authorizedRelationship kernel::IsA
-                    authorizedParent ItemDetail
-                    cardinality 0 
+                1 OrderedProductOf: kernel::IsA.PricedProduct
+                1 ItemDetailOf: kernel::IsA.Order
             }
+        kernel::IsA.Order { RequiredDate OrderDate ShipDate }
+            constraints {
+                3 HasItemDetail: kernel::IsA.ItemDetail
+            }
+        kernel::IsA.Category { Picture }
     }
 }
 
@@ -148,7 +168,7 @@ relationships {
     Area = "Area" "A is a member of the economic community B" | AreaOf = "Area Of" "A is economic community of B";
     Country = "Country" "A is located in the country B" | countryOf = "Country Of" "A is the country of B";
     Region = "Region" "The general region of A is B" | RegionOf = "Region Of" "A is the general region of B";
-    Territory = "Territory" "The territory of a A is B" | TerritoryOf = "Territory Of" "A is the territory of B";
+    HasTerritory = "Territory" "A has territory B" | TerritoryOf = "Territory Of" "A is a territory of B";
     State = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
     City = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
     Street = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
@@ -163,13 +183,15 @@ relationships {
     EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee = "Has Employee" "A has employee B";
     SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier = "Has Supplier" "A has supplier B";
     Ships = "Ships" "A ships B" | HasShipper = "Has Shipper" "A has shipper B";
+    ContactOf = "Contact Of" "A is the contact for B" | ContactFor = "A is the contact for B";
     
     ShippedBy = "Shipped By" "A was shipped by B" | Shipped = "Shipped" "A shipped B";
     DeliveredTo = "Delivered To" "A was delivered to B" | Recieved = "Received" "A recieved B";
     OrderedBy = "Ordered By" "A was ordered by B" | Ordered = "Ordered" "A ordered B";
     
     ItemDetailOf = "Item Detail Of" "A is an item detail of B" | HasItemDetail = "Has Item Detail" "A has item detail B";
-    OrderedProductOf = "Ordered Product Of" "A is the ordered product of B" | ProductOrdered = "Product Ordered" "A is a product order of B"; 
+    OrderedProductOf = "Ordered Product Of" "A is the ordered product of B" | ProductOrdered = "Product Ordered" "A is a product order of B";
+    IsCategorizedAs = "Is Categorized As" "A is categorized as B"  | CategoryOf = "A is a category of B";
 }
 
 
@@ -335,6 +357,7 @@ inferences {
     StateOf.CityOf.StateOf
     StateOf.StreetOf.StateOf
     CityOf.StreetOf.CityOf
+    ReportsTo.ReportsTo.ReportsTo
 }
 protocols {
         service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation
@@ -350,7 +373,7 @@ protocols {
         service: CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
         
         service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
-        requester: kernel::AnyAgency
+            requester: kernel::AnyAgency
         ->
         service: Ship product: kernel::SameProduct assign: Factory1Agency
         

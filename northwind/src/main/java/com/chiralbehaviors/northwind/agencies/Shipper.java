@@ -21,9 +21,9 @@
 package com.chiralbehaviors.northwind.agencies;
 
 import com.chiralbehaviors.CoRE.agency.Agency;
+import com.chiralbehaviors.CoRE.annotations.Key;
+import com.chiralbehaviors.CoRE.annotations.State;
 import com.chiralbehaviors.CoRE.phantasm.Phantasm;
-import com.chiralbehaviors.annotations.Key;
-import com.chiralbehaviors.annotations.State;
 import com.chiralbehaviors.northwind.locations.PhysicalAddress;
 
 /**
