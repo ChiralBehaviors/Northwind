@@ -15,33 +15,33 @@ agencies {
     Manufacturer = "MNFR" "Manufacturer";
     OrgA = "OrgA" "Organization A";
     OrderFullfillment = "Order Fullfillment" "Order Fullfillment";
+    Northwind = "Northwind" "Northwind, inc";
     
-    NonExempt = "Non Exempt" "Non tax exempt";
+    NonExemptAgency = "Non Exempt" "Non tax exempt";
     ExternalCust = "External Customer" "External (paying) customer";
     InternalCust = "Internal Customer" "Internal (non paying) customer";
     AbstractCustomerType = "Customer Type" "Common super typeof customer's type";
-    Exempt = "Exempt" "Exempt from sales tax";
-    Northwind = "Northwind" "Northwind, inc";
+    ExemptAgency = "Exempt" "Exempt from sales tax";
     Company = "Company" "A company";
     Customer = "Northwind Customer" "A customer of Northwind";
     Employee = "Northwind Employee" "An employee of Northwind";
     Manager = "Northwind Manager" "An manager of Northwind";
     Shipper = "Shipper" "An agency that ships products";
     Supplier = "Supplier" "An agency that supplies products";
-    TaxStatus = "Tax Status" "The abstract tax status of an agency";
+    AgencyTaxStatus = "Tax Status" "The abstract tax status of an agency";
     
     edges {
         ExternalCust.kernel::IsA.AbstractCustomerType
         InternalCust.kernel::IsA.AbstractCustomerType
-        Exempt.kernel::IsA.TaxStatus
-        NonExempt.kernel::IsA.TaxStatus
+        ExemptAgency.kernel::IsA.AgencyTaxStatus
+        NonExemptAgency.kernel::IsA.AgencyTaxStatus
         Northwind.kernel::IsA.Company
         Shipper.kernel::IsA.Company
         Supplier.kernel::IsA.Company
         Manager.kernel::IsA.Employee
         
         GeorgetownUniversity.CustomerType.ExternalCust
-        GeorgetownUniversity.SalesTaxStatus.Exempt
+        GeorgetownUniversity.SalesTaxStatus.ExemptAgency
         OrgA.CustomerType.ExternalCust
         CafleurBon.CustomerType.ExternalCust
         OrgA.SalesTaxStatus.NonExemptAgency
@@ -56,12 +56,12 @@ agencies {
         kernel::IsA.Customer
             constraints {
                 1 CustomerType method: relationship : kernel::IsA.AbstractCustomerType
-                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
+                1 SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
             }
         kernel::IsA.Company
             constraints {
                 1 Contact method: relationship : kernel::IsA.Employee
-                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
+                1 SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
             }
         kernel::IsA.Supplier
             constraints {
@@ -72,7 +72,7 @@ agencies {
                 3 InRegion: kernel::IsA.Region
             }
         kernel::IsA.Manager
-        kernel::IsA.TaxStatus
+        kernel::IsA.AgencyTaxStatus
         kernel::IsA.AbstractCustomerType
     }
 }
@@ -101,7 +101,7 @@ attributes {
 }
 
 locations { 
-    Address = "Address" "The address";
+    Address = "Address" "An address";
     DC = "DC" "District of Columbia";
     EastCoast = "East Coast" "East Coast";
     WestCoast = "West Coast" "The Left Coast";
@@ -109,6 +109,12 @@ locations {
     Paris = "Paris" "The city Paris";
     US = "United States" "US locations";
     Euro = "Europe" "EU locations";
+    Rsb225 = "225RSB" "225 Reiss Science Bldg";
+    Bht37 = "37BHT" "37 Bret Harte Terrace";
+    Rc31 = "31rc" "31 Rue Cambon"; 
+    Factory1 = "Factory 1" "Factory #1";
+    Bin1 = "Bin 1";
+    Bin15 = "Bin 15";
     
     Region = "Region" "A Region";
     Area = "Area" "An Area";
@@ -117,13 +123,7 @@ locations {
     Country = "Country" "A Country";
     Street = "Street" "A Street";
     Territory = "Territory" "A territory";
-    
-    Rsb225 = "225RSB" "225 Reiss Science Bldg";
-    Bht37 = "37BHT" "37 Bret Harte Terrace";
-    Rc31 = "31rc" "31 Rue Cambon"; 
-    Factory1 = "Factory 1" "Factory #1";
-    Bin1 = "Bin 1";
-    Bin15 = "Bin 15";
+
     edges {
         EastCoast.kernel::IsA.Region
         WestCoast.kernel::IsA.Region
@@ -159,13 +159,18 @@ locations {
 }
 
 products {
-    Category = "Product Category" "A category of products";
-    PricedProduct = "Priced Product" "A product we sell";
     Abc486 = "Abc486" "Laptop computer";
     Frozen = "frozen" "Frozen Products";
     ChemB = "ChemB" "Chemical B";
+    
+    Category = "Product Category" "A category of products";
+    PricedProduct = "Priced Product" "A product we sell";
     RoomTemp = "RoomTemp" "Room temperature products";
-    NonExempt = "NonExempt" "Non tax exempt products";
+    ExemptProduct = "Exempt" "Tax exempt products";
+    NonExemptProduct = "NonExempt" "Non tax exempt products";
+    Order = "Order" "An Order";
+    ItemDetail = "Order Item Detail" "Detail on item";
+    
     Deliver = "Deliver" "Deliver product";
     Pick = "Pick" "Pick inventory";
     Ship = "Ship" "Ship inventory";
@@ -176,19 +181,21 @@ products {
     PrintCustomsDeclaration = "PrintCustomsDeclaration" "Print the customs declaration";
     PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
     SalesTax = "SalesTax" "Compute sales tax";
-    Order = "Order" "An Order";
-    ItemDetail = "Order Item Detail" "Detail on item";
+    ProductTaxStatus = "Tax Status" "Product tax status";
     
     edges {
+        ExemptProduct.kernel::IsA.ProductTaxStatus
+        NonExemptProduct.kernel::IsA.ProductTaxStatus
+        
         Abc486.StorageType.RoomTemp
-        Abc486.SalesTaxStatus.NonExempt
+        Abc486.SalesTaxStatus.NonExemptProduct
         ChemB.StorageType.Frozen
     }
     facets {
         kernel::IsA.PricedProduct { UnitPrice }
             constraints {
                 3 IsCategorizedAs: kernel::IsA.Category
-                1 SalesTaxStatus method: relationship : kernel::IsA.TaxStatus
+                1 SalesTaxStatus method: relationship : kernel::IsA.ProductTaxStatus
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             constraints {
@@ -202,6 +209,7 @@ products {
         kernel::IsA.Category { Picture }
         kernel::IsA.Frozen
         kernel::IsA.RoomTemp
+        kernel::IsA.ProductTaxStatus
     }
 }
 
@@ -418,27 +426,27 @@ protocols {
         ->
         service: Ship product: kernel::SameProduct assign: Factory1Agency
         
-        service: Ship product: Abc486 from: US to: Euro
+        service: Ship product: kernel::AnyProduct from: US to: Euro
         ->
         service: PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
         
-        service: Ship product: Abc486 from: US to: kernel::AnyLocation
+        service: Ship product: kernel::AnyProduct from: US to: kernel::AnyLocation
         ->
         service: PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
         
-        service: PrintPurchaseOrder product: Abc486 from: US to: kernel::AnyLocation requester: kernel::AnyAgency
+        service: PrintPurchaseOrder product: kernel::AnyProduct from: US to: kernel::AnyLocation requester: kernel::AnyAgency
         -> 
         service: Fee product: kernel::SameProduct assign: BillingComputer
         
-        service: Fee product: NonExempt from: kernel::AnyLocation to: DC requester: NonExemptAgency 
+        service: Fee product: NonExemptProduct from: kernel::AnyLocation to: DC requester: NonExemptAgency 
         ->
         service: SalesTax product: kernel::SameProduct assign: BillingComputer
         
-        service: Fee product: Abc486 from: US to: Euro requester: ExternalCust
+        service: Fee product: kernel::AnyProduct from: US to: Euro requester: ExternalCust
         ->
         service: Discount product: kernel::SameProduct assign: BillingComputer
         
-        service: Fee product: Abc486 from: US to: DC requester: GeorgetownUniversity
+        service: Fee product: kernel::AnyProduct from: US to: DC requester: GeorgetownUniversity
         ->
         service: SalesTax product: kernel::SameProduct assign: BillingComputer
 }
