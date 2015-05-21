@@ -25,6 +25,13 @@
 
 <p>Please see the <a href="https://github.com/ChiralBehaviors/Northwind/wiki">Northwind Wiki</a> for more information.</p>
 
+<h3>
+<a id="updates" class="anchor" href="#updates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updates</h3>
+
+<p>I took out all the manual Phantasms, as Northwind is now generating the phantasms from the facets in the Northwind ontology.  This is done with a Maven plugin, and you can see this in the northwind maven module's pom.  You'll have to build at least through generate-sources to see the generated phantasms.  They are generated in target/generated-sources/phantasm directory in the northwind module.</p>
+
+<p>Frankly, I'm amazed at how simple it has been creating a rather complex model.  Already, we have a rich structure for the system and you can see that the Ultrastructure design discipline naturally creates general abstractions, and how the northwind model could be fully generalized with a little bit of effort.  For the moment, I'm resisting the urge to do that, as I'm more interested in getting a functional demo out the door.  In any event, it'll be interesting to have the refactoring history in git once I do start on generalizing this stuff.</p>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ChiralBehaviors/Northwind">Northwind</a> is maintained by <a href="https://github.com/ChiralBehaviors">ChiralBehaviors</a>.</span>
 
