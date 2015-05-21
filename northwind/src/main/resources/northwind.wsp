@@ -46,22 +46,17 @@ agencies {
                 3 HasTerritory: kernel::IsA.Territory
             }
         kernel::IsA.Customer
-            constraints {
-                1 ContactFor: kernel::IsA.Employee
-            }
         kernel::IsA.Company
             constraints {
-                1 ContactFor: kernel::IsA.Employee
+                1 Contact method: relationship : kernel::IsA.Employee
             }
         kernel::IsA.Supplier
             constraints {
-                1 ContactOf: kernel::IsA.Employee 
-                3 Region: kernel::IsA.RegionServed
+                3 Region method: relationship : kernel::IsA.RegionServed
             }
         kernel::IsA.Shipper
-            constraints {
-                1 ContactOf: kernel::IsA.Employee 
-                3 Region: kernel::IsA.RegionServed
+            constraints { 
+                3 Region method: relationship : kernel::IsA.RegionServed
             }
         kernel::IsA.Manager
     }
@@ -176,6 +171,8 @@ products {
                 3 HasItemDetail: kernel::IsA.ItemDetail
             }
         kernel::IsA.Category { Picture }
+        kernel::IsA.Frozen
+        kernel::IsA.RoomTemp
     }
 }
 
@@ -198,7 +195,7 @@ relationships {
     EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee = "Has Employee" "A has employee B";
     SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier = "Has Supplier" "A has supplier B";
     Ships = "Ships" "A ships B" | HasShipper = "Has Shipper" "A has shipper B";
-    ContactOf = "Contact Of" "A is the contact for B" | ContactFor = "A is the contact for B";
+    ContactOf = "Contact Of" "A is the contact of B" | Contact = " the contact of A is B";
     
     ShippedBy = "Shipped By" "A was shipped by B" | Shipped = "Shipped" "A shipped B";
     DeliveredTo = "Delivered To" "A was delivered to B" | Recieved = "Received" "A recieved B";

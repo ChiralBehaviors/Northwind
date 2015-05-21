@@ -140,6 +140,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.8</version>
+                </plugin>
+                <plugin>
                     <groupId>com.chiralbehaviors.CoRE</groupId>
                     <artifactId>loader</artifactId>
                     <version>${ultrastructure.version}</version>
