@@ -166,7 +166,6 @@ public class NorthwindTest extends AbstractModelTest {
         jobModel.changeStatus(pick, scenario.getCompleted(), kernel.getCore(),
                               "transition during test");
         em.flush();
-        em.clear();
         query.setParameter("service", scenario.getPick());
         pick = query.getSingleResult();
         query.setParameter("service", scenario.getShip());
@@ -183,7 +182,6 @@ public class NorthwindTest extends AbstractModelTest {
         jobModel.changeStatus(fee, scenario.getCompleted(), kernel.getCore(),
                               "transition during test");
         em.flush();
-        em.clear();
         query.setParameter("service", scenario.getPrintPurchaseOrder());
         Job printPO = query.getSingleResult();
         assertEquals(scenario.getAvailable(), printPO.getStatus());
@@ -193,7 +191,6 @@ public class NorthwindTest extends AbstractModelTest {
         jobModel.changeStatus(printPO, scenario.getCompleted(),
                               kernel.getCore(), "transition during test");
         em.flush();
-        em.clear();
         query.setParameter("service", scenario.getShip());
         ship = query.getSingleResult();
         assertEquals(scenario.getAvailable(), ship.getStatus());
@@ -203,7 +200,6 @@ public class NorthwindTest extends AbstractModelTest {
         jobModel.changeStatus(ship, scenario.getCompleted(), kernel.getCore(),
                               "transition during test");
         em.flush();
-        em.clear();
         query.setParameter("service", scenario.getDeliver());
         Job deliver = query.getSingleResult();
         assertEquals(scenario.getCompleted(), deliver.getStatus());
