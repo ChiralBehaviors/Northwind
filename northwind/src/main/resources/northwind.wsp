@@ -49,27 +49,27 @@ agencies {
     facets {
         kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
             constraints {
-                1 EmployeeOf: kernel::IsA.Company 
-                1 ReportsTo: kernel::IsA.Manager
-                3 Territory: kernel::IsA.Territory
+                one EmployeeOf: kernel::IsA.Company 
+                one ReportsTo: kernel::IsA.Manager
+                n Territory: kernel::IsA.Territory
             }
         kernel::IsA.Customer
             constraints {
-                1 CustomerType method: relationship : kernel::IsA.AbstractCustomerType
-                1 SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
+                one CustomerType method: relationship : kernel::IsA.AbstractCustomerType
+                one SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
             }
         kernel::IsA.Company
             constraints {
-                1 Contact method: relationship : kernel::IsA.Employee
-                1 SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
+                one Contact method: relationship : kernel::IsA.Employee
+                one SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
             }
         kernel::IsA.Supplier
             constraints {
-                3 InRegion: kernel::IsA.Region
+                n InRegion: kernel::IsA.Region
             }
         kernel::IsA.Shipper
             constraints { 
-                3 InRegion: kernel::IsA.Region
+                n InRegion: kernel::IsA.Region
             }
         kernel::IsA.Manager
         kernel::IsA.AgencyTaxStatus
@@ -194,17 +194,17 @@ products {
     facets {
         kernel::IsA.PricedProduct { UnitPrice }
             constraints {
-                3 IsCategorizedAs: kernel::IsA.Category
-                1 SalesTaxStatus method: relationship : kernel::IsA.ProductTaxStatus
+                n IsCategorizedAs: kernel::IsA.Category
+                one SalesTaxStatus method: relationship : kernel::IsA.ProductTaxStatus
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             constraints {
-                1 OrderedProductOf: kernel::IsA.PricedProduct
-                1 ItemDetailOf: kernel::IsA.Order
+                one OrderedProductOf: kernel::IsA.PricedProduct
+                one ItemDetailOf: kernel::IsA.Order
             }
         kernel::IsA.Order { RequiredDate OrderDate ShipDate }
             constraints {
-                3 HasItemDetail: kernel::IsA.ItemDetail
+                n HasItemDetail: kernel::IsA.ItemDetail
             }
         kernel::IsA.Category { Picture }
         kernel::IsA.Frozen
