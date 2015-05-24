@@ -51,7 +51,7 @@ agencies {
             constraints {
                 one EmployeeOf: kernel::IsA.Company 
                 one ReportsTo: kernel::IsA.Manager
-                n Territory: kernel::IsA.Territory
+                n HasTerritory: kernel::IsA.Territory
             }
         kernel::IsA.Customer
             constraints {
