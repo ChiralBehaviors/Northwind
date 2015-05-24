@@ -93,7 +93,7 @@ attributes {
     ShipDate = "Ship Date" "Date shipped" timestamp;
     
     DiscountPercentage = "discount" "discount percentage" numeric;
-    Quantity = "quantity" "quantity ordered" int; 
+    Quantity = "quantity" "quantity" int; 
     UnitPrice = "unit price"  "unit price" numeric; 
     TaxRate = "tax rate" "tax rate" numeric;
     
@@ -123,6 +123,7 @@ locations {
     Country = "Country" "A Country";
     Street = "Street" "A Street";
     Territory = "Territory" "A territory";
+    StockLocation = "Stock Location" "The location of product";
 
     edges {
         EastCoast.kernel::IsA.Region
@@ -155,6 +156,7 @@ locations {
         kernel::IsA.Country
         kernel::IsA.Street
         kernel::IsA.Territory
+        kernel::IsA.StockLocation
     }
 }
 
@@ -170,6 +172,7 @@ products {
     NonExemptProduct = "NonExempt" "Non tax exempt products";
     Order = "Order" "An Order";
     ItemDetail = "Order Item Detail" "Detail on item";
+    StockedProduct = "Stocked Product" "A product stocked at a location";
     
     Deliver = "Deliver" "Deliver product";
     Pick = "Pick" "Pick inventory";
@@ -210,6 +213,11 @@ products {
         kernel::IsA.Frozen
         kernel::IsA.RoomTemp
         kernel::IsA.ProductTaxStatus
+        kernel::IsA.StockedProduct
+            constraints {
+                one StockedAt: kernel::IsA.StockLocation
+                { Quantity }
+            }
     }
 }
 
@@ -241,6 +249,7 @@ relationships {
     ItemDetailOf = "Item Detail Of" "A is an item detail of B" | HasItemDetail = "Has Item Detail" "A has item detail B";
     OrderedProductOf = "Ordered Product Of" "A is the ordered product of B" | ProductOrdered = "Product Ordered" "A is a product order of B";
     IsCategorizedAs = "Is Categorized As" "A is categorized as B"  | CategoryOf = "A is a category of B";
+    StockedAt = "Stocked At" "A is stocked at B" | Stocks = "Stocks" "A is the location of stock B";
 }
 
 
