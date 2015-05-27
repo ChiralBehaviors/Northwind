@@ -6,17 +6,6 @@ imports {
 }
 
 agencies {
-    BillingComputer = "Billing CPU" "Billing computer";
-    CPU = "CPU" "General purpose computer";
-    CreditDept = "Credit Department" "The credit department";
-    Factory1Agency = "Factory 1" "Factory #1";
-    GeorgetownUniversity = "GU" "Georgetown University";
-    CafleurBon = "carfleurBon" "Carfleur Bon";
-    Manufacturer = "MNFR" "Manufacturer";
-    OrgA = "OrgA" "Organization A";
-    OrderFullfillment = "Order Fullfillment" "Order Fullfillment";
-    Northwind = "Northwind" "Northwind, inc";
-    
     NonExemptAgency = "Non Exempt" "Non tax exempt";
     ExternalCust = "External Customer" "External (paying) customer";
     InternalCust = "Internal Customer" "Internal (non paying) customer";
@@ -35,16 +24,9 @@ agencies {
         InternalCust.kernel::IsA.AbstractCustomerType
         ExemptAgency.kernel::IsA.AgencyTaxStatus
         NonExemptAgency.kernel::IsA.AgencyTaxStatus
-        Northwind.kernel::IsA.Company
         Shipper.kernel::IsA.Company
         Supplier.kernel::IsA.Company
         Manager.kernel::IsA.Employee
-        
-        GeorgetownUniversity.CustomerType.ExternalCust
-        GeorgetownUniversity.SalesTaxStatus.ExemptAgency
-        OrgA.CustomerType.ExternalCust
-        CafleurBon.CustomerType.ExternalCust
-        OrgA.SalesTaxStatus.NonExemptAgency
     }
     facets {
         kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
@@ -100,22 +82,7 @@ attributes {
     Picture = "picture" "A digital picture" binary;
 }
 
-locations { 
-    Address = "Address" "An address";
-    DC = "DC" "District of Columbia";
-    EastCoast = "East Coast" "East Coast";
-    WestCoast = "West Coast" "The Left Coast";
-    France = "France" "The country of France";
-    Paris = "Paris" "The city Paris";
-    US = "United States" "US locations";
-    Euro = "Europe" "EU locations";
-    Rsb225 = "225RSB" "225 Reiss Science Bldg";
-    Bht37 = "37BHT" "37 Bret Harte Terrace";
-    Rc31 = "31rc" "31 Rue Cambon"; 
-    Factory1 = "Factory 1" "Factory #1";
-    Bin1 = "Bin 1";
-    Bin15 = "Bin 15";
-    
+locations {
     Region = "Region" "A Region";
     Area = "Area" "An Area";
     StateOrProvince = "State or Province" "A state or province";
@@ -124,29 +91,6 @@ locations {
     Street = "Street" "A Street";
     Territory = "Territory" "A territory";
     StockLocation = "Stock Location" "The location of product";
-
-    edges {
-        EastCoast.kernel::IsA.Region
-        WestCoast.kernel::IsA.Region
-        Factory1.kernel::IsA.Area
-        DC.kernel::IsA.City
-        Paris.kernel::IsA.City
-        US.kernel::IsA.Country
-        US.kernel::IsA.Area
-        France.kernel::IsA.Region
-        Euro.kernel::IsA.Area
-    
-        Bin1.InArea.Factory1
-        Bin15.InArea.Factory1
-        Rsb225.InCity.DC
-        Bht37.InCity.DC
-        Rc31.InCity.Paris
-        DC.InRegion.EastCoast
-        EastCoast.InArea.US
-        Paris.InRegion.France
-        France.InArea.Euro
-        Factory1.OnStreet.Bht37
-    }
     
     facets {
         kernel::IsA.Region
@@ -160,14 +104,11 @@ locations {
     }
 }
 
-products {
-    Abc486 = "Abc486" "Laptop computer";
-    Frozen = "frozen" "Frozen Products";
-    ChemB = "ChemB" "Chemical B";
-    
+products { 
     Category = "Product Category" "A category of products";
     PricedProduct = "Priced Product" "A product we sell";
     RoomTemp = "RoomTemp" "Room temperature products";
+    Frozen = "frozen" "Frozen Products";
     ExemptProduct = "Exempt" "Tax exempt products";
     NonExemptProduct = "NonExempt" "Non tax exempt products";
     Order = "Order" "An Order";
@@ -189,10 +130,6 @@ products {
     edges {
         ExemptProduct.kernel::IsA.ProductTaxStatus
         NonExemptProduct.kernel::IsA.ProductTaxStatus
-        
-        Abc486.StorageType.RoomTemp
-        Abc486.SalesTaxStatus.NonExemptProduct
-        ChemB.StorageType.Frozen
     }
     facets {
         kernel::IsA.PricedProduct { UnitPrice }
@@ -416,48 +353,6 @@ inferences {
     StateOf.StreetOf.StateOf
     CityOf.StreetOf.CityOf
     ReportsTo.ReportsTo.ReportsTo
-}
-protocols {
-        service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation
-        ->
-        service: Pick product: kernel::SameProduct assign: Factory1Agency
-        
-        service: Pick product: kernel::AnyProduct from: US to: US
-        ->
-        service: CheckCredit product: kernel::SameProduct assign: CPU
-        
-        service: Pick product: kernel::AnyProduct from: US to: Euro
-        ->
-        service: CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
-        
-        service: Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
-            requester: kernel::AnyAgency
-        ->
-        service: Ship product: kernel::SameProduct assign: Factory1Agency
-        
-        service: Ship product: kernel::AnyProduct from: US to: Euro
-        ->
-        service: PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
-        
-        service: Ship product: kernel::AnyProduct from: US to: kernel::AnyLocation
-        ->
-        service: PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
-        
-        service: PrintPurchaseOrder product: kernel::AnyProduct from: US to: kernel::AnyLocation requester: kernel::AnyAgency
-        -> 
-        service: Fee product: kernel::SameProduct assign: BillingComputer
-        
-        service: Fee product: NonExemptProduct from: kernel::AnyLocation to: DC requester: NonExemptAgency 
-        ->
-        service: SalesTax product: kernel::SameProduct assign: BillingComputer
-        
-        service: Fee product: kernel::AnyProduct from: US to: Euro requester: ExternalCust
-        ->
-        service: Discount product: kernel::SameProduct assign: BillingComputer
-        
-        service: Fee product: kernel::AnyProduct from: US to: DC requester: GeorgetownUniversity
-        ->
-        service: SalesTax product: kernel::SameProduct assign: BillingComputer
 }
 meta protocols {
         transform: Deliver

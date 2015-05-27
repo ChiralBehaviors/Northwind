@@ -1,0 +1,121 @@
+workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/test-scenario/v1" 
+           "Northwind" 
+           "Ultrstructure implementation of ye olde thyme Northwind demo"
+imports {
+    "urn:uuid:00000000-0000-0004-0000-000000000003" as kernel
+    "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1" as nw
+}
+
+agencies {
+    BillingComputer = "Billing CPU" "Billing computer";
+    CPU = "CPU" "General purpose computer";
+    CreditDept = "Credit Department" "The credit department";
+    Factory1Agency = "Factory 1" "Factory #1";
+    GeorgetownUniversity = "GU" "Georgetown University";
+    CafleurBon = "carfleurBon" "Carfleur Bon";
+    Manufacturer = "MNFR" "Manufacturer";
+    OrgA = "OrgA" "Organization A";
+    OrderFullfillment = "Order Fullfillment" "Order Fullfillment";
+    Northwind = "Northwind" "Northwind, inc"; 
+    
+    edges {  
+        GeorgetownUniversity.nw::CustomerType.nw::ExternalCust
+        GeorgetownUniversity.nw::SalesTaxStatus.nw::ExemptAgency
+        OrgA.nw::CustomerType.nw::ExternalCust
+        CafleurBon.nw::CustomerType.nw::ExternalCust
+        OrgA.nw::SalesTaxStatus.nw::NonExemptAgency
+        Northwind.kernel::IsA.nw::Company
+    }
+} 
+
+locations {  
+    DC = "DC" "District of Columbia";
+    EastCoast = "East Coast" "East Coast";
+    WestCoast = "West Coast" "The Left Coast";
+    France = "France" "The country of France";
+    Paris = "Paris" "The city Paris";
+    US = "United States" "US locations";
+    Euro = "Europe" "EU locations";
+    Rsb225 = "225RSB" "225 Reiss Science Bldg";
+    Bht37 = "37BHT" "37 Bret Harte Terrace";
+    Rc31 = "31rc" "31 Rue Cambon"; 
+    Factory1 = "Factory 1" "Factory #1";
+    Bin1 = "Bin 1";
+    Bin15 = "Bin 15"; 
+
+    edges {
+        EastCoast.kernel::IsA.nw::Region
+        WestCoast.kernel::IsA.nw::Region
+        Factory1.kernel::IsA.nw::Area
+        DC.kernel::IsA.nw::City
+        Paris.kernel::IsA.nw::City
+        US.kernel::IsA.nw::Country
+        US.kernel::IsA.nw::Area
+        France.kernel::IsA.nw::Region
+        Euro.kernel::IsA.nw::Area
+    
+        Bin1.nw::InArea.Factory1
+        Bin15.nw::InArea.Factory1
+        Rsb225.nw::InCity.DC
+        Bht37.nw::InCity.DC
+        Rc31.nw::InCity.Paris
+        DC.nw::InRegion.EastCoast
+        EastCoast.nw::InArea.US
+        Paris.nw::InRegion.France
+        France.nw::InArea.Euro
+        Factory1.nw::OnStreet.Bht37
+    } 
+}
+
+products {
+    Abc486 = "Abc486" "Laptop computer";
+    ChemB = "ChemB" "Chemical B"; 
+    
+    edges { 
+        Abc486.nw::StorageType.nw::RoomTemp
+        Abc486.nw::SalesTaxStatus.nw::NonExemptProduct
+        ChemB.nw::StorageType.nw::Frozen
+    } 
+}   
+protocols {
+        service: nw::Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation
+        ->
+        service: nw::Pick product: kernel::SameProduct assign: Factory1Agency
+        
+        service: nw::Pick product: kernel::AnyProduct from: US to: US
+        ->
+        service: nw::CheckCredit product: kernel::SameProduct assign: CPU
+        
+        service: nw::Pick product: kernel::AnyProduct from: US to: Euro
+        ->
+        service: nw::CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
+        
+        service: nw::Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
+            requester: kernel::AnyAgency
+        ->
+        service: nw::Ship product: kernel::SameProduct assign: Factory1Agency
+        
+        service: nw::Ship product: kernel::AnyProduct from: US to: Euro
+        ->
+        service: nw::PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
+        
+        service: nw::Ship product: kernel::AnyProduct from: US to: kernel::AnyLocation
+        ->
+        service: nw::PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
+        
+        service: nw::PrintPurchaseOrder product: kernel::AnyProduct from: US to: kernel::AnyLocation requester: kernel::AnyAgency
+        -> 
+        service: nw::Fee product: kernel::SameProduct assign: BillingComputer
+        
+        service: nw::Fee product: nw::NonExemptProduct from: kernel::AnyLocation to: DC requester: nw::NonExemptAgency 
+        ->
+        service: nw::SalesTax product: kernel::SameProduct assign: BillingComputer
+        
+        service: nw::Fee product: kernel::AnyProduct from: US to: Euro requester: nw::ExternalCust
+        ->
+        service: nw::Discount product: kernel::SameProduct assign: BillingComputer
+        
+        service: nw::Fee product: kernel::AnyProduct from: US to: DC requester: GeorgetownUniversity
+        ->
+        service: nw::SalesTax product: kernel::SameProduct assign: BillingComputer
+}

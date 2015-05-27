@@ -20,37 +20,36 @@
 
 package com.chiralbehaviors.northwind;
 
-import com.chiralbehaviors.CoRE.job.status.StatusCode;
+import com.chiralbehaviors.CoRE.agency.Agency;
+import com.chiralbehaviors.CoRE.location.Location;
 import com.chiralbehaviors.CoRE.product.Product;
 
 /**
  * @author hhildebrand
  *
  */
-public interface Northwind {
+public interface TestScenario {
 
-    static String NORTHWIND_WORKSPACE = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1";
+    Product getAbc486();
 
-    StatusCode getAbandoned();
+    Location getBht37();
 
-    StatusCode getActive();
+    Agency getBillingComputer();
 
-    StatusCode getAvailable();
+    Agency getCafleurBon();
 
-    Product getCheckCredit();
+    Location getFactory1();
 
-    StatusCode getCompleted();
+    Agency getFactory1Agency();
 
-    Product getDeliver();
+    Agency getGeorgetownUniversity();
 
-    Product getFee();
+    Agency getOrderFullfillment();
 
-    Product getPick();
+    Agency getOrgA();
 
-    Product getPrintPurchaseOrder();
+    Location getRc31();
 
-    Product getShip();
-
-    StatusCode getWaitingOnPurchaseOrder();
+    Location getRsb225();
 
 }

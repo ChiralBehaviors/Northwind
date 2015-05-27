@@ -49,12 +49,16 @@ import com.chiralbehaviors.CoRE.workspace.dsl.WorkspaceImporter;
  */
 public class NorthwindTest extends AbstractModelTest {
 
-    private JobModel  jobModel = model.getJobModel();
-    private Northwind scenario;
+    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/test-scenario/v1";
+
+    private JobModel            jobModel          = model.getJobModel();
+    private Northwind           scenario;
+    private TestScenario        testScenario;
 
     @Before
     public void initializeScenario() {
         scenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(NORTHWIND_WORKSPACE)).getWorkspace().getAccessor(Northwind.class);
+        testScenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(TEST_SCENARIO_URI)).getWorkspace().getAccessor(TestScenario.class);
     }
 
     @BeforeClass
@@ -62,6 +66,8 @@ public class NorthwindTest extends AbstractModelTest {
 
         em.getTransaction().begin();
         WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/northwind.wsp"),
+                                          model);
+        WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/test-scenario.wsp"),
                                           model);
         em.getTransaction().commit();
     }
@@ -72,11 +78,11 @@ public class NorthwindTest extends AbstractModelTest {
         txn.begin();
         Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
                                                           kernel.getCore());
-        order.setAssignTo(scenario.getOrderFullfillment());
-        order.setProduct(scenario.getAbc486());
-        order.setDeliverTo(scenario.getRc31());
-        order.setDeliverFrom(scenario.getFactory1());
-        order.setRequester(scenario.getCafleurBon());
+        order.setAssignTo(testScenario.getOrderFullfillment());
+        order.setProduct(testScenario.getAbc486());
+        order.setDeliverTo(testScenario.getRc31());
+        order.setDeliverFrom(testScenario.getFactory1());
+        order.setRequester(testScenario.getCafleurBon());
         em.persist(order);
         em.flush();
         jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
@@ -99,11 +105,11 @@ public class NorthwindTest extends AbstractModelTest {
         txn.begin();
         Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
                                                           kernel.getCore());
-        order.setAssignTo(scenario.getOrderFullfillment());
-        order.setProduct(scenario.getAbc486());
-        order.setDeliverTo(scenario.getBht37());
-        order.setDeliverFrom(scenario.getFactory1());
-        order.setRequester(scenario.getOrgA());
+        order.setAssignTo(testScenario.getOrderFullfillment());
+        order.setProduct(testScenario.getAbc486());
+        order.setDeliverTo(testScenario.getBht37());
+        order.setDeliverFrom(testScenario.getFactory1());
+        order.setRequester(testScenario.getOrgA());
         em.persist(order);
         em.flush();
         jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
@@ -126,11 +132,11 @@ public class NorthwindTest extends AbstractModelTest {
         txn.begin();
         Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
                                                           kernel.getCore());
-        order.setAssignTo(scenario.getOrderFullfillment());
-        order.setProduct(scenario.getAbc486());
-        order.setDeliverTo(scenario.getRsb225());
-        order.setDeliverFrom(scenario.getFactory1());
-        order.setRequester(scenario.getGeorgetownUniversity());
+        order.setAssignTo(testScenario.getOrderFullfillment());
+        order.setProduct(testScenario.getAbc486());
+        order.setDeliverTo(testScenario.getRsb225());
+        order.setDeliverFrom(testScenario.getFactory1());
+        order.setRequester(testScenario.getGeorgetownUniversity());
         em.persist(order);
         em.flush();
         jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
