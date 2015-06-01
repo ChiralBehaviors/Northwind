@@ -11,7 +11,7 @@
 
     <licenses>
         <license>
-            <name>GPLv3 License</name>
+            <name>AGPLv3 License</name>
             <url>http://www.gnu.org/licenses/</url>
         </license>
     </licenses>
@@ -47,11 +47,15 @@
         <drop>false</drop>
 
         <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version>
+        <dropwizard.version>0.8.1</dropwizard.version>
+        <postgresql.driver.version>9.4-1201-jdbc41</postgresql.driver.version>
     </properties>
 
     <modules>
         <module>schema-loading</module>
         <module>northwind</module>
+        <module>northwind-resources</module>
+        <module>northwind-service</module>
     </modules>
 
     <repositories>
@@ -70,6 +74,41 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.chiralbehaviors</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-core</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>configuration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-auth</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-metrics</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-assets</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.driver.version}</version>
+            </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>

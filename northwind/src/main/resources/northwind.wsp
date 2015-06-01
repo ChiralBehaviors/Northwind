@@ -44,6 +44,7 @@ agencies {
             constraints {
                 one Contact method: relationship : kernel::IsA.Employee
                 one SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
+                n HasEmployee: kernel::IsA.Employee
             }
         kernel::IsA.Supplier
             constraints {
@@ -54,6 +55,9 @@ agencies {
                 n InRegion: kernel::IsA.Region
             }
         kernel::IsA.Manager
+            constraints { 
+                n HasReport method: relationship : kernel::IsA.Employee 
+            }
         kernel::IsA.AgencyTaxStatus
         kernel::IsA.AbstractCustomerType
     }
@@ -114,6 +118,7 @@ products {
     Order = "Order" "An Order";
     ItemDetail = "Order Item Detail" "Detail on item";
     StockedProduct = "Stocked Product" "A product stocked at a location";
+    ProductTaxStatus = "Tax Status" "Product tax status";
     
     Deliver = "Deliver" "Deliver product";
     Pick = "Pick" "Pick inventory";
@@ -125,7 +130,6 @@ products {
     PrintCustomsDeclaration = "PrintCustomsDeclaration" "Print the customs declaration";
     PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
     SalesTax = "SalesTax" "Compute sales tax";
-    ProductTaxStatus = "Tax Status" "Product tax status";
     
     edges {
         ExemptProduct.kernel::IsA.ProductTaxStatus

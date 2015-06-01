@@ -1,2 +1,3 @@
 # Northwind
-An example of Ultrastructure using Northwind
+
+The Northwind as realized in Ultrastructure
