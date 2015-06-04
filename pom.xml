@@ -54,7 +54,6 @@
     <modules>
         <module>schema-loading</module>
         <module>northwind</module>
-        <module>northwind-resources</module>
         <module>northwind-service</module>
     </modules>
 

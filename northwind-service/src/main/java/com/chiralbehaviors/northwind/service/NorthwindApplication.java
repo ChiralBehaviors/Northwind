@@ -21,7 +21,18 @@
 package com.chiralbehaviors.northwind.service;
 
 import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
+import java.util.Map;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import com.chiralbehaviors.CoRE.json.CoREModule;
+import com.chiralbehaviors.northwind.service.health.EmfHealthCheck;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 /**
  * @author hhildebrand
@@ -34,11 +45,28 @@ public class NorthwindApplication extends Application<NorthwindConfiguration> {
         new NorthwindApplication().run(argv);
     }
 
+    @Override
+    public void initialize(Bootstrap<NorthwindConfiguration> bootstrap) {
+        bootstrap.getObjectMapper().registerModule(new CoREModule());
+        Hibernate4Module module = new Hibernate4Module();
+        module.enable(Feature.FORCE_LAZY_LOADING);
+        bootstrap.getObjectMapper().registerModule(module);
+        super.initialize(bootstrap);
+    }
+
     /* (non-Javadoc)
      * @see io.dropwizard.AbstractService#initialize(io.dropwizard.config.Configuration, io.dropwizard.config.Environment)
      */
     @Override
     public void run(NorthwindConfiguration configuration,
                     Environment environment) throws Exception {
+        JpaConfiguration jpaConfig = configuration.getCrudServiceConfiguration();
+
+        String unit = jpaConfig.getPersistenceUnit();
+        Map<String, String> properties = jpaConfig.getProperties();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(unit,
+                                                                          properties);
+        environment.healthChecks().register("EMF Health",
+                                            new EmfHealthCheck(emf));
     }
 }
