@@ -18,25 +18,18 @@
  *  along with Ultrastructure.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.chiralbehaviors.northwind.service;
+package com.chiralbehaviors.northwind.service.resources;
 
-import io.dropwizard.Configuration;
-
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.EntityManagerFactory;
 
 /**
  * @author hhildebrand
  *
  */
-public class NorthwindConfiguration extends Configuration {
-    @NotNull
-    @JsonProperty
-    private JpaConfiguration jpa = new JpaConfiguration();
+public class CustomerDetails extends TransactionalResource {
 
-    public JpaConfiguration getCrudServiceConfiguration() {
-        return jpa;
+    public CustomerDetails(EntityManagerFactory emf) {
+        super(emf);
     }
 
 }

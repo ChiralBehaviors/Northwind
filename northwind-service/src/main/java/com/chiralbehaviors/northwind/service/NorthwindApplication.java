@@ -30,6 +30,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.chiralbehaviors.CoRE.json.CoREModule;
+import com.chiralbehaviors.northwind.service.config.JpaConfiguration;
+import com.chiralbehaviors.northwind.service.config.NorthwindConfiguration;
 import com.chiralbehaviors.northwind.service.health.EmfHealthCheck;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;

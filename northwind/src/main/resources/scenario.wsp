@@ -1,4 +1,4 @@
-workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/test-scenario/v1" 
+workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1" 
            "Northwind" 
            "Ultrstructure implementation of ye olde thyme Northwind demo"
 imports {
@@ -44,15 +44,14 @@ locations {
     Bin15 = "Bin 15"; 
 
     edges {
+        US.kernel::IsA.nw::Area
+        US.kernel::IsA.nw::Country
         EastCoast.kernel::IsA.nw::Region
         WestCoast.kernel::IsA.nw::Region
-        Factory1.kernel::IsA.nw::Area
+        Euro.kernel::IsA.nw::Area
         DC.kernel::IsA.nw::City
         Paris.kernel::IsA.nw::City
-        US.kernel::IsA.nw::Country
-        US.kernel::IsA.nw::Area
-        France.kernel::IsA.nw::Region
-        Euro.kernel::IsA.nw::Area
+        Factory1.kernel::IsA.nw::Area
     
         Bin1.nw::InArea.Factory1
         Bin15.nw::InArea.Factory1

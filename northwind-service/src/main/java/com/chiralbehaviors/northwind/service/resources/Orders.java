@@ -20,10 +20,16 @@
 
 package com.chiralbehaviors.northwind.service.resources;
 
+import javax.persistence.EntityManagerFactory;
+
 /**
  * @author hhildebrand
  *
  */
-public class Customer {
+public class Orders extends TransactionalResource {
+
+    public Orders(EntityManagerFactory emf) {
+        super(emf);
+    }
 
 }

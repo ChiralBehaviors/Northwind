@@ -34,6 +34,7 @@ agencies {
                 one EmployeeOf: kernel::IsA.Company 
                 one ReportsTo: kernel::IsA.Manager
                 n HasTerritory: kernel::IsA.Territory
+                n Sold: kernel::IsA.Order
             }
         kernel::IsA.Customer
             constraints {
@@ -95,6 +96,7 @@ locations {
     Street = "Street" "A Street";
     Territory = "Territory" "A territory";
     StockLocation = "Stock Location" "The location of product";
+
     
     facets {
         kernel::IsA.Region
@@ -149,10 +151,9 @@ products {
         kernel::IsA.Order { RequiredDate OrderDate ShipDate }
             constraints {
                 n HasItemDetail: kernel::IsA.ItemDetail
+                one SoldBy: kernel::IsA.Employee
             }
         kernel::IsA.Category { Picture }
-        kernel::IsA.Frozen
-        kernel::IsA.RoomTemp
         kernel::IsA.ProductTaxStatus
         kernel::IsA.StockedProduct
             constraints {
@@ -191,6 +192,7 @@ relationships {
     OrderedProductOf = "Ordered Product Of" "A is the ordered product of B" | ProductOrdered = "Product Ordered" "A is a product order of B";
     IsCategorizedAs = "Is Categorized As" "A is categorized as B"  | CategoryOf = "A is a category of B";
     StockedAt = "Stocked At" "A is stocked at B" | Stocks = "Stocks" "A is the location of stock B";
+    Sold = "Sold" "A sold B" | SoldBy = "Sold By" "A was sold by B";
 }
 
 

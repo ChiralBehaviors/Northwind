@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package com.chiralbehaviors.northwind.service;
+package com.chiralbehaviors.northwind.service.config;
 
 import io.dropwizard.Configuration;
 
