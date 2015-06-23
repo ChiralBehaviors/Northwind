@@ -6,18 +6,10 @@ imports {
 }
 
 agencies {
+    ExemptAgency = "Exempt" "Exempt from sales tax";
     NonExemptAgency = "Non Exempt" "Non tax exempt";
     ExternalCust = "External Customer" "External (paying) customer";
-    InternalCust = "Internal Customer" "Internal (non paying) customer";
-    AbstractCustomerType = "Customer Type" "Common super typeof customer's type";
-    ExemptAgency = "Exempt" "Exempt from sales tax";
-    Company = "Company" "A company";
-    Customer = "Northwind Customer" "A customer of Northwind";
-    Employee = "Northwind Employee" "An employee of Northwind";
-    Manager = "Northwind Manager" "An manager of Northwind";
-    Shipper = "Shipper" "An agency that ships products";
-    Supplier = "Supplier" "An agency that supplies products";
-    AgencyTaxStatus = "Tax Status" "The abstract tax status of an agency";
+    InternalCust = "Internal Customer" "Internal (non paying) customer"; 
     
     edges {
         ExternalCust.kernel::IsA.AbstractCustomerType
@@ -60,7 +52,9 @@ agencies {
                 n HasReport method: relationship : kernel::IsA.Employee 
             }
         kernel::IsA.AgencyTaxStatus
+            "Tax Status" "The abstract tax status of an agency"
         kernel::IsA.AbstractCustomerType
+            "Customer Type" "Common super typeof customer's type"
     }
 }
 
@@ -88,39 +82,25 @@ attributes {
 }
 
 locations {
-    Region = "Region" "A Region";
-    Area = "Area" "An Area";
-    StateOrProvince = "State or Province" "A state or province";
-    City = "City" "A City";
-    Country = "Country" "A Country";
-    Street = "Street" "A Street";
-    Territory = "Territory" "A territory";
-    StockLocation = "Stock Location" "The location of product";
-
-    
     facets {
         kernel::IsA.Region
         kernel::IsA.Area
         kernel::IsA.StateOrProvince
+           "State or Province" "A state or province"
         kernel::IsA.City
         kernel::IsA.Country
         kernel::IsA.Street
         kernel::IsA.Territory
         kernel::IsA.StockLocation
+            "Stock Location" "The location of product"
     }
 }
 
-products { 
-    Category = "Product Category" "A category of products";
-    PricedProduct = "Priced Product" "A product we sell";
+products {   
     RoomTemp = "RoomTemp" "Room temperature products";
     Frozen = "frozen" "Frozen Products";
     ExemptProduct = "Exempt" "Tax exempt products";
     NonExemptProduct = "NonExempt" "Non tax exempt products";
-    Order = "Order" "An Order";
-    ItemDetail = "Order Item Detail" "Detail on item";
-    StockedProduct = "Stocked Product" "A product stocked at a location";
-    ProductTaxStatus = "Tax Status" "Product tax status";
     
     Deliver = "Deliver" "Deliver product";
     Pick = "Pick" "Pick inventory";
@@ -139,11 +119,13 @@ products {
     }
     facets {
         kernel::IsA.PricedProduct { UnitPrice }
+            "Priced Product" "A product we sell"
             constraints {
                 n IsCategorizedAs: kernel::IsA.Category
                 one SalesTaxStatus method: relationship : kernel::IsA.ProductTaxStatus
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
+            "Order Item Detail" "Detail on item"
             constraints {
                 one OrderedProductOf: kernel::IsA.PricedProduct
                 one ItemDetailOf: kernel::IsA.Order
@@ -155,7 +137,9 @@ products {
             }
         kernel::IsA.Category { Picture }
         kernel::IsA.ProductTaxStatus
+            "Tax Status" "Product tax status"
         kernel::IsA.StockedProduct
+            "Stocked Product" "A product stocked at a location"
             constraints {
                 one StockedAt: kernel::IsA.StockLocation
                 { Quantity }
