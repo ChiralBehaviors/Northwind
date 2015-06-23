@@ -84,15 +84,63 @@ attributes {
 locations {
     facets {
         kernel::IsA.Region
+        kernel::IsA.Country
+            constraints {
+                one InRegion: kernel::IsA.Region
+            }
         kernel::IsA.Area
+            constraints {
+                one InRegion get: inferred : kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+            }
         kernel::IsA.StateOrProvince
            "State or Province" "A state or province"
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                n InArea: kernel::IsA.Area
+            }
         kernel::IsA.City
-        kernel::IsA.Country
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                one InArea: kernel::IsA.Area
+                one InStateOrProvince: kernel::IsA.StateOrProvince
+            }
         kernel::IsA.Street
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                one InArea: kernel::IsA.Area
+                one InStateOrProvince: kernel::IsA.StateOrProvince
+                one InCity: kernel::IsA.City
+            }
+        kernel::IsA.StreetAddress
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                one InArea: kernel::IsA.Area
+                one InStateOrProvince: kernel::IsA.StateOrProvince
+                one InCity: kernel::IsA.City
+                one OnStreet: kernel::IsA.Street
+            }
         kernel::IsA.Territory
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                one InArea: kernel::IsA.Area
+                one InStateOrProvince: kernel::IsA.StateOrProvince
+                one InCity: kernel::IsA.City
+            }
         kernel::IsA.StockLocation
             "Stock Location" "The location of product"
+            constraints {
+                one InRegion: kernel::IsA.Region
+                one InCountry: kernel::IsA.Country
+                one InArea: kernel::IsA.Area
+                one InStateOrProvince: kernel::IsA.StateOrProvince
+                one InCity: kernel::IsA.City
+            }
     }
 }
 
@@ -154,6 +202,7 @@ relationships {
     HasTerritory = "Territory" "A has territory B" | TerritoryOf = "Territory Of" "A is a territory of B";
     InState = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
     InCity = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
+    InStateOrProvince = "In State or Province" "A is located in the State or Province of B" | StateOrProvinceOf = "State or Province Of" "A is the State or Province of B";
     OnStreet = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
     
     CustomerType = "Customer Type" "A has customer type of B" | CustomerTypeOf = "Customer Type Of" "A is the customer type of B";
@@ -241,7 +290,6 @@ status code sequencings {
 
 sequencing auths {
     parent {
-        
         service: CheckCredit
         status: Completed
         parent: Pick

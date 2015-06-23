@@ -31,8 +31,6 @@ public interface Northwind {
 
     static String NORTHWIND_WORKSPACE = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1";
 
-    StatusCode getAbandoned();
-
     StatusCode getActive();
 
     StatusCode getAvailable();
