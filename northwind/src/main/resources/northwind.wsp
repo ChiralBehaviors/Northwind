@@ -11,11 +11,7 @@ agencies {
     ExternalCust = "External Customer" "External (paying) customer";
     InternalCust = "Internal Customer" "Internal (non paying) customer"; 
     
-    edges {
-        ExternalCust.kernel::IsA.AbstractCustomerType
-        InternalCust.kernel::IsA.AbstractCustomerType
-        ExemptAgency.kernel::IsA.AgencyTaxStatus
-        NonExemptAgency.kernel::IsA.AgencyTaxStatus
+    edges { 
         Shipper.kernel::IsA.Company
         Supplier.kernel::IsA.Company
         Manager.kernel::IsA.Employee
@@ -30,13 +26,13 @@ agencies {
             }
         kernel::IsA.Customer
             constraints {
-                one CustomerType method: relationship : kernel::IsA.AbstractCustomerType
-                one SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
+                one CustomerType method: relationship : *Agency
+                one SalesTaxStatus method: relationship : *Agency
             }
         kernel::IsA.Company
             constraints {
                 one Contact method: relationship : kernel::IsA.Employee
-                one SalesTaxStatus method: relationship : kernel::IsA.AgencyTaxStatus
+                one SalesTaxStatus method: relationship : *Agency
                 n HasEmployee: kernel::IsA.Employee
             }
         kernel::IsA.Supplier
@@ -51,10 +47,6 @@ agencies {
             constraints { 
                 n HasReport method: relationship : kernel::IsA.Employee 
             }
-        kernel::IsA.AgencyTaxStatus
-            "Tax Status" "The abstract tax status of an agency"
-        kernel::IsA.AbstractCustomerType
-            "Customer Type" "Common super typeof customer's type"
     }
 }
 
@@ -170,7 +162,7 @@ products {
             "Priced Product" "A product we sell"
             constraints {
                 n IsCategorizedAs: kernel::IsA.Category
-                one SalesTaxStatus method: relationship : kernel::IsA.ProductTaxStatus
+                one SalesTaxStatus method: relationship : *Product
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             "Order Item Detail" "Detail on item"
@@ -184,8 +176,6 @@ products {
                 one SoldBy: kernel::IsA.Employee
             }
         kernel::IsA.Category { Picture }
-        kernel::IsA.ProductTaxStatus
-            "Tax Status" "Product tax status"
         kernel::IsA.StockedProduct
             "Stocked Product" "A product stocked at a location"
             constraints {
