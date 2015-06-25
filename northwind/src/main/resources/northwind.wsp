@@ -153,10 +153,6 @@ products {
     PrintPurchaseOrder = "PrintPurchaseOrder" "Print the purchase order";
     SalesTax = "SalesTax" "Compute sales tax";
     
-    edges {
-        ExemptProduct.kernel::IsA.ProductTaxStatus
-        NonExemptProduct.kernel::IsA.ProductTaxStatus
-    }
     facets {
         kernel::IsA.PricedProduct { UnitPrice }
             "Priced Product" "A product we sell"
