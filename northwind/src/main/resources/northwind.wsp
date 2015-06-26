@@ -19,20 +19,20 @@ agencies {
     facets {
         kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
             constraints {
-                one EmployeeOf: kernel::IsA.Company 
+                one EmployeeOf: kernel::IsA.Company
                 one ReportsTo: kernel::IsA.Manager
                 n HasTerritory: kernel::IsA.Territory
                 n Sold: kernel::IsA.Order
             }
         kernel::IsA.Customer
             constraints {
-                one CustomerType method: relationship : *Agency
-                one SalesTaxStatus method: relationship : *Agency
+                one CustomerType: *Agency
+                one SalesTaxStatus: *Agency
             }
         kernel::IsA.Company
             constraints {
-                one Contact method: relationship : kernel::IsA.Employee
-                one SalesTaxStatus method: relationship : *Agency
+                one Contact: kernel::IsA.Employee named by relationship
+                one SalesTaxStatus: *Agency
                 n HasEmployee: kernel::IsA.Employee
             }
         kernel::IsA.Supplier
@@ -45,7 +45,7 @@ agencies {
             }
         kernel::IsA.Manager
             constraints { 
-                n HasReport method: relationship : kernel::IsA.Employee 
+                n HasReport: kernel::IsA.Employee named report
             }
     }
 }
@@ -70,7 +70,7 @@ attributes {
     UnitPrice = "unit price"  "unit price" numeric; 
     TaxRate = "tax rate" "tax rate" numeric;
     
-    Picture = "picture" "A digital picture" binary;
+    Picture = "picture" "A digital picture" irl: "http://schema.org/image" binary;
 }
 
 locations {
@@ -82,7 +82,7 @@ locations {
             }
         kernel::IsA.Area
             constraints {
-                one InRegion get: inferred : kernel::IsA.Region
+                one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
             }
         kernel::IsA.StateOrProvince
@@ -158,18 +158,18 @@ products {
             "Priced Product" "A product we sell"
             constraints {
                 n IsCategorizedAs: kernel::IsA.Category
-                one SalesTaxStatus method: relationship : *Product
+                one SalesTaxStatus: *Product
             }
         kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             "Order Item Detail" "Detail on item"
             constraints {
-                one OrderedProductOf: kernel::IsA.PricedProduct
+                one OrderedProductOf: kernel::IsA.PricedProduct named product
                 one ItemDetailOf: kernel::IsA.Order
             }
         kernel::IsA.Order { RequiredDate OrderDate ShipDate }
             constraints {
                 n HasItemDetail: kernel::IsA.ItemDetail
-                one SoldBy: kernel::IsA.Employee
+                one SoldBy: kernel::IsA.Employee named by relationship
             }
         kernel::IsA.Category { Picture }
         kernel::IsA.StockedProduct
