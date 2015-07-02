@@ -70,7 +70,7 @@ attributes {
     UnitPrice = "unit price"  "unit price" numeric; 
     TaxRate = "tax rate" "tax rate" numeric;
     
-    Picture = "picture" "A digital picture" irl: "http://schema.org/image" binary;
+    Picture = "picture" "A digital picture" type: "@id" binary;
 }
 
 locations {
