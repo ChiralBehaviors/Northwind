@@ -21,10 +21,23 @@ agencies {
     edges {  
         GeorgetownUniversity.nw::CustomerType.nw::ExternalCust
         GeorgetownUniversity.nw::SalesTaxStatus.nw::ExemptAgency
+        GeorgetownUniversity.kernel::IsA.nw::Customer
+        
         OrgA.nw::CustomerType.nw::ExternalCust
-        CafleurBon.nw::CustomerType.nw::ExternalCust
+        OrgA.kernel::IsA.nw::Customer
         OrgA.nw::SalesTaxStatus.nw::NonExemptAgency
+        
+        CafleurBon.nw::CustomerType.nw::ExternalCust
+        CafleurBon.kernel::IsA.nw::Customer
+        CafleurBon.nw::SalesTaxStatus.nw::NonExemptAgency
+        
         Northwind.kernel::IsA.nw::Company
+        BillingComputer.kernel::IsA.nw::ComputeResource
+        CPU.kernel::IsA.nw::ComputeResource
+        Manufacturer.kernel::IsA.nw::Supplier
+        CreditDept.kernel::IsA.nw::Department
+        Factory1Agency.kernel::IsA.nw::Department
+        OrderFullfillment.kernel::IsA.nw::Department
     }
 } 
 
@@ -73,7 +86,12 @@ products {
     edges { 
         Abc486.nw::StorageType.nw::RoomTemp
         Abc486.nw::SalesTaxStatus.nw::NonExemptProduct
+        Abc486.kernel::IsA.nw::PricedProduct
+        
         ChemB.nw::StorageType.nw::Frozen
+        ChemB.nw::SalesTaxStatus.nw::NonExemptProduct
+        ChemB.kernel::IsA.nw::PricedProduct
+        
     } 
 }   
 protocols {

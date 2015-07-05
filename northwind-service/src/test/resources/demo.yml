@@ -1,4 +1,3 @@
-name: Northwind
 jpa:
     debug: true
     persistenceUnit: CoRE
@@ -10,4 +9,7 @@ jpa:
         hibernate.cache.use_second_level_cache: true
         
 logging:
-    level: WARN
+    level: INFO
+    loggers:
+        "org.hibernate": ERROR
+        "org.glassfish": ERROR

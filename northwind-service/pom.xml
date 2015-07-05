@@ -18,12 +18,10 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.chiralbehaviors.northwind</groupId>
             <artifactId>northwind</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

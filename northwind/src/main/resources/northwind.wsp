@@ -9,7 +9,9 @@ agencies {
     ExemptAgency = "Exempt" "Exempt from sales tax";
     NonExemptAgency = "Non Exempt" "Non tax exempt";
     ExternalCust = "External Customer" "External (paying) customer";
-    InternalCust = "Internal Customer" "Internal (non paying) customer"; 
+    InternalCust = "Internal Customer" "Internal (non paying) customer";
+    ComputeResource = "Compute Resource" "Compute system resource for doing computing";
+    Department = "Department" "A group of employees organized by function";
     
     edges { 
         Shipper.kernel::IsA.Company
@@ -28,12 +30,14 @@ agencies {
             constraints {
                 one CustomerType: *Agency
                 one SalesTaxStatus: *Agency
+                n Ordered: kernel::IsA.Order
             }
         kernel::IsA.Company
             constraints {
                 one Contact: kernel::IsA.Employee named by relationship
                 one SalesTaxStatus: *Agency
                 n HasEmployee: kernel::IsA.Employee
+                n HasDepartment: kernel::IsA.Department
             }
         kernel::IsA.Supplier
             constraints {
@@ -47,6 +51,8 @@ agencies {
             constraints { 
                 n HasReport: kernel::IsA.Employee named report
             }
+        kernel::IsA.ComputeResource
+        kernel::IsA.Department
     }
 }
 
@@ -170,6 +176,7 @@ products {
             constraints {
                 n HasItemDetail: kernel::IsA.ItemDetail
                 one SoldBy: kernel::IsA.Employee named by relationship
+                one OrderedBy: kernel::IsA.Customer named by relationship
             }
         kernel::IsA.Category { Picture }
         kernel::IsA.StockedProduct
@@ -202,6 +209,7 @@ relationships {
     SupplierOf = "Supplier Of" "A is a supplier of B" | HasSupplier = "Has Supplier" "A has supplier B";
     Ships = "Ships" "A ships B" | HasShipper = "Has Shipper" "A has shipper B";
     ContactOf = "Contact Of" "A is the contact of B" | Contact = " the contact of A is B";
+    DepartmentOf = "Department Of" "A is an organizational department of B" | HasDepartment = "Has Department" "A has department B";
     
     ShippedBy = "Shipped By" "A was shipped by B" | Shipped = "Shipped" "A shipped B";
     DeliveredTo = "Delivered To" "A was delivered to B" | Recieved = "Received" "A recieved B";
