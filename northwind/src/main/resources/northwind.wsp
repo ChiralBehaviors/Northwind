@@ -25,19 +25,22 @@ agencies {
                 one ReportsTo: kernel::IsA.Manager
                 n HasTerritory: kernel::IsA.Territory
                 n Sold: kernel::IsA.Order
+                one MailingAddress: kernel::IsA.StreetAddress named by relationship
             }
         kernel::IsA.Customer
             constraints {
                 one CustomerType: *Agency
                 one SalesTaxStatus: *Agency
                 n Ordered: kernel::IsA.Order
+                one ShippingAddress: kernel::IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Company
+        kernel::IsA.Company { CompanyName }
             constraints {
                 one Contact: kernel::IsA.Employee named by relationship
                 one SalesTaxStatus: *Agency
                 n HasEmployee: kernel::IsA.Employee
                 n HasDepartment: kernel::IsA.Department
+                one MailingAddress: kernel::IsA.StreetAddress named by relationship
             }
         kernel::IsA.Supplier
             constraints {
@@ -52,7 +55,10 @@ agencies {
                 n HasReport: kernel::IsA.Employee named report
             }
         kernel::IsA.ComputeResource
-        kernel::IsA.Department
+        kernel::IsA.Department {Name}
+            constraints {
+                one DepartmentOf: kernel::IsA.Company
+            }
     }
 }
 
@@ -64,6 +70,11 @@ attributes {
     BirthDate = "Birthdate" "Birthdate" timestamp;
     HireDate = "Hire Date" "Hire date" timestamp;
     
+    CompanyName = "Company Name" "The name of a company" text;
+    Name = "Name" "The name of something" text;
+    CountryCode = "Country Code" "The short code of a contry" text;
+    StateCode = "State Code" "The short code of a state or region" text;
+
     StreetNumber = "Street Number" "The number on a street" text;
     PostalCode = "Postal Code" "The postal routing code" text;
     
@@ -81,31 +92,31 @@ attributes {
 
 locations {
     facets {
-        kernel::IsA.Region
+        kernel::IsA.Region {Name}
         kernel::IsA.Country
             constraints {
                 one InRegion: kernel::IsA.Region
             }
-        kernel::IsA.Area
+        kernel::IsA.Area {Name}
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
             }
-        kernel::IsA.StateOrProvince
+        kernel::IsA.StateOrProvince {StateCode}
            "State or Province" "A state or province"
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
                 n InArea: kernel::IsA.Area
             }
-        kernel::IsA.City
+        kernel::IsA.City {Name}
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
                 one InArea: kernel::IsA.Area
                 one InStateOrProvince: kernel::IsA.StateOrProvince
             }
-        kernel::IsA.Street
+        kernel::IsA.Street {Name}
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
@@ -113,7 +124,7 @@ locations {
                 one InStateOrProvince: kernel::IsA.StateOrProvince
                 one InCity: kernel::IsA.City
             }
-        kernel::IsA.StreetAddress
+        kernel::IsA.StreetAddress {StreetNumber}
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
@@ -122,7 +133,7 @@ locations {
                 one InCity: kernel::IsA.City
                 one OnStreet: kernel::IsA.Street
             }
-        kernel::IsA.Territory
+        kernel::IsA.Territory {Name}
             constraints {
                 one InRegion: kernel::IsA.Region
                 one InCountry: kernel::IsA.Country
@@ -130,7 +141,7 @@ locations {
                 one InStateOrProvince: kernel::IsA.StateOrProvince
                 one InCity: kernel::IsA.City
             }
-        kernel::IsA.StockLocation
+        kernel::IsA.StockLocation {Name}
             "Stock Location" "The location of product"
             constraints {
                 one InRegion: kernel::IsA.Region
@@ -202,7 +213,8 @@ relationships {
     SalesTaxStatus = "Sales Tax Status" "The sales tax status of A is B" | SalesTaxStatusOf = "Sales Tax Status Of" "A is the sales tax status of B";
     
     StorageType = "StorageType" "The type of storage required for A is B" | StorageTypeOf = "StorageType Of" "A is the storage type of B";
-    PhysicalAddress = "Physical Address" "the phyiscal address of A is B" | PhysicalAddressOf ="Physical Address Of" "A is the physical address of B";
+    ShippingAddress = "Shipping Address" "the shipping address of A is B" | ShippingAddressOf ="Shipping Address Of" "A is the shipping address of B";
+    MailingAddress = "Mailing Address" "the mailing address of A is B" | MailingAddressOf ="Mailing Address Of" "A is the mailing address of B";
    
     ReportsTo = "Reports To" "A reports to B" | HasReport = "Has Report" "A has report B";
     EmployeeOf = "Employee Of" "A is an employee of B" | HasEmployee = "Has Employee" "A has employee B";

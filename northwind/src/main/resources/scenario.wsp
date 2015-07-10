@@ -99,38 +99,51 @@ protocols {
         ->
         service: nw::Pick product: kernel::SameProduct assign: Factory1Agency
         
-        service: nw::Pick product: kernel::AnyProduct from: US to: US
-        ->
-        service: nw::CheckCredit product: kernel::SameProduct assign: CPU
-        
-        service: nw::Pick product: kernel::AnyProduct from: US to: Euro
-        ->
-        service: nw::CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
         
         service: nw::Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
             requester: kernel::AnyAgency
         ->
         service: nw::Ship product: kernel::SameProduct assign: Factory1Agency
         
+        
+        
+        service: nw::Pick product: kernel::AnyProduct from: US to: US
+        ->
+        service: nw::CheckCredit product: kernel::SameProduct assign: CPU
+        
+        
+        service: nw::Pick product: kernel::AnyProduct from: US to: Euro
+        ->
+        service: nw::CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
+        
+        
+        
         service: nw::Ship product: kernel::AnyProduct from: US to: Euro
         ->
         service: nw::PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
+        
         
         service: nw::Ship product: kernel::AnyProduct from: US to: kernel::AnyLocation
         ->
         service: nw::PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
         
+        
+        
         service: nw::PrintPurchaseOrder product: kernel::AnyProduct from: US to: kernel::AnyLocation requester: kernel::AnyAgency
         -> 
         service: nw::Fee product: kernel::SameProduct assign: BillingComputer
+        
+        
         
         service: nw::Fee product: nw::NonExemptProduct from: kernel::AnyLocation to: DC requester: nw::NonExemptAgency 
         ->
         service: nw::SalesTax product: kernel::SameProduct assign: BillingComputer
         
+        
         service: nw::Fee product: kernel::AnyProduct from: US to: Euro requester: nw::ExternalCust
         ->
         service: nw::Discount product: kernel::SameProduct assign: BillingComputer
+        
         
         service: nw::Fee product: kernel::AnyProduct from: US to: DC requester: GeorgetownUniversity
         ->
