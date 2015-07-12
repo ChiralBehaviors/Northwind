@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
 import com.chiralbehaviors.CoRE.meta.workspace.Workspace;
-import com.chiralbehaviors.CoRE.workspace.dsl.WorkspaceImporter;
+import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
 import com.chiralbehaviors.northwind.Northwind;
 import com.chiralbehaviors.northwind.agency.Customer;
 import com.chiralbehaviors.northwind.product.ItemDetail;

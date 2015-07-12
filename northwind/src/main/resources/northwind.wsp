@@ -1,6 +1,6 @@
 workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1" 
            "Northwind" 
-           "Ultrstructure implementation of ye olde thyme Northwind demo"
+           "Ultrstructure ontology for ye olde thyme Northwind demo"
 imports {
     "urn:uuid:00000000-0000-0004-0000-000000000003" as kernel
 }
