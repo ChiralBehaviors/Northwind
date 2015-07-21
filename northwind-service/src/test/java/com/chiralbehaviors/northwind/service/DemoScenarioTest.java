@@ -64,6 +64,7 @@ public class DemoScenarioTest extends AbstractModelTest {
         em.getTransaction().commit();
     }
 
+    @SuppressWarnings("unused")
     private Northwind    scenario;
     private TestScenario testScenario;
 
