@@ -26,12 +26,14 @@ import org.eclipse.jetty.server.Server;
 import com.chiralbehaviors.CoRE.json.CoREModule;
 import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.FacetResource;
 import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.RuleformResource;
+import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.WorkspaceMediatedResource;
 import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.WorkspaceResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.jetty.HttpConnectorFactory;
 import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -81,6 +83,7 @@ public class NorthwindApplication
         environment.jersey().register(new FacetResource(emf));
         environment.jersey().register(new WorkspaceResource(emf));
         environment.jersey().register(new RuleformResource(emf));
+        environment.jersey().register(new WorkspaceMediatedResource(emf));
         environment.healthChecks().register("EMF Health",
                                             new EmfHealthCheck(emf));
     }
@@ -99,6 +102,7 @@ public class NorthwindApplication
 
     @Override
     public void initialize(Bootstrap<NorthwindApplicationConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/ui", "/ui"));
         ObjectMapper objMapper = bootstrap.getObjectMapper();
         objMapper.registerModule(new CoREModule());
         Hibernate4Module module = new Hibernate4Module();

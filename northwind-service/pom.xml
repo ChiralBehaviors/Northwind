@@ -12,6 +12,10 @@
     <description>A REST service for Northwest</description>
     <dependencies>
         <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-assets</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.chiralbehaviors.CoRE</groupId>
             <artifactId>phantasm-at-rest</artifactId>
         </dependency>
