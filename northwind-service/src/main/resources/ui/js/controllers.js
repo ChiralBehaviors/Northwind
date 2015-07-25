@@ -1,4 +1,5 @@
-var northwindControllers = angular.module('northwindControllers', ['jsonFormatter' ]);
+var northwindControllers = angular.module('northwindControllers',
+		[ 'jsonFormatter' ]);
 
 var r = new RegExp('^(?:[a-z]+:)?//', 'i');
 
@@ -21,12 +22,12 @@ northwindControllers.controller('DefaultCtrl', [ "$scope", function($scope) {
 northwindControllers.controller('CustomersControl', [ '$scope', 'Customers',
 		function($scope, Customers) {
 			Customers.one().get().then(function(data) {
-				var list = data['@graph'];
-				for ( var key in list) {
-					var customer = list[key];
-					customer['@id'] = customers + customer['@id'];
+				var customers = data['@graph'];
+				for ( var key in customers) {
+					var customer = customers[key];
+					customer['@id'] = "/customer/" + customer['@id'];
 				}
-				$scope.customers = list;
+				$scope.customers = customers;
 			});
 		} ]);
 
