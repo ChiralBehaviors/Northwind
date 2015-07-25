@@ -1,15 +1,11 @@
-var northwindControllers = angular.module('northwindControllers', []);
-
-function isObject(obj) {
-	return obj === Object(obj);
-}
+var northwindControllers = angular.module('northwindControllers', ['jsonFormatter' ]);
 
 var r = new RegExp('^(?:[a-z]+:)?//', 'i');
 
 function relativize(data) {
 	for ( var key in data) {
 		var prop = data[key];
-		if (isObject(prop)) {
+		if (angular.isObject(prop)) {
 			relativize(prop);
 		} else if (r.test(prop)) {
 			var parser = document.createElement('a');
@@ -19,67 +15,25 @@ function relativize(data) {
 	}
 }
 
-northwindControllers.controller('FacetInstancesListCtrl', [
-		'$scope',
-		'$http',
-		'$routeParams',
-		function($scope, $http, $routeParams) {
-			$http.get(
-					'/json-ld/facet/' + $routeParams.ruleform + '/'
-							+ $routeParams.classifier + '/'
-							+ $routeParams.classification).success(
-					function(data) {
-						for ( var idx in data) {
-							relativize(data[idx]);
-						}
-						$scope.facetInstances = data;
-					});
-		} ]);
+northwindControllers.controller('DefaultCtrl', [ "$scope", function($scope) {
+} ]);
 
-northwindControllers.controller('FacetListCtrl', [
-		'$scope',
-		'$http',
-		'$routeParams',
-		function($scope, $http, $routeParams) {
-			$http.get('/json-ld/facet/' + $routeParams.ruleform).success(
-					function(data) {
-						$scope.facets = data['@graph'];
-					});
-		} ]);
-
-northwindControllers.controller('FacetRuleformsListCtrl', [ '$scope', '$http',
-		function($scope, $http) {
-			$http.get('/json-ld/facet').success(function(data) {
-				relativize(data);
-				$scope.facetRuleforms = data;
+northwindControllers.controller('CustomersControl', [ '$scope', 'Customers',
+		function($scope, Customers) {
+			Customers.one().get().then(function(data) {
+				var list = data['@graph'];
+				for ( var key in list) {
+					var customer = list[key];
+					customer['@id'] = customers + customer['@id'];
+				}
+				$scope.customers = list;
 			});
 		} ]);
 
-northwindControllers.controller('FacetDetailCtrl', [
-		'$scope',
-		'$http',
-		'$routeParams',
-		function($scope, $http, $routeParams) {
-			$http.get(
-					'/json-ld/facet/' + $routeParams.ruleform + '/'
-							+ $routeParams.classifier + '/'
-							+ $routeParams.classification).success(
-					function(data) {
-						$scope.facet = data;
-					});
-		} ]);
-
-northwindControllers.controller('FacetInstanceDetailCtrl', [
-		'$scope',
-		'$http',
-		'$routeParams',
-		function($scope, $http, $routeParams) {
-			$http.get(
-					'/json-ld/facet/' + $routeParams.ruleform + '/'
-							+ $routeParams.classifier + '/'
-							+ $routeParams.classification + '/'
-							+ $routeParams.instance).success(function(data) {
-				relativize(data);
-				$scope.facetInstance = data;
-			});
+northwindControllers.controller('CustomerDetailControl', [ '$scope',
+		'$routeParams', 'Customers', function($scope, $routeParams, Customers) {
+			Customers.one($routeParams.instance).get().then(function(customer) {
+				relativize(customer);
+				$scope.customer = customer;
+			})
 		} ]);
