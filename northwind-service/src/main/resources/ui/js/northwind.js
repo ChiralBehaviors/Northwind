@@ -1,8 +1,6 @@
 (function() {
 	var northwindWspUri = window
 			.encodeURIComponent("uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1");
-	var scenarioWspUri = window
-			.encodeURIComponent("uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1");
 	var northwindWsp = 'json-ld/workspace-mediated/' + northwindWspUri + "/";
 	var customers = northwindWsp + 'facet/Agency/kernel|IsA/Customer/';
 
@@ -16,7 +14,7 @@
 					templateUrl : 'partials/customer-detail.html',
 					controller : 'CustomerDetailControl'
 				});
-				$routeProvider.when("/customer/", {
+				$routeProvider.when("/customer", {
 					templateUrl : 'partials/customers.html',
 					controller : 'CustomersControl'
 				});
