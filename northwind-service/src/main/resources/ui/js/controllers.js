@@ -3,7 +3,7 @@ var northwindControllers = angular.module('northwindControllers',
 
 northwindControllers.controller('CustomersControl', [ '$scope', 'Customers',
 		function($scope, Customers) {
-			Customers.one().get().then(function(data) {
+			Customers.instances().get().then(function(data) {
 				for ( var key in data.instances) {
 					var id = data.instances[key]["@id"];
 					id = id.substr(id.lastIndexOf('/') + 1);
@@ -13,9 +13,13 @@ northwindControllers.controller('CustomersControl', [ '$scope', 'Customers',
 			});
 		} ]);
 
-northwindControllers.controller('CustomerDetailControl', [ '$scope',
-		'$routeParams', 'Customers', function($scope, $routeParams, Customers) {
-			Customers.one($routeParams.instance).get().then(function(customer) {
-				$scope.customer = customer;
-			});
+northwindControllers.controller('CustomerDetailControl', [
+		'$scope',
+		'$routeParams',
+		'Customers',
+		function($scope, $routeParams, Customers) {
+			Customers.instance($routeParams.instance).get().then(
+					function(customer) {
+						$scope.customer = customer.plain();
+					});
 		} ]);

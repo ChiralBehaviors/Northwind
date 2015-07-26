@@ -1,35 +1,38 @@
 (function() {
-	var northwindWspUri = window
-			.encodeURIComponent("uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1");
-	var northwindWsp = 'json-ld/workspace-mediated/' + northwindWspUri + "/";
-	var customers = northwindWsp + 'facet/Agency/kernel|IsA/Customer/';
 
 	var northwind = angular.module('northwind', [ 'ngRoute',
-			'northwindControllers', 'restangular' ]);
+			'northwindControllers', 'phantasm' ]);
 
-	northwind.config([ '$routeProvider', 'RestangularProvider',
-			function($routeProvider, RestangularProvider) {
-				RestangularProvider.setBaseUrl("/");
-				$routeProvider.when("/customer/:instance", {
-					templateUrl : 'partials/customer-detail.html',
-					controller : 'CustomerDetailControl'
-				});
-				$routeProvider.when("/customer", {
-					templateUrl : 'partials/customers.html',
-					controller : 'CustomersControl'
-				});
-				$routeProvider.otherwise({
-					redirectTo : "/customer"
-				});
-			} ]);
-
-	northwind.factory("Northwind", [ "Restangular", function(Restangular) {
-		var service = Restangular.service(northwindWsp);
-		return service;
+	northwind.config([ '$routeProvider', function($routeProvider) {
+		$routeProvider.when("/customer/:instance", {
+			templateUrl : 'partials/customer-detail.html',
+			controller : 'CustomerDetailControl'
+		});
+		$routeProvider.when("/customer", {
+			templateUrl : 'partials/customers.html',
+			controller : 'CustomersControl'
+		});
+		$routeProvider.otherwise({
+			redirectTo : "/customer"
+		});
 	} ]);
 
-	northwind.factory("Customers", [ "Restangular", function(Restangular) {
-		var service = Restangular.service(customers);
-		return service;
-	} ]);
+	northwind
+			.service(
+					"Customers",
+					[
+							"WorkspacePhantasm",
+							function(WorkspacePhantasm) {
+								var northwindUri = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1";
+								this.instances = function() {
+									return WorkspacePhantasm.facetInstances(
+											northwindUri, "Agency",
+											"kernel|IsA", "Customer");
+								};
+								this.instance = function(ref) {
+									return WorkspacePhantasm.facetInstance(
+											northwindUri, "Agency",
+											"kernel|IsA", "Customer", ref);
+								};
+							} ]);
 })();
