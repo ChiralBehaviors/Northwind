@@ -1,16 +1,20 @@
 var northwindControllers = angular.module('northwindControllers',
 		[ 'jsonFormatter' ]);
 
-northwindControllers.controller('CustomersControl', [ '$scope', 'Customers',
-		function($scope, Customers) {
-			Customers.instances().get().then(function(data) {
-				for ( var key in data.instances) {
-					var id = data.instances[key]["@id"];
-					id = id.substr(id.lastIndexOf('/') + 1);
-					data.instances[key]["@id"] = id;
-				}
-				$scope.customers = data.instances;
-			});
+northwindControllers.controller('CustomersControl', [
+		'$scope',
+		'Customers',
+		'PhantasmRelative',
+		function($scope, Customers, PhantasmRelative) {
+			Customers.instances().get().then(
+					function(data) {
+						var instances = data.instances;
+						for ( var key in instances) {
+							instances[key]["@id"] = PhantasmRelative
+									.instance(instances[key]["@id"]);
+						}
+						$scope.customers = instances;
+					});
 		} ]);
 
 northwindControllers.controller('CustomerDetailControl', [
