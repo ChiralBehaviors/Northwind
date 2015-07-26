@@ -102,7 +102,9 @@ public class NorthwindApplication
 
     @Override
     public void initialize(Bootstrap<NorthwindApplicationConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/ui", "/ui"));
+        bootstrap.addBundle(new AssetsBundle("/angular", "/angular", null,
+                                             "phantasm"));
+        bootstrap.addBundle(new AssetsBundle("/ui", "/ui", null, "northwind"));
         ObjectMapper objMapper = bootstrap.getObjectMapper();
         objMapper.registerModule(new CoREModule());
         Hibernate4Module module = new Hibernate4Module();
