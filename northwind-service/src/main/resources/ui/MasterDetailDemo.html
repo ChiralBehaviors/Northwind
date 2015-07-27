@@ -34,9 +34,7 @@
 				ng-class="{cssCompanySelectedRecord: Customer.CustomerID == selectedCustomer}"
 				ng-repeat='Customer in listOfCustomers'
 				ng-click="selectCustomer(Customer);">
-				<div class="cssCompanyName">{{Customer.CompanyName}}</div>
-				<div class="cssCompanyCity">{{Customer.City}}</div>
-				<div class="cssCustomerID">{{Customer.CustomerID}}</div>
+				<div class="cssCompanyName">{{Customer.name}}</div>
 				<img src='Images/icnOffice.png'
 					title="This is a tooltip for the company: {{Customer.CompanyName}}"
 					class="cssCustomerIcon" />
