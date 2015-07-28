@@ -24,13 +24,6 @@ myApp.service("Customers", [
 				return WorkspacePhantasm.facetInstance(northwindUri, "Agency",
 						"kernel|IsA", "Customer", instance);
 			};
-
-			var selection = [ "orders", "itemDetails" ];
-			this.ordersOf = function(customer) {
-				var instance = PhantasmRelative.instance(customer);
-				return WorkspacePhantasm.select(northwindUri, "Agency",
-						"kernel|IsA", "Customer", instance, selection);
-			};
 		} ]);
 
 myApp.filter('sumByKey', function() {
@@ -80,9 +73,7 @@ myApp.filter('orderTotal', function() {
 	};
 });
 
-myApp.controller('MasterDetailCtrl', [
-		'$scope',
-		'Customers',
+myApp.controller('MasterDetailCtrl', [ '$scope', 'Customers',
 		function($scope, Customers) {
 			$scope.listOfCustomers = null;
 			$scope.selectedCustomer = null;
@@ -104,9 +95,11 @@ myApp.controller('MasterDetailCtrl', [
 			$scope.loadOrders = function() {
 				$scope.listOfOrders = null;
 
-				Customers.ordersOf($scope.selectedCustomer).get().then(
-						function(data) {
-							$scope.listOfOrders = data;
-						});
+				var selection = [ "orders/itemDetails" ];
+				Customers.instance($scope.selectedCustomer).get({
+					select : selection
+				}).then(function(data) {
+					$scope.listOfOrders = data.orders[0].itemDetails;
+				});
 			};
 		} ]);

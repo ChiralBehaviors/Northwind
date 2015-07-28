@@ -81,7 +81,9 @@ public class DemoScenarioTest extends AbstractModelTest {
                                          testScenario.getCafleurBon());
         Customer gu = model.wrap(Customer.class,
                                  testScenario.getGeorgetownUniversity());
+        gu.setCustomerName("George Washington University");
         Customer orgA = model.wrap(Customer.class, testScenario.getOrgA());
+        orgA.setCustomerName("Der Org A");
 
         PricedProduct computer = model.wrap(PricedProduct.class,
                                             testScenario.getAbc486());
@@ -93,6 +95,7 @@ public class DemoScenarioTest extends AbstractModelTest {
         addItem(computer, order, 2, 0, 0.07);
         addItem(chemB, order, 50, 0, 0.05);
         cafleurBon.addOrder(order);
+        cafleurBon.setCustomerName("Cafleur Bon");
 
         order = model.construct(Order.class, "GU Order", "monthly ship");
         addItem(computer, order, 20, 0.05, 0);
