@@ -78,7 +78,10 @@ myApp.controller('MasterDetailCtrl', [ '$scope', 'Customers',
 			$scope.listOfCustomers = null;
 			$scope.selectedCustomer = null;
 
-			Customers.instances().get().then(function(data) {
+			var selection = [ ";a=Customer Name" ];
+			Customers.instances().get({
+				select : selection
+			}).then(function(data) {
 				$scope.listOfCustomers = data.instances;
 
 				if ($scope.listOfCustomers.length > 0) {
