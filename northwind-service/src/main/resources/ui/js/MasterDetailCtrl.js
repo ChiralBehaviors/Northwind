@@ -52,22 +52,22 @@ myApp.filter('customSum', function() {
 });
 
 myApp.filter('countItemsInOrder', function() {
-	return function(listOfProducts) {
+	return function(listOfItems) {
 		// Count how many items are in this order
 		var total = 0;
-		angular.forEach(listOfProducts, function(product) {
-			total += product.Quantity;
+		angular.forEach(listOfItems, function(item) {
+			total += item.quantity;
 		});
 		return total;
 	};
 });
 
 myApp.filter('orderTotal', function() {
-	return function(listOfProducts) {
+	return function(listOfItems) {
 		// Calculate the total value of a particular Order
 		var total = 0;
-		angular.forEach(listOfProducts, function(product) {
-			total += product.Quantity * product.UnitPrice;
+		angular.forEach(listOfItems, function(item) {
+			total += item.quantity * item["unit price"];
 		});
 		return total;
 	};

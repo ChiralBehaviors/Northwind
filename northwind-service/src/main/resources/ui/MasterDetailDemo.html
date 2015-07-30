@@ -46,24 +46,24 @@
 				class="cssOneOrderRecord">
 				<div class="cssOneOrderHeader">
 					<div class="cssOrderID">Order # {{Order.name}}</div>
-					<div class="cssOrderDate">Order Date: {{Order.OrderDate}}</div>
+					<div class="cssOrderDate">Order Date: {{Order["Order Date"]}}</div>
 				</div>
 				<div class="cssOneProductRecord"
-					ng-repeat='Item in Order.ItemDetails | filter:ProductsInOrder'
+					ng-repeat='Item in Order.itemDetails | filter:ProductsInOrder'
 					ng-class-odd="'cssProductOdd'" ng-class-even="'cssProductEven'">
-					<div class="cssOneProductQty">{{Item .Quantity}}</div>
-					<div class="cssOneProductName">{{Item .ProductName}}</div>
-					<div class="cssOneProductPrice">@ {{Product.UnitPrice |
+					<div class="cssOneProductQty">{{Item.quantity}}</div>
+					<div class="cssOneProductName">{{Item.product.name}}</div>
+					<div class="cssOneProductPrice">@ {{Item["unit price"] |
 						currency}}</div>
-					<div class="cssOneProductSubtotal">{{Product.UnitPrice *
-						Product.Quantity | currency}}</div>
+					<div class="cssOneProductSubtotal">{{Item["unit price"] *
+						Product.quantity | currency}}</div>
 				</div>
 				<div class="cssOneOrderTotal">
 					<div class="cssOneProductQty">
-						{{Order.ProductsInBasket|countItemsInOrder}} item(s),
-						{{Order.ProductsInBasket.length}} product(s)</div>
+						{{Order.itemDetails|countItemsInOrder}} item(s),
+						{{Order.itemDetails.length}} product(s)</div>
 					<div class="cssOneProductSubtotal">
-						{{Order.ProductsInBasket|orderTotal | currency}}</div>
+						{{Order.itemDetails|orderTotal | currency}}</div>
 				</div>
 			</div>
 		</div>

@@ -24,6 +24,7 @@ import static com.chiralbehaviors.northwind.Northwind.NORTHWIND_WORKSPACE;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -92,17 +93,20 @@ public class DemoScenarioTest extends AbstractModelTest {
 
         Order order = model.construct(Order.class, "Cafluer Bon Order",
                                       "emergency order");
+        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
         addItem(computer, order, 2, 0, 0.07);
         addItem(chemB, order, 50, 0, 0.05);
         cafleurBon.addOrder(order);
         cafleurBon.setCustomerName("Cafleur Bon");
 
         order = model.construct(Order.class, "GU Order", "monthly ship");
+        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
         addItem(computer, order, 20, 0.05, 0);
         addItem(chemB, order, 050, 0.05, 0);
         gu.addOrder(order);
 
         order = model.construct(Order.class, "Org A", "computer!  STAT!");
+        order.setOrderDate(new Timestamp(System.currentTimeMillis()));
         addItem(computer, order, 500, 0.10, 0);
         orgA.addOrder(order);
 
