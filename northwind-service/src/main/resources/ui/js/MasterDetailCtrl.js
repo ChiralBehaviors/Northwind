@@ -98,11 +98,11 @@ myApp.controller('MasterDetailCtrl', [ '$scope', 'Customers',
 			$scope.loadOrders = function() {
 				$scope.listOfOrders = null;
 
-				var selection = [ "orders/itemDetails" ];
+				var selection = [ "orders;a=name;a=Required Date;a=Order Date;a=Ship Date/itemDetails;a=unit price;a=quantity;a=discount;a=tax rate/product/name" ];
 				Customers.instance($scope.selectedCustomer).get({
 					select : selection
 				}).then(function(data) {
-					$scope.listOfOrders = data.orders[0].itemDetails;
+					$scope.listOfOrders = data.orders;
 				});
 			};
 		} ]);

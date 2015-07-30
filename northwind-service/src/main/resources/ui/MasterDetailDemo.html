@@ -45,14 +45,14 @@
 			<div id="Order_{{Order['@id']}}" ng-repeat="Order in listOfOrders"
 				class="cssOneOrderRecord">
 				<div class="cssOneOrderHeader">
-					<div class="cssOrderID">Order # {{Order.OrderID}}</div>
+					<div class="cssOrderID">Order # {{Order.name}}</div>
 					<div class="cssOrderDate">Order Date: {{Order.OrderDate}}</div>
 				</div>
 				<div class="cssOneProductRecord"
-					ng-repeat='Product in Order.ProductsInBasket | filter:ProductsInOrder'
+					ng-repeat='Item in Order.ItemDetails | filter:ProductsInOrder'
 					ng-class-odd="'cssProductOdd'" ng-class-even="'cssProductEven'">
-					<div class="cssOneProductQty">{{Product.Quantity}}</div>
-					<div class="cssOneProductName">{{Product.ProductName}}</div>
+					<div class="cssOneProductQty">{{Item .Quantity}}</div>
+					<div class="cssOneProductName">{{Item .ProductName}}</div>
 					<div class="cssOneProductPrice">@ {{Product.UnitPrice |
 						currency}}</div>
 					<div class="cssOneProductSubtotal">{{Product.UnitPrice *
