@@ -29,8 +29,6 @@ import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.RuleformResource;
 import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.WorkspaceMediatedResource;
 import com.chiralbehaviors.CoRE.phantasm.jsonld.resources.WorkspaceResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -107,8 +105,6 @@ public class NorthwindApplication
         bootstrap.addBundle(new AssetsBundle("/ui", "/ui", null, "northwind"));
         ObjectMapper objMapper = bootstrap.getObjectMapper();
         objMapper.registerModule(new CoREModule());
-        Hibernate4Module module = new Hibernate4Module();
-        module.enable(Feature.FORCE_LAZY_LOADING);
-        objMapper.registerModule(module);
+        bootstrap.addBundle(new AssetsBundle("/favicon.ico"));
     }
 }

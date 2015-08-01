@@ -12,17 +12,15 @@ myApp.config([ '$httpProvider', function($httpProvider) {
 
 myApp.service("Customers", [
 		'WorkspacePhantasm',
-		'PhantasmRelative',
-		function(WorkspacePhantasm, PhantasmRelative) {
+		function(WorkspacePhantasm) {
 			this.instances = function() {
 				return WorkspacePhantasm.facetInstances(northwindUri, "Agency",
 						"kernel|IsA", "Customer");
 			};
 
 			this.instance = function(customer) {
-				var instance = PhantasmRelative.instance(customer);
 				return WorkspacePhantasm.facetInstance(northwindUri, "Agency",
-						"kernel|IsA", "Customer", instance);
+						"kernel|IsA", "Customer", customer);
 			};
 		} ]);
 
@@ -73,36 +71,49 @@ myApp.filter('orderTotal', function() {
 	};
 });
 
-myApp.controller('MasterDetailCtrl', [ '$scope', 'Customers',
-		function($scope, Customers) {
-			$scope.listOfCustomers = null;
-			$scope.selectedCustomer = null;
+myApp
+		.controller(
+				'MasterDetailCtrl',
+				[
+						'$scope',
+						'Customers',
+						function($scope, Customers) {
+							$scope.listOfCustomers = null;
+							$scope.selectedCustomer = null;
 
-			var selection = [ ";a=Customer Name" ];
-			Customers.instances().get({
-				select : selection
-			}).then(function(data) {
-				$scope.listOfCustomers = data.instances;
+							var selection = [ ";a=Customer Name" ];
+							Customers
+									.instances()
+									.get({
+										select : selection
+									})
+									.then(
+											function(data) {
+												$scope.listOfCustomers = data['@graph'];
 
-				if ($scope.listOfCustomers.length > 0) {
-					$scope.selectedCustomer = $scope.listOfCustomers[0]["@id"];
-					$scope.loadOrders();
-				}
-			});
+												if ($scope.listOfCustomers.length > 0) {
+													$scope.selectedCustomer = $scope.listOfCustomers[0]["@id"];
+													$scope.loadOrders();
+												}
+											});
 
-			$scope.selectCustomer = function(val) {
-				$scope.selectedCustomer = val["@id"];
-				$scope.loadOrders();
-			};
+							$scope.selectCustomer = function(val) {
+								$scope.selectedCustomer = val["@id"];
+								$scope.loadOrders();
+							};
 
-			$scope.loadOrders = function() {
-				$scope.listOfOrders = null;
+							$scope.loadOrders = function() {
+								$scope.listOfOrders = null;
 
-				var selection = [ "orders;a=name;a=Required Date;a=Order Date;a=Ship Date/itemDetails;a=unit price;a=quantity;a=discount;a=tax rate/product/name" ];
-				Customers.instance($scope.selectedCustomer).get({
-					select : selection
-				}).then(function(data) {
-					$scope.listOfOrders = data.orders;
-				});
-			};
-		} ]);
+								var ordersAttrs = ";a=name;a=Required Date;a=Order Date;a=Ship Date";
+								var itemDetailsAttrs = ";a=unit price;a=quantity;a=discount;a=tax rate/product/name";
+								var selection = [ "orders" + ordersAttrs
+										+ "/itemDetails" + itemDetailsAttrs ];
+								Customers.instance($scope.selectedCustomer)
+										.get({
+											select : selection
+										}).then(function(data) {
+											$scope.listOfOrders = data.orders;
+										});
+							};
+						} ]);
