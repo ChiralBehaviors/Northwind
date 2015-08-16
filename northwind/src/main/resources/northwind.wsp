@@ -27,7 +27,7 @@ agencies {
                 n Sold: kernel::IsA.Order
                 one MailingAddress: kernel::IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Customer
+        kernel::IsA.Customer { CustomerName }
             constraints {
                 one CustomerType: *Agency
                 one SalesTaxStatus: *Agency
@@ -42,7 +42,7 @@ agencies {
                 n HasDepartment: kernel::IsA.Department
                 one MailingAddress: kernel::IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Supplier
+        kernel::IsA.Supplier { SupplierName }
             constraints {
                 n InRegion: kernel::IsA.Region
             }
@@ -71,6 +71,8 @@ attributes {
     HireDate = "Hire Date" "Hire date" timestamp;
     
     CompanyName = "Company Name" "The name of a company" text;
+    CustomerName = "Customer Name" "The name of a customer" text;
+    SupplierName = "Supplier Name" "The name of a supplier" text;
     Name = "Name" "The name of something" text;
     CountryCode = "Country Code" "The short code of a contry" text;
     StateCode = "State Code" "The short code of a state or region" text;

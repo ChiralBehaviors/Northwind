@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app='myApp'>
+<head>
+<!--  
+      --  A Master-Detail controller, using AngularJS
+      --  Michael Gledhill, 2014
+      --
+      --  www.MikesKnowledgeBase.com
+      -->
+<title>AngularJS Master Detail view</title>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/angular/phantasm-at-rest.js"></script>
+
+<script src="js/MasterDetailCtrl.js" type="text/javascript"></script>
+<link href="css/MasterDetails.css" rel="stylesheet" />
+
+</head>
+<body>
+	<h1>AngularJS - Master Detail view</h1>
+	<br />
+	<div id="divMasterDetailWrapper" ng-controller='MasterDetailCtrl'
+		style="position: relative;">
+		<div style="left: -30px; top: -1px; position: absolute;">
+			<img src="Images/tabAngularJS.png" />
+		</div>
+		<div id="divMasterView">
+			<div id="{{customer.customerid}}" class="cssOneCompanyRecord"
+				ng-class="{cssCompanySelectedRecord: Customer.CustomerID == selectedCustomer}"
+				ng-repeat='Customer in listOfCustomers'
+				ng-click="selectCustomer(Customer);">
+				<div class="cssCompanyName">{{Customer.description}}</div>
+				<img src='Images/icnOffice.png'
+					title="This is a tooltip for the company: {{Customer.CompanyName}}"
+					class="cssCustomerIcon" />
+			</div>
+		</div>
+		<div id="divDetailView">
+			<!--  .$select('Order, sum(Quantity) as OrderTotal')-->
+			<div id="Order_{{Order['@id']}}" ng-repeat="Order in listOfOrders"
+				class="cssOneOrderRecord">
+				<div class="cssOneOrderHeader">
+					<div class="cssOrderID">Order # {{Order.name}}</div>
+					<div class="cssOrderDate">Order Date: {{Order["Order Date"]}}</div>
+				</div>
+				<div class="cssOneProductRecord"
+					ng-repeat='Item in Order.itemDetails | filter:ProductsInOrder'
+					ng-class-odd="'cssProductOdd'" ng-class-even="'cssProductEven'">
+					<div class="cssOneProductQty">{{Item.quantity}}</div>
+					<div class="cssOneProductName">{{Item.product.name}}</div>
+					<div class="cssOneProductPrice">@ {{Item["unit price"] |
+						currency}}</div>
+					<div class="cssOneProductSubtotal">{{Item["unit price"] *
+						Product.quantity | currency}}</div>
+				</div>
+				<div class="cssOneOrderTotal">
+					<div class="cssOneProductQty">
+						{{Order.itemDetails|countItemsInOrder}} item(s),
+						{{Order.itemDetails.length}} product(s)</div>
+					<div class="cssOneProductSubtotal">
+						{{Order.itemDetails|orderTotal | currency}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
