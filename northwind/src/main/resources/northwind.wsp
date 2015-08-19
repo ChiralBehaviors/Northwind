@@ -66,7 +66,7 @@ attributes {
     LastName = "Last Name" "the last name" text;
     FirstName = "First Name" "the first name" text;
     Title = "Title" "Official title" text;
-    TitleOfCourtesy = "Title of Courtesy" "Informal title" text;
+    TitleOfCourtesy = "Title Of Courtesy" "Informal title" text;
     BirthDate = "Birthdate" "Birthdate" timestamp;
     HireDate = "Hire Date" "Hire date" timestamp;
     
@@ -84,10 +84,10 @@ attributes {
     RequiredDate = "Required Date" "Date required" timestamp;
     ShipDate = "Ship Date" "Date shipped" timestamp;
     
-    DiscountPercentage = "discount" "discount percentage" numeric;
-    Quantity = "quantity" "quantity" int; 
-    UnitPrice = "unit price"  "unit price" numeric; 
-    TaxRate = "tax rate" "tax rate" numeric;
+    DiscountPercentage = "Discount" "discount percentage" numeric;
+    Quantity = "Quantity" "quantity" int; 
+    UnitPrice = "Unit Price"  "unit price" numeric; 
+    TaxRate = "Tax Rate" "tax rate" numeric;
     
     Picture = "picture" "A digital picture" type: "@id" binary;
 }
