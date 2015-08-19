@@ -78,13 +78,18 @@ myApp
     'MasterDetailCtrl',
     [
         '$scope',
-        'Customers',
-        function ($scope, Customers) {
+        'Restangular',
+        function ($scope, Restangular) {
+            var Northwind = Restangular.one('/graphql').one('workspace').all(encodeURIComponent(northwindUri));
+            var ordersQuery = '{ Customer( id: "$id") { orders {id name requiredDate orderDate shipDate itemDetails { id name unitPrice quantity product { id name } } } } }';
+            var instancesQuery = '{ InstancesOfCustomer { customerName id description } }';
+
             $scope.listOfCustomers = null;
             $scope.selectedCustomer = null;
 
-            Customers
-                .instances("{ name id description }")
+            var request = {query: instancesQuery};
+            Northwind
+                .post(request)
                 .then(
                 function (data) {
                     $scope.listOfCustomers = data.InstancesOfCustomer;
@@ -102,9 +107,8 @@ myApp
 
             $scope.loadOrders = function () {
                 $scope.listOfOrders = null;
-                var query = '{ Customer( id: "$id") { orders {id name requiredDate orderDate shipDate itemDetails { id name unitPrice quantity product { id name } } } } }';
-                query = query.replace('$id', $scope.selectedCustomer);
-                Customers.instance($scope.selectedCustomer, query).then(function (data) {
+                var request = {query: ordersQuery.replace('$id', $scope.selectedCustomer)};
+                Northwind.post(request).then(function (data) {
                     $scope.listOfOrders = data.Customer.orders;
                 });
             };
