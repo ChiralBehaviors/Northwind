@@ -25,6 +25,7 @@ import org.eclipse.jetty.server.Server;
 
 import com.chiralbehaviors.CoRE.json.CoREModule;
 import com.chiralbehaviors.CoRE.phantasm.resources.FacetResource;
+import com.chiralbehaviors.CoRE.phantasm.resources.GraphQlResource;
 import com.chiralbehaviors.CoRE.phantasm.resources.RuleformResource;
 import com.chiralbehaviors.CoRE.phantasm.resources.WorkspaceMediatedResource;
 import com.chiralbehaviors.CoRE.phantasm.resources.WorkspaceResource;
@@ -58,7 +59,9 @@ public class NorthwindApplication
     }
 
     public int getPort() {
-        return ((AbstractNetworkConnector) environment.getApplicationContext().getServer().getConnectors()[0]).getLocalPort();
+        return ((AbstractNetworkConnector) environment.getApplicationContext()
+                                                      .getServer()
+                                                      .getConnectors()[0]).getLocalPort();
     }
 
     /* (non-Javadoc)
@@ -68,22 +71,31 @@ public class NorthwindApplication
     public void run(NorthwindApplicationConfiguration configuration,
                     Environment environment) throws Exception {
         if (configuration.isRandomPort()) {
-            ((HttpConnectorFactory) ((DefaultServerFactory) configuration.getServerFactory()).getApplicationConnectors().get(0)).setPort(0);
-            ((HttpConnectorFactory) ((DefaultServerFactory) configuration.getServerFactory()).getAdminConnectors().get(0)).setPort(0);
+            ((HttpConnectorFactory) ((DefaultServerFactory) configuration.getServerFactory()).getApplicationConnectors()
+                                                                                             .get(0)).setPort(0);
+            ((HttpConnectorFactory) ((DefaultServerFactory) configuration.getServerFactory()).getAdminConnectors()
+                                                                                             .get(0)).setPort(0);
         }
         this.environment = environment;
-        environment.lifecycle().addServerLifecycleListener(server -> jettyServer = server);
+        environment.lifecycle()
+                   .addServerLifecycleListener(server -> jettyServer = server);
         JpaConfiguration jpaConfig = configuration.getCrudServiceConfiguration();
 
         String unit = jpaConfig.getPersistenceUnit();
         Map<String, String> properties = jpaConfig.getProperties();
         emf = Persistence.createEntityManagerFactory(unit, properties);
-        environment.jersey().register(new FacetResource(emf));
-        environment.jersey().register(new WorkspaceResource(emf));
-        environment.jersey().register(new RuleformResource(emf));
-        environment.jersey().register(new WorkspaceMediatedResource(emf));
-        environment.healthChecks().register("EMF Health",
-                                            new EmfHealthCheck(emf));
+        environment.jersey()
+                   .register(new FacetResource(emf));
+        environment.jersey()
+                   .register(new WorkspaceResource(emf));
+        environment.jersey()
+                   .register(new RuleformResource(emf));
+        environment.jersey()
+                   .register(new WorkspaceMediatedResource(emf));
+        environment.jersey()
+                   .register(new GraphQlResource(emf));
+        environment.healthChecks()
+                   .register("EMF Health", new EmfHealthCheck(emf));
     }
 
     public void stop() {
