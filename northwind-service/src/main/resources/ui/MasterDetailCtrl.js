@@ -11,21 +11,6 @@ myApp.config(['$httpProvider', 'RestangularProvider', function ($httpProvider, R
     RestangularProvider.setDefaultHeaders({'Content-Type': 'application/json; charset=UTF-8'});
 }]);
 
-myApp.service("Customers", [
-    'Restangular',
-    function (Restangular) {
-        var northwind = Restangular.one('/graphql').one('workspace').all(encodeURIComponent(northwindUri));
-        this.instances = function (query) {
-            var request = {query: '{ InstancesOfCustomer ' + query + '}'};
-            return northwind.post(request);
-        };
-
-        this.instance = function (customer, query) {
-            var request = {query: query, variables: {id: customer}};
-            return northwind.post(request);
-        };
-    }]);
-
 myApp.filter('sumByKey', function () {
     return function (data, key) {
         if (typeof (data) === 'undefined' || typeof (key) === 'undefined') {
