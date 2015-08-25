@@ -51,7 +51,7 @@ myApp.filter('orderTotal', function () {
 
 myApp
     .controller(
-    'MasterDetailCtrl',
+    'CustomerMasterDetailCtrl',
     [
         '$scope',
         'Restangular',
