@@ -62,10 +62,8 @@ myApp
 
             $scope.listOfCustomers = null;
             $scope.selectedCustomer = null;
-
-            var request = {query: instancesQuery};
             Northwind
-                .post(request)
+                .post({query: instancesQuery})
                 .then(
                 function (data) {
                     $scope.listOfCustomers = data.InstancesOfCustomer;
