@@ -33,6 +33,7 @@ import org.junit.Test;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
 import com.chiralbehaviors.CoRE.meta.workspace.Workspace;
 import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
+import com.chiralbehaviors.CoRE.phantasm.authentication.CoreUser;
 import com.chiralbehaviors.northwind.Northwind;
 import com.chiralbehaviors.northwind.agency.Customer;
 import com.chiralbehaviors.northwind.product.ItemDetail;
@@ -47,14 +48,19 @@ public class DemoScenarioTest extends AbstractModelTest {
     private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1";
 
     @BeforeClass
-    public static void loadOntology() throws IOException {
+    public static void loadOntology() throws IOException,
+                                      InstantiationException {
 
-        em.getTransaction().begin();
+        em.getTransaction()
+          .begin();
         WorkspaceImporter.createWorkspace(DemoScenarioTest.class.getResourceAsStream("/northwind.wsp"),
                                           model);
         WorkspaceImporter.createWorkspace(DemoScenarioTest.class.getResourceAsStream("/scenario.wsp"),
                                           model);
-        TestScenario testScenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(TEST_SCENARIO_URI)).getWorkspace().getAccessor(TestScenario.class);
+        TestScenario testScenario = model.getWorkspaceModel()
+                                         .getScoped(Workspace.uuidOf(TEST_SCENARIO_URI))
+                                         .getWorkspace()
+                                         .getAccessor(TestScenario.class);
         PricedProduct computer = model.wrap(PricedProduct.class,
                                             testScenario.getAbc486());
         PricedProduct chemB = model.wrap(PricedProduct.class,
@@ -62,7 +68,17 @@ public class DemoScenarioTest extends AbstractModelTest {
 
         computer.setUnitPrice(BigDecimal.valueOf(2295.0));
         chemB.setUnitPrice(BigDecimal.valueOf(2396.0));
-        em.getTransaction().commit();
+
+        // Set up test user for login
+        String username = "Test";
+        String password = "test";
+        CoreUser bob = (CoreUser) model.construct(CoreUser.class, "Tester",
+                                                  "Test Dummy");
+        bob.setUserName(username);
+        bob.setPasswordRounds(10);
+        bob.resetPassword(password);
+        em.getTransaction()
+          .commit();
     }
 
     @SuppressWarnings("unused")
@@ -71,13 +87,20 @@ public class DemoScenarioTest extends AbstractModelTest {
 
     @Before
     public void initializeScenario() {
-        scenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(NORTHWIND_WORKSPACE)).getWorkspace().getAccessor(Northwind.class);
-        testScenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(TEST_SCENARIO_URI)).getWorkspace().getAccessor(TestScenario.class);
+        scenario = model.getWorkspaceModel()
+                        .getScoped(Workspace.uuidOf(NORTHWIND_WORKSPACE))
+                        .getWorkspace()
+                        .getAccessor(Northwind.class);
+        testScenario = model.getWorkspaceModel()
+                            .getScoped(Workspace.uuidOf(TEST_SCENARIO_URI))
+                            .getWorkspace()
+                            .getAccessor(TestScenario.class);
     }
 
     @Test
     public void loadScenario() throws Exception {
-        em.getTransaction().begin();
+        em.getTransaction()
+          .begin();
         Customer cafleurBon = model.wrap(Customer.class,
                                          testScenario.getCafleurBon());
         Customer gu = model.wrap(Customer.class,
@@ -110,7 +133,8 @@ public class DemoScenarioTest extends AbstractModelTest {
         addItem(computer, order, 500, 0.10, 0);
         orgA.addOrder(order);
 
-        em.getTransaction().commit();
+        em.getTransaction()
+          .commit();
     }
 
     public void addItem(PricedProduct product, Order order, int quantity,
