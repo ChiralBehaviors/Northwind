@@ -30,10 +30,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.chiralbehaviors.CoRE.kernel.agency.CoreUser;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
-import com.chiralbehaviors.CoRE.meta.workspace.Workspace;
+import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
 import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
-import com.chiralbehaviors.CoRE.phantasm.authentication.CoreUser;
+import com.chiralbehaviors.CoRE.phantasm.authentication.AgencyBasicAuthenticator;
 import com.chiralbehaviors.northwind.Northwind;
 import com.chiralbehaviors.northwind.agency.Customer;
 import com.chiralbehaviors.northwind.product.ItemDetail;
@@ -58,7 +59,7 @@ public class DemoScenarioTest extends AbstractModelTest {
         WorkspaceImporter.createWorkspace(DemoScenarioTest.class.getResourceAsStream("/scenario.wsp"),
                                           model);
         TestScenario testScenario = model.getWorkspaceModel()
-                                         .getScoped(Workspace.uuidOf(TEST_SCENARIO_URI))
+                                         .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
                                          .getWorkspace()
                                          .getAccessor(TestScenario.class);
         PricedProduct computer = model.wrap(PricedProduct.class,
@@ -74,9 +75,11 @@ public class DemoScenarioTest extends AbstractModelTest {
         String password = "test";
         CoreUser bob = (CoreUser) model.construct(CoreUser.class, "Tester",
                                                   "Test Dummy");
-        bob.setUserName(username);
+        bob.getRuleform()
+           .setDescription("\"Bob\"  J.R. \"Bob\" Dobbs");
+        bob.setLogin(username);
         bob.setPasswordRounds(10);
-        bob.resetPassword(password);
+        AgencyBasicAuthenticator.resetPassword(bob, password);
         em.getTransaction()
           .commit();
     }
@@ -88,19 +91,17 @@ public class DemoScenarioTest extends AbstractModelTest {
     @Before
     public void initializeScenario() {
         scenario = model.getWorkspaceModel()
-                        .getScoped(Workspace.uuidOf(NORTHWIND_WORKSPACE))
+                        .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
                         .getAccessor(Northwind.class);
         testScenario = model.getWorkspaceModel()
-                            .getScoped(Workspace.uuidOf(TEST_SCENARIO_URI))
+                            .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
                             .getWorkspace()
                             .getAccessor(TestScenario.class);
     }
 
     @Test
     public void loadScenario() throws Exception {
-        em.getTransaction()
-          .begin();
         Customer cafleurBon = model.wrap(Customer.class,
                                          testScenario.getCafleurBon());
         Customer gu = model.wrap(Customer.class,

@@ -27,10 +27,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,7 +38,7 @@ import com.chiralbehaviors.CoRE.job.Protocol;
 import com.chiralbehaviors.CoRE.meta.InferenceMap;
 import com.chiralbehaviors.CoRE.meta.JobModel;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
-import com.chiralbehaviors.CoRE.meta.workspace.Workspace;
+import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
 import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
 
 /**
@@ -51,33 +49,36 @@ public class NorthwindTest extends AbstractModelTest {
 
     private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1";
 
-    private JobModel            jobModel          = model.getJobModel();
-    private Northwind           scenario;
-    private TestScenario        testScenario;
-
-    @Before
-    public void initializeScenario() {
-        scenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(NORTHWIND_WORKSPACE)).getWorkspace().getAccessor(Northwind.class);
-        testScenario = model.getWorkspaceModel().getScoped(Workspace.uuidOf(TEST_SCENARIO_URI)).getWorkspace().getAccessor(TestScenario.class);
-    }
+    private JobModel            jobModel = model.getJobModel();
+    private static Northwind    scenario;
+    private static TestScenario testScenario;
 
     @BeforeClass
     public static void loadOntology() throws IOException {
 
-        em.getTransaction().begin();
+        em.getTransaction()
+          .begin();
         WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/northwind.wsp"),
                                           model);
         WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/scenario.wsp"),
                                           model);
-        em.getTransaction().commit();
+        scenario = model.getWorkspaceModel()
+                        .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
+                        .getWorkspace()
+                        .getAccessor(Northwind.class);
+        testScenario = model.getWorkspaceModel()
+                            .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
+                            .getWorkspace()
+                            .getAccessor(TestScenario.class);
+        em.getTransaction()
+          .commit();
     }
 
     @Test
     public void testEuOrder() throws Exception {
-        EntityTransaction txn = em.getTransaction();
-        txn.begin();
-        Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
-                                                          kernel.getCore());
+        Job order = model.getJobModel()
+                         .newInitializedJob(scenario.getDeliver(),
+                                            kernel.getCore());
         order.setAssignTo(testScenario.getOrderFullfillment());
         order.setProduct(testScenario.getAbc486());
         order.setDeliverTo(testScenario.getRc31());
@@ -101,10 +102,9 @@ public class NorthwindTest extends AbstractModelTest {
 
     @Test
     public void testNonExemptOrder() throws Exception {
-        EntityTransaction txn = em.getTransaction();
-        txn.begin();
-        Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
-                                                          kernel.getCore());
+        Job order = model.getJobModel()
+                         .newInitializedJob(scenario.getDeliver(),
+                                            kernel.getCore());
         order.setAssignTo(testScenario.getOrderFullfillment());
         order.setProduct(testScenario.getAbc486());
         order.setDeliverTo(testScenario.getBht37());
@@ -128,10 +128,9 @@ public class NorthwindTest extends AbstractModelTest {
 
     @Test
     public void testOrder() throws Exception {
-        EntityTransaction txn = em.getTransaction();
-        txn.begin();
-        Job order = model.getJobModel().newInitializedJob(scenario.getDeliver(),
-                                                          kernel.getCore());
+        Job order = model.getJobModel()
+                         .newInitializedJob(scenario.getDeliver(),
+                                            kernel.getCore());
         order.setAssignTo(testScenario.getOrderFullfillment());
         order.setProduct(testScenario.getAbc486());
         order.setDeliverTo(testScenario.getRsb225());
