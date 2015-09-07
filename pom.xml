@@ -50,6 +50,7 @@
         <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version>
         <dropwizard.version>0.8.1</dropwizard.version>
         <postgresql.driver.version>9.4-1201-jdbc41</postgresql.driver.version>
+        <hibernate.version>4.3.10.Final</hibernate.version>
     </properties>
 
     <modules>
@@ -74,6 +75,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
