@@ -15,50 +15,50 @@ agencies {
     Department = "Department" "A group of employees organized by function";
     
     edges { 
-        Shipper.kernel::IsA.Company
-        Supplier.kernel::IsA.Company
-        Manager.kernel::IsA.Employee
+        Shipper.IsA.Company
+        Supplier.IsA.Company
+        Manager.IsA.Employee
     }
     facets {
-        kernel::IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
+        IsA.Employee { LastName FirstName Title TitleOfCourtesy BirthDate HireDate }
             constraints {
-                one EmployeeOf: kernel::IsA.Company
-                one ReportsTo: kernel::IsA.Manager
-                n HasTerritory: kernel::IsA.Territory
-                n Sold: kernel::IsA.Order
-                one MailingAddress: kernel::IsA.StreetAddress named by relationship
+                one EmployeeOf: IsA.Company
+                one ReportsTo: IsA.Manager
+                n HasTerritory: IsA.Territory
+                n Sold: IsA.Order
+                one MailingAddress: IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Customer { CustomerName }
+        IsA.Customer { CustomerName }
             constraints {
                 one CustomerType: *Agency
                 one SalesTaxStatus: *Agency
-                n Ordered: kernel::IsA.Order
-                one ShippingAddress: kernel::IsA.StreetAddress named by relationship
+                n Ordered: IsA.Order
+                one ShippingAddress: IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Company { CompanyName }
+        IsA.Company { CompanyName }
             constraints {
-                one Contact: kernel::IsA.Employee named by relationship
+                one Contact: IsA.Employee named by relationship
                 one SalesTaxStatus: *Agency
-                n HasEmployee: kernel::IsA.Employee
-                n HasDepartment: kernel::IsA.Department
-                one MailingAddress: kernel::IsA.StreetAddress named by relationship
+                n HasEmployee: IsA.Employee
+                n HasDepartment: IsA.Department
+                one MailingAddress: IsA.StreetAddress named by relationship
             }
-        kernel::IsA.Supplier { SupplierName }
+        IsA.Supplier { SupplierName }
             constraints {
-                n InRegion: kernel::IsA.Region
+                n InRegion: IsA.Region
             }
-        kernel::IsA.Shipper
+        IsA.Shipper
             constraints { 
-                n InRegion: kernel::IsA.Region
+                n InRegion: IsA.Region
             }
-        kernel::IsA.Manager
+        IsA.Manager
             constraints { 
-                n HasReport: kernel::IsA.Employee named report
+                n HasReport: IsA.Employee named report
             }
-        kernel::IsA.ComputeResource
-        kernel::IsA.Department {Name}
+        IsA.ComputeResource
+        IsA.Department {Name}
             constraints {
-                one DepartmentOf: kernel::IsA.Company
+                one DepartmentOf: IsA.Company
             }
     }
 }
@@ -95,63 +95,63 @@ attributes {
 
 locations {
     facets {
-        kernel::IsA.Region {Name}
-        kernel::IsA.Country
+        IsA.Region {Name}
+        IsA.Country
             constraints {
-                one InRegion: kernel::IsA.Region
+                one InRegion: IsA.Region
             }
-        kernel::IsA.Area {Name}
+        IsA.Area {Name}
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
             }
-        kernel::IsA.StateOrProvince {StateCode}
+        IsA.StateOrProvince {StateCode}
            "State or Province" "A state or province"
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                n InArea: kernel::IsA.Area
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                n InArea: IsA.Area
             }
-        kernel::IsA.City {Name}
+        IsA.City {Name}
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                one InArea: kernel::IsA.Area
-                one InStateOrProvince: kernel::IsA.StateOrProvince
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                one InArea: IsA.Area
+                one InStateOrProvince: IsA.StateOrProvince
             }
-        kernel::IsA.Street {Name}
+        IsA.Street {Name}
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                one InArea: kernel::IsA.Area
-                one InStateOrProvince: kernel::IsA.StateOrProvince
-                one InCity: kernel::IsA.City
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                one InArea: IsA.Area
+                one InStateOrProvince: IsA.StateOrProvince
+                one InCity: IsA.City
             }
-        kernel::IsA.StreetAddress {StreetNumber}
+        IsA.StreetAddress {StreetNumber}
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                one InArea: kernel::IsA.Area
-                one InStateOrProvince: kernel::IsA.StateOrProvince
-                one InCity: kernel::IsA.City
-                one OnStreet: kernel::IsA.Street
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                one InArea: IsA.Area
+                one InStateOrProvince: IsA.StateOrProvince
+                one InCity: IsA.City
+                one OnStreet: IsA.Street
             }
-        kernel::IsA.Territory {Name}
+        IsA.Territory {Name}
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                one InArea: kernel::IsA.Area
-                one InStateOrProvince: kernel::IsA.StateOrProvince
-                one InCity: kernel::IsA.City
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                one InArea: IsA.Area
+                one InStateOrProvince: IsA.StateOrProvince
+                one InCity: IsA.City
             }
-        kernel::IsA.StockLocation {Name}
+        IsA.StockLocation {Name}
             "Stock Location" "The location of product"
             constraints {
-                one InRegion: kernel::IsA.Region
-                one InCountry: kernel::IsA.Country
-                one InArea: kernel::IsA.Area
-                one InStateOrProvince: kernel::IsA.StateOrProvince
-                one InCity: kernel::IsA.City
+                one InRegion: IsA.Region
+                one InCountry: IsA.Country
+                one InArea: IsA.Area
+                one InStateOrProvince: IsA.StateOrProvince
+                one InCity: IsA.City
             }
     }
 }
@@ -174,29 +174,29 @@ products {
     SalesTax = "SalesTax" "Compute sales tax";
     
     facets {
-        kernel::IsA.PricedProduct { UnitPrice }
+        IsA.PricedProduct { UnitPrice }
             "Priced Product" "A product we sell"
             constraints {
-                n IsCategorizedAs: kernel::IsA.Category
+                n IsCategorizedAs: IsA.Category
                 one SalesTaxStatus: *Product
             }
-        kernel::IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
+        IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
             "Order Item Detail" "Detail on item"
             constraints {
-                one OrderedProductOf: kernel::IsA.PricedProduct named product
-                one ItemDetailOf: kernel::IsA.Order
+                one OrderedProductOf: IsA.PricedProduct named product
+                one ItemDetailOf: IsA.Order
             }
-        kernel::IsA.Order { RequiredDate OrderDate ShipDate }
+        IsA.Order { RequiredDate OrderDate ShipDate }
             constraints {
-                n HasItemDetail: kernel::IsA.ItemDetail
-                one SoldBy: kernel::IsA.Employee named by relationship
-                one OrderedBy: kernel::IsA.Customer named by relationship
+                n HasItemDetail: IsA.ItemDetail
+                one SoldBy: IsA.Employee named by relationship
+                one OrderedBy: IsA.Customer named by relationship
             }
-        kernel::IsA.Category { Picture }
-        kernel::IsA.StockedProduct
+        IsA.Category { Picture }
+        IsA.StockedProduct
             "Stocked Product" "A product stocked at a location"
             constraints {
-                one StockedAt: kernel::IsA.StockLocation
+                one StockedAt: IsA.StockLocation
                 { Quantity }
             }
     }
@@ -403,30 +403,30 @@ inferences {
 }
 meta protocols {
         transform: Deliver
-        product: kernel::AnyRelationship
+        product: AnyRelationship
         from: InArea
         to: InState
         
         transform: Pick
-        product: kernel::AnyRelationship
+        product: AnyRelationship
         from: InArea
         to: InArea 
         requester: CustomerType
         
         transform: Ship
-        product: kernel::AnyRelationship
+        product: AnyRelationship
         from: InArea
         to: InArea 
         requester: CustomerType
         
         transform: Fee
-        product: kernel::AnyRelationship
+        product: AnyRelationship
         to: InCity
         requester: SalesTaxStatus 
         
         transform: PrintPurchaseOrder
-        product: kernel::AnyRelationship
+        product: AnyRelationship
         from: InArea
-        to: kernel::AnyRelationship
-        requester: kernel::AnyRelationship
+        to: AnyRelationship
+        requester: AnyRelationship
 }

@@ -20,25 +20,25 @@ agencies {
     Northwind = "Northwind" "Northwind, inc"; 
     
     edges {  
-        GeorgetownUniversity.nw::CustomerType.nw::ExternalCust
-        GeorgetownUniversity.nw::SalesTaxStatus.nw::ExemptAgency
-        GeorgetownUniversity.kernel::IsA.nw::Customer
+        GeorgetownUniversity.CustomerType.ExternalCust
+        GeorgetownUniversity.SalesTaxStatus.ExemptAgency
+        GeorgetownUniversity.IsA.Customer
         
-        OrgA.nw::CustomerType.nw::ExternalCust
-        OrgA.kernel::IsA.nw::Customer
-        OrgA.nw::SalesTaxStatus.nw::NonExemptAgency
+        OrgA.CustomerType.ExternalCust
+        OrgA.IsA.Customer
+        OrgA.SalesTaxStatus.NonExemptAgency
         
-        CafleurBon.nw::CustomerType.nw::ExternalCust
-        CafleurBon.kernel::IsA.nw::Customer
-        CafleurBon.nw::SalesTaxStatus.nw::NonExemptAgency
+        CafleurBon.CustomerType.ExternalCust
+        CafleurBon.IsA.Customer
+        CafleurBon.SalesTaxStatus.NonExemptAgency
         
-        Northwind.kernel::IsA.nw::Company
-        BillingComputer.kernel::IsA.nw::ComputeResource
-        CPU.kernel::IsA.nw::ComputeResource
-        Manufacturer.kernel::IsA.nw::Supplier
-        CreditDept.kernel::IsA.nw::Department
-        Factory1Agency.kernel::IsA.nw::Department
-        OrderFullfillment.kernel::IsA.nw::Department
+        Northwind.IsA.Company
+        BillingComputer.IsA.ComputeResource
+        CPU.IsA.ComputeResource
+        Manufacturer.IsA.Supplier
+        CreditDept.IsA.Department
+        Factory1Agency.IsA.Department
+        OrderFullfillment.IsA.Department
     }
 } 
 
@@ -58,25 +58,25 @@ locations {
     Bin15 = "Bin 15"; 
 
     edges {
-        US.kernel::IsA.nw::Area
-        US.kernel::IsA.nw::Country
-        EastCoast.kernel::IsA.nw::Region
-        WestCoast.kernel::IsA.nw::Region
-        Euro.kernel::IsA.nw::Area
-        DC.kernel::IsA.nw::City
-        Paris.kernel::IsA.nw::City
-        Factory1.kernel::IsA.nw::Area
+        US.IsA.Area
+        US.IsA.Country
+        EastCoast.IsA.Region
+        WestCoast.IsA.Region
+        Euro.IsA.Area
+        DC.IsA.City
+        Paris.IsA.City
+        Factory1.IsA.Area
     
-        Bin1.nw::InArea.Factory1
-        Bin15.nw::InArea.Factory1
-        Rsb225.nw::InCity.DC
-        Bht37.nw::InCity.DC
-        Rc31.nw::InCity.Paris
-        DC.nw::InRegion.EastCoast
-        EastCoast.nw::InArea.US
-        Paris.nw::InRegion.France
-        France.nw::InArea.Euro
-        Factory1.nw::OnStreet.Bht37
+        Bin1.InArea.Factory1
+        Bin15.InArea.Factory1
+        Rsb225.InCity.DC
+        Bht37.InCity.DC
+        Rc31.InCity.Paris
+        DC.InRegion.EastCoast
+        EastCoast.InArea.US
+        Paris.InRegion.France
+        France.InArea.Euro
+        Factory1.OnStreet.Bht37
     } 
 }
 
@@ -85,68 +85,68 @@ products {
     ChemB = "ChemB" "Chemical B"; 
     
     edges { 
-        Abc486.nw::StorageType.nw::RoomTemp
-        Abc486.nw::SalesTaxStatus.nw::NonExemptProduct
-        Abc486.kernel::IsA.nw::PricedProduct
+        Abc486.StorageType.RoomTemp
+        Abc486.SalesTaxStatus.NonExemptProduct
+        Abc486.IsA.PricedProduct
         
-        ChemB.nw::StorageType.nw::Frozen
-        ChemB.nw::SalesTaxStatus.nw::NonExemptProduct
-        ChemB.kernel::IsA.nw::PricedProduct
+        ChemB.StorageType.Frozen
+        ChemB.SalesTaxStatus.NonExemptProduct
+        ChemB.IsA.PricedProduct
         
     } 
 }   
 protocols {
-        service: nw::Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation
+        service: Deliver product: AnyProduct from: AnyLocation to: AnyLocation
         ->
-        service: nw::Pick product: kernel::SameProduct assign: Factory1Agency
+        service: Pick product: SameProduct assign: Factory1Agency
         
         
-        service: nw::Deliver product: kernel::AnyProduct from: kernel::AnyLocation to: kernel::AnyLocation 
-            requester: kernel::AnyAgency
+        service: Deliver product: AnyProduct from: AnyLocation to: AnyLocation 
+            requester: AnyAgency
         ->
-        service: nw::Ship product: kernel::SameProduct assign: Factory1Agency
+        service: Ship product: SameProduct assign: Factory1Agency
         
         
         
-        service: nw::Pick product: kernel::AnyProduct from: US to: US
+        service: Pick product: AnyProduct from: US to: US
         ->
-        service: nw::CheckCredit product: kernel::SameProduct assign: CPU
+        service: CheckCredit product: SameProduct assign: CPU
         
         
-        service: nw::Pick product: kernel::AnyProduct from: US to: Euro
+        service: Pick product: AnyProduct from: US to: Euro
         ->
-        service: nw::CheckLetterOfCredit product: kernel::SameProduct assign: CreditDept
+        service: CheckLetterOfCredit product: SameProduct assign: CreditDept
         
         
         
-        service: nw::Ship product: kernel::AnyProduct from: US to: Euro
+        service: Ship product: AnyProduct from: US to: Euro
         ->
-        service: nw::PrintCustomsDeclaration product: kernel::SameProduct assign: CPU
+        service: PrintCustomsDeclaration product: SameProduct assign: CPU
         
         
-        service: nw::Ship product: kernel::AnyProduct from: US to: kernel::AnyLocation
+        service: Ship product: AnyProduct from: US to: AnyLocation
         ->
-        service: nw::PrintPurchaseOrder product: kernel::SameProduct assign: CPU 
+        service: PrintPurchaseOrder product: SameProduct assign: CPU 
         
         
         
-        service: nw::PrintPurchaseOrder product: kernel::AnyProduct from: US to: kernel::AnyLocation requester: kernel::AnyAgency
+        service: PrintPurchaseOrder product: AnyProduct from: US to: AnyLocation requester: AnyAgency
         -> 
-        service: nw::Fee product: kernel::SameProduct assign: BillingComputer
+        service: Fee product: SameProduct assign: BillingComputer
         
         
         
-        service: nw::Fee product: nw::NonExemptProduct from: kernel::AnyLocation to: DC requester: nw::NonExemptAgency 
+        service: Fee product: NonExemptProduct from: AnyLocation to: DC requester: NonExemptAgency 
         ->
-        service: nw::SalesTax product: kernel::SameProduct assign: BillingComputer
+        service: SalesTax product: SameProduct assign: BillingComputer
         
         
-        service: nw::Fee product: kernel::AnyProduct from: US to: Euro requester: nw::ExternalCust
+        service: Fee product: AnyProduct from: US to: Euro requester: ExternalCust
         ->
-        service: nw::Discount product: kernel::SameProduct assign: BillingComputer
+        service: Discount product: SameProduct assign: BillingComputer
         
         
-        service: nw::Fee product: kernel::AnyProduct from: US to: DC requester: GeorgetownUniversity
+        service: Fee product: AnyProduct from: US to: DC requester: GeorgetownUniversity
         ->
-        service: nw::SalesTax product: kernel::SameProduct assign: BillingComputer
+        service: SalesTax product: SameProduct assign: BillingComputer
 }
