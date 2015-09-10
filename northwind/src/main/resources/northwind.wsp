@@ -1,4 +1,5 @@
-workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1" 
+workspace: "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind"
+           version: 1 
            "Northwind" 
            "Ultrstructure ontology for ye olde thyme Northwind demo"
 imports {

@@ -46,7 +46,7 @@ import com.chiralbehaviors.northwind.product.PricedProduct;
  *
  */
 public class DemoScenarioTest extends AbstractModelTest {
-    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1";
+    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
 
     @BeforeClass
     public static void loadOntology() throws IOException,
@@ -54,10 +54,10 @@ public class DemoScenarioTest extends AbstractModelTest {
 
         em.getTransaction()
           .begin();
-        WorkspaceImporter.createWorkspace(DemoScenarioTest.class.getResourceAsStream("/northwind.wsp"),
-                                          model);
-        WorkspaceImporter.createWorkspace(DemoScenarioTest.class.getResourceAsStream("/scenario.wsp"),
-                                          model);
+        WorkspaceImporter.manifest(DemoScenarioTest.class.getResourceAsStream("/northwind.wsp"),
+                                   model);
+        WorkspaceImporter.manifest(DemoScenarioTest.class.getResourceAsStream("/scenario.wsp"),
+                                   model);
         TestScenario testScenario = model.getWorkspaceModel()
                                          .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
                                          .getWorkspace()

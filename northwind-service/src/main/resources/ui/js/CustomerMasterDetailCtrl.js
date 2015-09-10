@@ -1,6 +1,6 @@
 ﻿var myApp = angular.module('myApp', ["restangular"]);
 
-var northwindUri = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/v1";
+var northwindUri = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind";
 
 myApp.filter('sumByKey', function () {
     return function (data, key) {

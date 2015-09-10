@@ -47,7 +47,7 @@ import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
  */
 public class NorthwindTest extends AbstractModelTest {
 
-    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario/v1";
+    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
 
     private JobModel            jobModel = model.getJobModel();
     private static Northwind    scenario;
@@ -58,10 +58,10 @@ public class NorthwindTest extends AbstractModelTest {
 
         em.getTransaction()
           .begin();
-        WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/northwind.wsp"),
-                                          model);
-        WorkspaceImporter.createWorkspace(NorthwindTest.class.getResourceAsStream("/scenario.wsp"),
-                                          model);
+        WorkspaceImporter.manifest(NorthwindTest.class.getResourceAsStream("/northwind.wsp"),
+                                   model);
+        WorkspaceImporter.manifest(NorthwindTest.class.getResourceAsStream("/scenario.wsp"),
+                                   model);
         scenario = model.getWorkspaceModel()
                         .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
