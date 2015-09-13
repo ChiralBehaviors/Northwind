@@ -63,6 +63,31 @@
                 <version>${ultrastructure.version}</version>
             </plugin>
             <plugin>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>load-dsl</goal>
+                        </goals>
+                        <configuration> 
+                            <database>
+                                <coreServer>${db.server}</coreServer>
+                                <corePort>${db.port}</corePort>
+                                <coreUsername>${db.login}</coreUsername>
+                                <corePassword>${db.password}</corePassword>
+                            </database>  
+                            <resources>
+                                <resource>${project.build.directory}/classes/northwind.wsp</resource>
+                                <resource>${project.build.directory}/classes/scenario.wsp</resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+                <groupId>com.chiralbehaviors.CoRE</groupId>
+                <artifactId>workspace-plugin</artifactId>
+                <version>${ultrastructure.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
@@ -98,6 +123,19 @@
                                         <versionRange>[2.0.0-SNAPSHOT,)</versionRange>
                                         <goals>
                                             <goal>generate</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.chiralbehaviors.CoRE</groupId>
+                                        <artifactId>workspace-plugin</artifactId>
+                                        <versionRange>[2.0.0-SNAPSHOT,)</versionRange>
+                                        <goals>
+                                            <goal>load-dsl</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
