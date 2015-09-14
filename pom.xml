@@ -46,9 +46,9 @@
 
         <drop>false</drop>
 
-        <jackson.version>2.5.1</jackson.version>
+        <jackson.version>2.6.1</jackson.version>
         <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version>
-        <dropwizard.version>0.8.1</dropwizard.version>
+        <dropwizard.version>0.8.4</dropwizard.version>
         <postgresql.driver.version>9.4-1202-jdbc42</postgresql.driver.version>
         <hibernate.version>5.0.1.Final</hibernate.version>
     </properties>
@@ -109,11 +109,6 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.dropwizard</groupId>
-                <artifactId>dropwizard-assets</artifactId>
-                <version>0.8.2</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>

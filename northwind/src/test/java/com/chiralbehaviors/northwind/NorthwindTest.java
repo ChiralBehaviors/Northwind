@@ -22,46 +22,101 @@ package com.chiralbehaviors.northwind;
 
 import static com.chiralbehaviors.northwind.Northwind.NORTHWIND_WORKSPACE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
+import com.chiralbehaviors.CoRE.WellKnownObject;
 import com.chiralbehaviors.CoRE.job.Job;
 import com.chiralbehaviors.CoRE.job.MetaProtocol;
 import com.chiralbehaviors.CoRE.job.Protocol;
+import com.chiralbehaviors.CoRE.kernel.Kernel;
 import com.chiralbehaviors.CoRE.meta.InferenceMap;
 import com.chiralbehaviors.CoRE.meta.JobModel;
+import com.chiralbehaviors.CoRE.meta.Model;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
+import com.chiralbehaviors.CoRE.meta.models.ModelImpl;
+import com.chiralbehaviors.CoRE.meta.models.ModelTest;
 import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
-import com.chiralbehaviors.CoRE.meta.workspace.dsl.WorkspaceImporter;
 
 /**
  * @author hhildebrand
  *
  */
-public class NorthwindTest extends AbstractModelTest {
+public class NorthwindTest {
+    private static JobModel               jobModel;
+    private static Northwind              scenario;
+    private static final String           TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
+    private static TestScenario           testScenario;
+    protected static EntityManager        em;
+    protected static EntityManagerFactory emf;
+    protected static Kernel               kernel;
+    protected static Model                model;
 
-    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
-
-    private JobModel            jobModel = model.getJobModel();
-    private static Northwind    scenario;
-    private static TestScenario testScenario;
+    @AfterClass
+    public static void closeEntityManager() {
+        if (em != null) {
+            if (em.getTransaction()
+                  .isActive()) {
+                try {
+                    em.getTransaction()
+                      .rollback();
+                    em.close();
+                } catch (Throwable e) {
+                    LoggerFactory.getLogger(AbstractModelTest.class)
+                                 .warn(String.format("Had a bit of trouble cleaning up after %s",
+                                                     e.getMessage()),
+                                       e);
+                }
+            }
+            em = null;
+        }
+    }
 
     @BeforeClass
-    public static void loadOntology() throws IOException {
+    public static void createEMF() throws IOException, SQLException {
+        if (em != null) {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        if (emf == null) {
+            InputStream is = ModelTest.class.getResourceAsStream("/jpa.properties");
+            assertNotNull("jpa properties missing", is);
+            Properties properties = new Properties();
+            properties.load(is);
+            System.out.println(String.format("Database URL: %s",
+                                             properties.getProperty("javax.persistence.jdbc.url")));
+            emf = Persistence.createEntityManagerFactory(WellKnownObject.CORE,
+                                                         properties);
+        }
+        model = new ModelImpl(emf);
+        kernel = model.getKernel();
+        em = model.getEntityManager();
+        jobModel = model.getJobModel();
+    }
 
+    @Before
+    public void initializeScenario() {
         em.getTransaction()
           .begin();
-        WorkspaceImporter.manifest(NorthwindTest.class.getResourceAsStream("/northwind.wsp"),
-                                   model);
-        WorkspaceImporter.manifest(NorthwindTest.class.getResourceAsStream("/scenario.wsp"),
-                                   model);
         scenario = model.getWorkspaceModel()
                         .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
@@ -70,8 +125,15 @@ public class NorthwindTest extends AbstractModelTest {
                             .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
                             .getWorkspace()
                             .getAccessor(TestScenario.class);
-        em.getTransaction()
-          .commit();
+    }
+
+    @After
+    public void rollback() {
+        if (em.getTransaction()
+              .isActive()) {
+            em.getTransaction()
+              .rollback();
+        }
     }
 
     @Test

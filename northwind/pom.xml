@@ -65,21 +65,54 @@
             <plugin>
                 <executions>
                     <execution>
+                        <id>load-dsl</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>load-dsl</goal>
                         </goals>
-                        <configuration> 
+                        <configuration>
                             <database>
                                 <coreServer>${db.server}</coreServer>
                                 <corePort>${db.port}</corePort>
                                 <coreUsername>${db.login}</coreUsername>
                                 <corePassword>${db.password}</corePassword>
-                            </database>  
+                            </database>
                             <resources>
                                 <resource>${project.build.directory}/classes/northwind.wsp</resource>
                                 <resource>${project.build.directory}/classes/scenario.wsp</resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+                <groupId>com.chiralbehaviors.CoRE</groupId>
+                <artifactId>workspace-plugin</artifactId>
+                <version>${ultrastructure.version}</version>
+            </plugin>
+            <plugin>
+                <executions>
+                    <execution>
+                        <id>generate-snapshots</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate-snapshot</goal>
+                        </goals>
+                        <configuration>
+                            <database>
+                                <coreServer>${db.server}</coreServer>
+                                <corePort>${db.port}</corePort>
+                                <coreUsername>${db.login}</coreUsername>
+                                <corePassword>${db.password}</corePassword>
+                            </database>
+                            <exports>
+                                <export>
+                                    <iri>uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind</iri>
+                                    <output>${project.build.directory}/classes/northwind.1.json</output>
+                                </export>
+                                <export>
+                                    <iri>uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario</iri>
+                                    <output>${project.build.directory}/classes/scenario.1.json</output>
+                                </export>
+                            </exports>
                         </configuration>
                     </execution>
                 </executions>
@@ -136,6 +169,8 @@
                                         <versionRange>[2.0.0-SNAPSHOT,)</versionRange>
                                         <goals>
                                             <goal>load-dsl</goal>
+                                            <goal>generate-snapshots</goal>
+                                            <goal>generate-snapshot</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
