@@ -1,3 +1,5 @@
+auth: NULL
+
 jpa:
     debug: true
     persistenceUnit: CoRE
@@ -20,3 +22,8 @@ logging:
     loggers:
         "org.hibernate": INFO 
         "org.glassfish": ERROR
+        
+assets:
+  - name: northwind
+    uri: /ui
+    path: /ui
