@@ -126,6 +126,8 @@ public class DemoScenarioTest {
 
     @Before
     public void initializeScenario() {
+        em.getTransaction()
+          .begin();
         scenario = model.getWorkspaceModel()
                         .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
