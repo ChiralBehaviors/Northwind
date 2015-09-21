@@ -65,8 +65,8 @@ myApp
             Northwind
                 .post({query: instancesQuery})
                 .then(
-                function (data) {
-                    $scope.listOfCustomers = data.InstancesOfCustomer;
+                function (result) {
+                    $scope.listOfCustomers = result.data.InstancesOfCustomer;
 
                     if ($scope.listOfCustomers.length > 0) {
                         $scope.selectedCustomer = $scope.listOfCustomers[0].id;
@@ -82,8 +82,8 @@ myApp
             $scope.loadOrders = function () {
                 $scope.listOfOrders = null;
                 var request = {query: ordersQuery, variables: {id: $scope.selectedCustomer}};
-                Northwind.post(request).then(function (data) {
-                    $scope.listOfOrders = data.Customer.orders;
+                Northwind.post(request).then(function (result) {
+                    $scope.listOfOrders = result.data.Customer.orders;
                 });
             };
         }]);
