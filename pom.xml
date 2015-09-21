@@ -45,12 +45,9 @@
         <db.password>password</db.password>
 
         <drop>false</drop>
-
-        <jackson.version>2.6.1</jackson.version>
-        <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version>
-        <dropwizard.version>0.8.4</dropwizard.version>
-        <postgresql.driver.version>9.4-1202-jdbc42</postgresql.driver.version>
-        <hibernate.version>5.0.1.Final</hibernate.version>
+ 
+        <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version> 
+        <postgresql.driver.version>9.4-1202-jdbc42</postgresql.driver.version> 
     </properties>
 
     <modules>
