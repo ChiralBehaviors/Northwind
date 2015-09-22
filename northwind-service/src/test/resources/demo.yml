@@ -27,3 +27,6 @@ assets:
   - name: northwind
     uri: /ui
     path: /ui
+  - name: explorer
+    uri: /explorer
+    path: /workspace-explorer/dist
