@@ -72,10 +72,11 @@
                         </goals>
                         <configuration>
                             <database>
-                                <coreServer>${db.server}</coreServer>
-                                <corePort>${db.port}</corePort>
-                                <coreUsername>${db.login}</coreUsername>
-                                <corePassword>${db.password}</corePassword>
+                                <coreServer>${northwind.db.server}</coreServer>
+                                <corePort>${northwind.db.port}</corePort>
+                                <coreDb>${northwind.db.database}</coreDb>
+                                <coreUsername>${northwind.db.login}</coreUsername>
+                                <corePassword>${northwind.db.password}</corePassword>
                             </database>
                             <resources>
                                 <resource>${project.build.directory}/classes/northwind.wsp</resource>
@@ -98,10 +99,11 @@
                         </goals>
                         <configuration>
                             <database>
-                                <coreServer>${db.server}</coreServer>
-                                <corePort>${db.port}</corePort>
-                                <coreUsername>${db.login}</coreUsername>
-                                <corePassword>${db.password}</corePassword>
+                                <coreServer>${northwind.db.server}</coreServer>
+                                <corePort>${northwind.db.port}</corePort>
+                                <coreUsername>${northwind.db.login}</coreUsername>
+                                <coreDb>${northwind.db.database}</coreDb>
+                                <corePassword>${northwind.db.password}</corePassword>
                             </database>
                             <exports>
                                 <export>

@@ -4,9 +4,9 @@ jpa:
     debug: true
     persistenceUnit: CoRE
     properties: 
-        javax.persistence.jdbc.user: ${db.login}
-        javax.persistence.jdbc.password: ${db.password}
-        javax.persistence.jdbc.url: jdbc:postgresql://${db.server}:${db.port}/${db.database}
+        javax.persistence.jdbc.user: ${northwind.db.login}
+        javax.persistence.jdbc.password: ${northwind.db.password}
+        javax.persistence.jdbc.url: jdbc:postgresql://${northwind.db.server}:${northwind.db.port}/${northwind.db.database}
         javax.persistence.jdbc.driver: org.postgresql.Driver 
         hibernate.cache.use_second_level_cache: true
         hibernate.c3p0.max_size: 20

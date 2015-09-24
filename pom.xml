@@ -38,11 +38,11 @@
         <dba.db.login>postgres</dba.db.login>
         <dba.db.password>postgres</dba.db.password>
 
-        <db.server>${dba.db.server}</db.server>
-        <db.port>${dba.db.port}</db.port>
-        <db.database>core</db.database>
-        <db.login>core</db.login>
-        <db.password>password</db.password>
+        <northwind.db.server>${dba.db.server}</northwind.db.server>
+        <northwind.db.port>${dba.db.port}</northwind.db.port>
+        <northwind.db.database>northwind</northwind.db.database>
+        <northwind.db.login>northwind</northwind.db.login>
+        <northwind.db.password>password</northwind.db.password>
 
         <drop>false</drop>
  
