@@ -46,8 +46,7 @@
 
         <drop>false</drop>
  
-        <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version> 
-        <postgresql.driver.version>9.4-1202-jdbc42</postgresql.driver.version> 
+        <ultrastructure.version>2.0.0-SNAPSHOT</ultrastructure.version>  
     </properties>
 
     <modules>
@@ -81,11 +80,6 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>northwind-service</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.chiralbehaviors.CoRE</groupId>
