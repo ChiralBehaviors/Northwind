@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Northwind by ChiralBehaviors</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Northwind by ChiralBehaviors</title>
   </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Northwind</h1>
-      <h2 class="project-tagline">An example of Ultrastructure using ye olde thyme Northwind demonstration</h2>
-      <a href="https://github.com/ChiralBehaviors/Northwind" class="btn">View on GitHub</a>
-      <a href="https://github.com/ChiralBehaviors/Northwind/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/ChiralBehaviors/Northwind/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
 
-    <section class="main-content">
-      <p>An <a href="http://chiralbehaviors.github.io/Ultrastructure">Ultrastructure</a> implementation of the venerable Northwind M$ demoware.  This is a mashup of the original order pricing demo presented in the April, 1995 issue of the Communications of the ACM and the Microsoft Northwind retail store demo.  Every software jockey on the planet understands Northwind, so...</p>
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Northwind</h1>
+          <h2>An example of Ultrastructure using ye olde thyme Northwind demonstration</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/ChiralBehaviors/Northwind/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/ChiralBehaviors/Northwind/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/ChiralBehaviors/Northwind" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>An <a href="http://chiralbehaviors.github.io/Ultrastructure">Ultrastructure</a> implementation of the venerable Northwind M$ demoware.  This is a mashup of the original order pricing demo presented in the April, 1995 issue of the Communications of the ACM and the Microsoft Northwind retail store demo.  Every software jockey on the planet understands Northwind, so...</p>
 
 <p>Basically, we get a much richer model of the Northwind retail store AND add order, pricing and shipping logistics workflows so we can actually sell things rather than just report them ;)</p>
 
@@ -32,9 +44,11 @@
 
 <p>Ultrastructure as a platform now provides a quite sophisticated capability based security platform.  It isn't built into the Northwind mashup yet, but the base platform now provides all the REST resources necessary to hook into the Phantasm dynamic capability model, as well as providing authentication services for such.  Pretty cool, if I say so myself.  And it's cheap.  The model is also logical and understandable (I know, right?).  So I'll be working on getting that set up next.</p>
 
-<p>But the GraphQL API is really the big deal to come out of the last few months of work.  It provides a wicked API for interacting with the underlying Phantasm model of Ultrastructure.  The Northwind Customer Master/Detail page shows just how trivial it is to provide sophisticated data models for the UI tier.</p>
+<p>But the <a href="https://github.com/ChiralBehaviors/Ultrastructure/wiki/Ultrastructure-GraphQL-API">GraphQL API</a> is really the big deal to come out of the last few months of work.  It provides a wicked API for interacting with the underlying Phantasm model of Ultrastructure.  The <a href="https://github.com/ChiralBehaviors/Northwind/blob/master/northwind-service/src/main/resources/ui/js/CustomerMasterDetailCtrl.js">Northwind Customer Master/Detail</a> page shows just how trivial it is to provide sophisticated data models for the UI tier.</p>
 
 <p>Also included is the GraphiQL IDE for GraphQL.  Works with the workspace GraphQL resource, and is pretty awesome to demo.  /workspace-exporer/index.html</p>
+
+<p>Pretty much the entire service for Northwind is now provided by <a href="https://github.com/ChiralBehaviors/Ultrastructure/wiki/Ultrastructure-as-a-Service">HandiNAVI - Ultrastructure as a Service</a>.  The Northwind demo is largely reduced to the workspaces and user interface.  I'll be adding Job animation implementation for the Northwind Order pricing/sourcing/logistics/fulfillment workflow, but these will be pretty tiny as they are focused tasks for the leaves.</p>
 
 <hr>
 
@@ -59,15 +73,15 @@
 <p>I took out all the manual Phantasms, as Northwind is now generating the phantasms from the facets in the Northwind ontology.  This is done with a Maven plugin, and you can see this in the northwind maven module's pom.  You'll have to build at least through generate-sources to see the generated phantasms.  They are generated in target/generated-sources/phantasm directory in the northwind module.</p>
 
 <p>Frankly, I'm amazed at how simple it has been creating a rather complex model.  Already, we have a rich structure for the system and you can see that the Ultrastructure design discipline naturally creates general abstractions, and how the northwind model could be fully generalized with a little bit of effort.  For the moment, I'm resisting the urge to do that, as I'm more interested in getting a functional demo out the door.  In any event, it'll be interesting to have the refactoring history in git once I do start on generalizing this stuff.</p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/ChiralBehaviors/Northwind">Northwind</a> is maintained by <a href="https://github.com/ChiralBehaviors">ChiralBehaviors</a>.</span>
+        <footer>
+          Northwind is maintained by <a href="https://github.com/ChiralBehaviors">ChiralBehaviors</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
+        
+      </div>
+    </div>
   </body>
 </html>
