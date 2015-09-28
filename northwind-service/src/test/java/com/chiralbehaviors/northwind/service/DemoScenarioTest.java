@@ -150,8 +150,10 @@ public class DemoScenarioTest {
 
         PricedProduct computer = model.wrap(PricedProduct.class,
                                             testScenario.getAbc486());
+        computer.setUnitPrice(BigDecimal.valueOf(1250.10));
         PricedProduct chemB = model.wrap(PricedProduct.class,
                                          testScenario.getChemB());
+        chemB.setUnitPrice(BigDecimal.valueOf(10.25));
 
         Order order = model.construct(Order.class, "Cafluer Bon Order",
                                       "emergency order");
