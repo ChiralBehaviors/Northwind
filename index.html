@@ -5,7 +5,7 @@
     <title>Northwind by ChiralBehaviors</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -28,6 +28,16 @@
 <h3>
 <a id="updates" class="anchor" href="#updates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updates</h3>
 
+<p>Got quite a bit done on the modeling front.  We now have [GraphQL API] the JSON-LD API mentioned below, and the Java based API.  All these APIs use the same underlying animation code and are just presentations of the underlying Phantasm model.</p>
+
+<p>Ultrastructure as a platform now provides a quite sophisticated capability based security platform.  It isn't built into the Northwind mashup yet, but the base platform now provides all the REST resources necessary to hook into the Phantasm dynamic capability model, as well as providing authentication services for such.  Pretty cool, if I say so myself.  And it's cheap.  The model is also logical and understandable (I know, right?).  So I'll be working on getting that set up next.</p>
+
+<p>But the GraphQL API is really the big deal to come out of the last few months of work.  It provides a wicked API for interacting with the underlying Phantasm model of Ultrastructure.  The Northwind Customer Master/Detail page shows just how trivial it is to provide sophisticated data models for the UI tier.</p>
+
+<p>Also included is the GraphiQL IDE for GraphQL.  Works with the workspace GraphQL resource, and is pretty awesome to demo.  /workspace-exporer/index.html</p>
+
+<hr>
+
 <p>I finally started tackling the REST API of Ultrastructure.  If there's a minimum bar for a Northwind service, it's at least something REST(ish) that spits out and gobbles up JSON.  So we now have a spiffy new <a href="http://json-ld.org/">JSON-LD</a> REST api for traversing the graph of Ultrastructure.  The API is called, appropriately, <em>Phantasm At REST</em>.  As it turns out, Ultrastructure provides a closed system of self describing linked data that can be represented by RDF.  I know, right?  JSON-LD is the HATEOS JSON version of RDF.  <em>Phantasm At REST</em> is a straight forward and (hopefully obvious) mapping of the Ultrastructure model to data expressed in REST endpoints and JSON-LD data as the interchange.</p>
 
 <p>What I like about JSON-LD is that it's really just JSON data.  The <a href="https://github.com/Context" class="user-mention">@Context</a> gives you the moral equivalent of schema and the HATEOAS implementation is a natural fit for graph (RDF) data.  I also like how JSON-LD has a bunch of client libraries that don't suck that make it easy to use.</p>
@@ -36,7 +46,7 @@
 
 <p>I'll post instructions on the wiki later about how to set this up from a maven command.</p>
 
-<p>I think I can almost see the day where I'll have all the pieces to make this a really simple, global federated system.  It's quite awesome to contemplate.</p>
+<p>I think I can almost see the day where I'll have all the pieces to make this a really simple, globally federated system.</p>
 
 <hr>
 
@@ -61,4 +71,3 @@
   
   </body>
 </html>
-
