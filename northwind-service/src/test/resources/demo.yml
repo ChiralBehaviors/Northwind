@@ -2,7 +2,6 @@ auth: NULL
 
 jpa:
     debug: true
-    persistenceUnit: CoRE
     properties: 
         javax.persistence.jdbc.user: ${northwind.db.login}
         javax.persistence.jdbc.password: ${northwind.db.password}
