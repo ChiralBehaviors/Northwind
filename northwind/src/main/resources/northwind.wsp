@@ -105,8 +105,7 @@ locations {
                 one InRegion: IsA.Region
                 one InCountry: IsA.Country
             }
-        IsA.StateOrProvince {StateCode}
-           "State or Province" "A state or province"
+        IsA.StateOrProvince {Name StateCode}
             constraints {
                 one InRegion: IsA.Region
                 one InCountry: IsA.Country
@@ -145,13 +144,14 @@ locations {
                 one InCity: IsA.City
             }
         IsA.StockLocation {Name}
-            "Stock Location" "The location of product"
             constraints {
                 one InRegion: IsA.Region
                 one InCountry: IsA.Country
                 one InArea: IsA.Area
                 one InStateOrProvince: IsA.StateOrProvince
                 one InCity: IsA.City
+                one OnStreet: IsA.Street
+                one AtAddress: IsA.StreetAddress
             }
     }
 }
@@ -175,13 +175,11 @@ products {
     
     facets {
         IsA.PricedProduct { UnitPrice }
-            "Priced Product" "A product we sell"
             constraints {
                 n IsCategorizedAs: IsA.Category
                 one SalesTaxStatus: *Product
             }
         IsA.ItemDetail { UnitPrice Quantity DiscountPercentage TaxRate }
-            "Order Item Detail" "Detail on item"
             constraints {
                 one OrderedProductOf: IsA.PricedProduct named product
                 one ItemDetailOf: IsA.Order
@@ -194,7 +192,6 @@ products {
             }
         IsA.Category { Picture }
         IsA.StockedProduct
-            "Stocked Product" "A product stocked at a location"
             constraints {
                 one StockedAt: IsA.StockLocation
                 { Quantity }
@@ -209,6 +206,7 @@ relationships {
     HasTerritory = "Territory" "A has territory B" | TerritoryOf = "Territory Of" "A is a territory of B";
     InState = "State" "A is located in the State B" | StateOf = "State Of" "A is the State of B";
     InCity = "City" "A is located in the City B" | CityOf = "City Of" "A is the city of B";
+    AtAddress = "Address" "A is located at the address B" | AddressOf = "Address Of" "A is an address of B";
     InStateOrProvince = "In State or Province" "A is located in the State or Province of B" | StateOrProvinceOf = "State or Province Of" "A is the State or Province of B";
     OnStreet = "Street" "A is located on the Street B" | StreetOf = "Street Of" "A is the street of B";
     
