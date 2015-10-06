@@ -54,6 +54,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.chiralbehaviors.CoRE</groupId>
+                <artifactId>phantasm-plugin</artifactId>
+                <version>${ultrastructure.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generator>
+                                <resource>${basedir}/src/main/resources/northwind.wsp</resource>
+                                <outputDirectory>${project.build.directory}/generated-sources/phantasm</outputDirectory>
+                                <packageName>com.chiralbehaviors.northwind</packageName>
+                                <appendTypeToPackage>true</appendTypeToPackage>
+                            </generator>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -107,27 +128,6 @@
             <id>database.active</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>com.chiralbehaviors.CoRE</groupId>
-                        <artifactId>phantasm-plugin</artifactId>
-                        <version>${ultrastructure.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                                <configuration>
-                                    <generator>
-                                        <resource>${basedir}/src/main/resources/northwind.wsp</resource>
-                                        <outputDirectory>${project.build.directory}/generated-sources/phantasm</outputDirectory>
-                                        <packageName>com.chiralbehaviors.northwind</packageName>
-                                        <appendTypeToPackage>true</appendTypeToPackage>
-                                    </generator>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>com.chiralbehaviors.CoRE</groupId>
                         <artifactId>workspace-plugin</artifactId>
