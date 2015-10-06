@@ -10,36 +10,42 @@
     <artifactId>schema-loading</artifactId>
     <name>Ultrastructure Schema Loading</name>
     <description>A module to control initialization and loading of the Ultrastructure database schema</description>
-    <build>
-        <plugins>
-            <plugin>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>load</goal>
-                        </goals>
-                        <configuration>
-                            <loader>
-                                <dbaServer>${dba.db.server}</dbaServer>
-                                <dbaPort>${dba.db.port}</dbaPort>
-                                <dbaUsername>${dba.db.login}</dbaUsername>
-                                <dbaPassword>${dba.db.password}</dbaPassword>
 
-                                <coreServer>${northwind.db.server}</coreServer>
-                                <corePort>${northwind.db.port}</corePort>
-                                <coreUsername>${northwind.db.login}</coreUsername>
-                                <corePassword>${northwind.db.password}</corePassword>
-                                <coreDb>${northwind.db.database}</coreDb>
+    <profiles>
+        <profile>
+            <id>database.active</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>load</goal>
+                                </goals>
+                                <configuration>
+                                    <loader>
+                                        <dbaServer>${dba.db.server}</dbaServer>
+                                        <dbaPort>${dba.db.port}</dbaPort>
+                                        <dbaUsername>${dba.db.login}</dbaUsername>
+                                        <dbaPassword>${dba.db.password}</dbaPassword>
 
-                                <dropDatabase>${drop}</dropDatabase>
-                            </loader>
-                        </configuration>
-                    </execution>
-                </executions>
-                <groupId>com.chiralbehaviors.CoRE</groupId>
-                <artifactId>loader-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+                                        <coreServer>${northwind.db.server}</coreServer>
+                                        <corePort>${northwind.db.port}</corePort>
+                                        <coreUsername>${northwind.db.login}</coreUsername>
+                                        <corePassword>${northwind.db.password}</corePassword>
+                                        <coreDb>${northwind.db.database}</coreDb>
+
+                                        <dropDatabase>${drop}</dropDatabase>
+                                    </loader>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <groupId>com.chiralbehaviors.CoRE</groupId>
+                        <artifactId>loader-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
