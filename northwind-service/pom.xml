@@ -12,6 +12,10 @@
     <description>A REST service for Northwest</description>
     <dependencies>
         <dependency>
+            <groupId>com.dcsquare</groupId>
+            <artifactId>dropwizard-papertrail</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.chiralbehaviors.CoRE</groupId>
             <artifactId>animations</artifactId>
             <type>test-jar</type>

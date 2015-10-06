@@ -72,6 +72,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.dcsquare</groupId>
+                <artifactId>dropwizard-papertrail</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>northwind</artifactId>
                 <version>${project.version}</version>
