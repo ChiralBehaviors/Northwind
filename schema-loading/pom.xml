@@ -47,5 +47,31 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>clear</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>clear</goal>
+                                </goals>
+                                <configuration>
+                                    <coreServer>${northwind.db.server}</coreServer>
+                                    <corePort>${northwind.db.port}</corePort>
+                                    <coreUsername>${northwind.db.login}</coreUsername>
+                                    <corePassword>${northwind.db.password}</corePassword>
+                                    <coreDb>${northwind.db.database}</coreDb>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <groupId>com.chiralbehaviors.CoRE</groupId>
+                        <artifactId>loader-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
