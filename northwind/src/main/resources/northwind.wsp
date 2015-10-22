@@ -126,7 +126,7 @@ locations {
                 one InStateOrProvince: IsA.StateOrProvince
                 one InCity: IsA.City
             }
-        IsA.StreetAddress {StreetNumber}
+        IsA.StreetAddress {StreetNumber PostalCode}
             constraints {
                 one InRegion: IsA.Region
                 one InCountry: IsA.Country

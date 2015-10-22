@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;
@@ -48,6 +49,7 @@ import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
 import com.chiralbehaviors.CoRE.meta.models.ModelImpl;
 import com.chiralbehaviors.CoRE.meta.models.ModelTest;
 import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
+import com.chiralbehaviors.CoRE.workspace.WorkspaceSnapshot;
 import com.chiralbehaviors.northwind.Northwind;
 import com.chiralbehaviors.northwind.agency.Customer;
 import com.chiralbehaviors.northwind.product.ItemDetail;
@@ -59,7 +61,7 @@ import com.chiralbehaviors.northwind.product.PricedProduct;
  *
  */
 public class DemoScenarioTest {
-    private static final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
+    private static final String           TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
 
     protected static EntityManager        em;
     protected static EntityManagerFactory emf;
@@ -125,9 +127,12 @@ public class DemoScenarioTest {
     }
 
     @Before
-    public void initializeScenario() {
+    public void initializeScenario() throws Exception {
         em.getTransaction()
           .begin();
+        WorkspaceSnapshot.load(em,
+                               Arrays.asList(getClass().getResource("/northwind.1.json"),
+                                             getClass().getResource("/scenario.1.json")));
         scenario = model.getWorkspaceModel()
                         .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
