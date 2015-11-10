@@ -104,7 +104,7 @@ public class DemoScenarioTest {
                                   .getWorkspace()
                                   .getAccessor(TestScenario.class);
             loadState(myModel);
-            StateSnapshot snap = new StateSnapshot(em);
+            StateSnapshot snap = myModel.snapshot();
             try (OutputStream os = new FileOutputStream(TARGET_CLASSES_DEMO_DATA_JSON)) {
                 new ObjectMapper().registerModule(new CoREModule())
                                   .writeValue(os, snap);
