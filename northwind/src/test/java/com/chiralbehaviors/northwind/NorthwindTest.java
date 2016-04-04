@@ -20,103 +20,42 @@
 
 package com.chiralbehaviors.northwind;
 
+import static com.chiralbehaviors.CoRE.jooq.Tables.JOB;
 import static com.chiralbehaviors.northwind.Northwind.NORTHWIND_WORKSPACE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.LoggerFactory;
 
-import com.chiralbehaviors.CoRE.WellKnownObject;
-import com.chiralbehaviors.CoRE.job.Job;
-import com.chiralbehaviors.CoRE.job.MetaProtocol;
-import com.chiralbehaviors.CoRE.job.Protocol;
-import com.chiralbehaviors.CoRE.kernel.Kernel;
+import com.chiralbehaviors.CoRE.jooq.tables.records.JobRecord;
+import com.chiralbehaviors.CoRE.jooq.tables.records.MetaProtocolRecord;
+import com.chiralbehaviors.CoRE.jooq.tables.records.ProtocolRecord;
 import com.chiralbehaviors.CoRE.meta.InferenceMap;
 import com.chiralbehaviors.CoRE.meta.JobModel;
-import com.chiralbehaviors.CoRE.meta.Model;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
-import com.chiralbehaviors.CoRE.meta.models.ModelImpl;
-import com.chiralbehaviors.CoRE.meta.models.ModelTest;
 import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
+import com.chiralbehaviors.CoRE.workspace.WorkspaceSnapshot;
 
 /**
  * @author hhildebrand
  *
  */
-public class NorthwindTest {
-    private static JobModel               jobModel;
-    private static Northwind              scenario;
-    private static final String           TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
-    private static TestScenario           testScenario;
-    protected static EntityManager        em;
-    protected static EntityManagerFactory emf;
-    protected static Kernel               kernel;
-    protected static Model                model;
-
-    @AfterClass
-    public static void closeEntityManager() {
-        if (em != null) {
-            if (em.getTransaction()
-                  .isActive()) {
-                try {
-                    em.getTransaction()
-                      .rollback();
-                    em.close();
-                } catch (Throwable e) {
-                    LoggerFactory.getLogger(AbstractModelTest.class)
-                                 .warn(String.format("Had a bit of trouble cleaning up after %s",
-                                                     e.getMessage()),
-                                       e);
-                }
-            }
-            em = null;
-        }
-    }
-
-    @BeforeClass
-    public static void createEMF() throws IOException, SQLException {
-        if (em != null) {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
-        if (emf == null) {
-            InputStream is = ModelTest.class.getResourceAsStream("/jpa.properties");
-            assertNotNull("jpa properties missing", is);
-            Properties properties = new Properties();
-            properties.load(is);
-            System.out.println(String.format("Database URL: %s",
-                                             properties.getProperty("javax.persistence.jdbc.url")));
-            emf = Persistence.createEntityManagerFactory(WellKnownObject.CORE,
-                                                         properties);
-        }
-        model = new ModelImpl(emf);
-        kernel = model.getKernel();
-        em = model.getEntityManager();
-        jobModel = model.getJobModel();
-    }
+public class NorthwindTest extends AbstractModelTest {
+    private JobModel     jobModel;
+    private Northwind    scenario;
+    private final String TEST_SCENARIO_URI = "uri:http://ultrastructure.me/ontology/com.chiralbehaviors/demo/northwind/scenario";
+    private TestScenario testScenario;
 
     @Before
-    public void initializeScenario() {
-        em.getTransaction()
-          .begin();
+    public void initializeScenario() throws Exception {
+        WorkspaceSnapshot.load(model.create(),
+                               Arrays.asList(getClass().getResource("/northwind.1.json"),
+                                             getClass().getResource("/scenario.1.json")));
+        jobModel = model.getJobModel();
         scenario = model.getWorkspaceModel()
                         .getScoped(WorkspaceAccessor.uuidOf(NORTHWIND_WORKSPACE))
                         .getWorkspace()
@@ -127,148 +66,184 @@ public class NorthwindTest {
                             .getAccessor(TestScenario.class);
     }
 
-    @After
-    public void rollback() {
-        if (em.getTransaction()
-              .isActive()) {
-            em.getTransaction()
-              .rollback();
-        }
-    }
-
     @Test
     public void testEuOrder() throws Exception {
-        Job order = model.getJobModel()
-                         .newInitializedJob(scenario.getDeliver(),
-                                            kernel.getCore());
-        order.setAssignTo(testScenario.getOrderFullfillment());
-        order.setProduct(testScenario.getAbc486());
-        order.setDeliverTo(testScenario.getRc31());
-        order.setDeliverFrom(testScenario.getFactory1());
-        order.setRequester(testScenario.getCafleurBon());
-        em.persist(order);
-        em.flush();
-        jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        jobModel.changeStatus(order, scenario.getActive(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        List<MetaProtocol> metaProtocols = jobModel.getMetaprotocols(order);
+        JobRecord order = model.getJobModel()
+                               .newInitializedJob(scenario.getDeliver());
+        order.setAssignTo(testScenario.getOrderFullfillment()
+                                      .getId());
+        order.setProduct(testScenario.getAbc486()
+                                     .getId());
+        order.setDeliverTo(testScenario.getRc31()
+                                       .getId());
+        order.setDeliverFrom(testScenario.getFactory1()
+                                         .getId());
+        order.setRequester(testScenario.getCafleurBon()
+                                       .getId());
+        order.update();
+        List<MetaProtocolRecord> metaProtocols = jobModel.getMetaprotocols(order);
         assertEquals(1, metaProtocols.size());
-        Map<Protocol, InferenceMap> protocols = jobModel.getProtocols(order);
+        Map<ProtocolRecord, InferenceMap> protocols = jobModel.getProtocols(order);
         assertEquals(2, protocols.size());
-        List<Job> jobs = jobModel.getAllChildren(order);
+        model.flush();
+        jobModel.changeStatus(order, scenario.getAvailable(),
+                              "transition during test");
+        model.flush();
+        jobModel.changeStatus(order, scenario.getActive(),
+                              "transition during test");
+        model.flush();
+        List<JobRecord> jobs = jobModel.getAllChildren(order);
         assertEquals(6, jobs.size());
     }
 
     @Test
     public void testNonExemptOrder() throws Exception {
-        Job order = model.getJobModel()
-                         .newInitializedJob(scenario.getDeliver(),
-                                            kernel.getCore());
-        order.setAssignTo(testScenario.getOrderFullfillment());
-        order.setProduct(testScenario.getAbc486());
-        order.setDeliverTo(testScenario.getBht37());
-        order.setDeliverFrom(testScenario.getFactory1());
-        order.setRequester(testScenario.getOrgA());
-        em.persist(order);
-        em.flush();
-        jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        jobModel.changeStatus(order, scenario.getActive(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        List<MetaProtocol> metaProtocols = jobModel.getMetaprotocols(order);
+        JobRecord order = model.getJobModel()
+                               .newInitializedJob(scenario.getDeliver());
+        order.setAssignTo(testScenario.getOrderFullfillment()
+                                      .getId());
+        order.setProduct(testScenario.getAbc486()
+                                     .getId());
+        order.setDeliverTo(testScenario.getBht37()
+                                       .getId());
+        order.setDeliverFrom(testScenario.getFactory1()
+                                         .getId());
+        order.setRequester(testScenario.getOrgA()
+                                       .getId());
+        order.update();
+        List<MetaProtocolRecord> metaProtocols = jobModel.getMetaprotocols(order);
         assertEquals(1, metaProtocols.size());
-        Map<Protocol, InferenceMap> protocols = jobModel.getProtocols(order);
+        Map<ProtocolRecord, InferenceMap> protocols = jobModel.getProtocols(order);
         assertEquals(2, protocols.size());
-        List<Job> jobs = jobModel.getAllChildren(order);
+        model.flush();
+        jobModel.changeStatus(order, scenario.getAvailable(),
+                              "transition during test");
+        model.flush();
+        jobModel.changeStatus(order, scenario.getActive(),
+                              "transition during test");
+        model.flush();
+        List<JobRecord> jobs = jobModel.getAllChildren(order);
         assertEquals(6, jobs.size());
     }
 
     @Test
     public void testOrder() throws Exception {
-        Job order = model.getJobModel()
-                         .newInitializedJob(scenario.getDeliver(),
-                                            kernel.getCore());
-        order.setAssignTo(testScenario.getOrderFullfillment());
-        order.setProduct(testScenario.getAbc486());
-        order.setDeliverTo(testScenario.getRsb225());
-        order.setDeliverFrom(testScenario.getFactory1());
-        order.setRequester(testScenario.getGeorgetownUniversity());
-        em.persist(order);
-        em.flush();
-        jobModel.changeStatus(order, scenario.getAvailable(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        jobModel.changeStatus(order, scenario.getActive(), kernel.getCore(),
-                              "transition during test");
-        em.flush();
-        List<MetaProtocol> metaProtocols = jobModel.getMetaprotocols(order);
+        JobRecord order = model.getJobModel()
+                               .newInitializedJob(scenario.getDeliver());
+        order.setAssignTo(testScenario.getOrderFullfillment()
+                                      .getId());
+        order.setProduct(testScenario.getAbc486()
+                                     .getId());
+        order.setDeliverTo(testScenario.getRsb225()
+                                       .getId());
+        order.setDeliverFrom(testScenario.getFactory1()
+                                         .getId());
+        order.setRequester(testScenario.getGeorgetownUniversity()
+                                       .getId());
+        order.update();
+        List<MetaProtocolRecord> metaProtocols = jobModel.getMetaprotocols(order);
         assertEquals(1, metaProtocols.size());
-        Map<Protocol, InferenceMap> protocols = jobModel.getProtocols(order);
+        Map<ProtocolRecord, InferenceMap> protocols = jobModel.getProtocols(order);
         assertEquals(2, protocols.size());
-        List<Job> jobs = jobModel.getAllChildren(order);
+        model.flush();
+        jobModel.changeStatus(order, scenario.getAvailable(),
+                              "transition during test");
+        model.flush();
+        jobModel.changeStatus(order, scenario.getActive(),
+                              "transition during test");
+        model.flush();
+        List<JobRecord> jobs = jobModel.getAllChildren(order);
         assertEquals(5, jobs.size());
 
-        TypedQuery<Job> query = em.createQuery("select j from Job j where j.service = :service",
-                                               Job.class);
-        query.setParameter("service", scenario.getCheckCredit());
-        Job creditCheck = query.getSingleResult();
-        assertEquals(scenario.getAvailable(), creditCheck.getStatus());
+        JobRecord creditCheck = model.create()
+                                     .selectFrom(JOB)
+                                     .where(JOB.SERVICE.equal(scenario.getCheckCredit()
+                                                                      .getId()))
+                                     .fetchOne();
+        assertEquals(scenario.getAvailable()
+                             .getId(),
+                     creditCheck.getStatus());
         jobModel.changeStatus(creditCheck, scenario.getActive(),
-                              kernel.getCore(), "transition during test");
-        em.flush();
+                              "transition during test");
+        model.flush();
         jobModel.changeStatus(creditCheck, scenario.getCompleted(),
-                              kernel.getCore(), "transition during test");
-        em.flush();
-        query.setParameter("service", scenario.getPick());
-        Job pick = query.getSingleResult();
-        assertEquals(scenario.getAvailable(), pick.getStatus());
-        jobModel.changeStatus(pick, scenario.getActive(), kernel.getCore(),
                               "transition during test");
-        em.flush();
-        jobModel.changeStatus(pick, scenario.getCompleted(), kernel.getCore(),
+        model.flush();
+        JobRecord pick = model.create()
+                              .selectFrom(JOB)
+                              .where(JOB.SERVICE.equal(scenario.getPick()
+                                                               .getId()))
+                              .fetchOne();
+        assertEquals(scenario.getAvailable()
+                             .getId(),
+                     pick.getStatus());
+        jobModel.changeStatus(pick, scenario.getActive(),
                               "transition during test");
-        em.flush();
-        query.setParameter("service", scenario.getPick());
-        pick = query.getSingleResult();
-        query.setParameter("service", scenario.getShip());
-        Job ship = query.getSingleResult();
-        List<Job> pickSiblings = jobModel.getActiveSubJobsForService(pick.getParent(),
-                                                                     scenario.getShip());
+        model.flush();
+        jobModel.changeStatus(pick, scenario.getCompleted(),
+                              "transition during test");
+        model.flush();
+        pick = model.create()
+                    .selectFrom(JOB)
+                    .where(JOB.SERVICE.equal(scenario.getPick()
+                                                     .getId()))
+                    .fetchOne();
+        JobRecord ship = model.create()
+                              .selectFrom(JOB)
+                              .where(JOB.SERVICE.equal(scenario.getShip()
+                                                               .getId()))
+                              .fetchOne();
+        List<JobRecord> pickSiblings = jobModel.getActiveSubJobsForService(model.records()
+                                                                                .resolveJob(pick.getParent()),
+                                                                           scenario.getShip());
         assertEquals(1, pickSiblings.size());
-        assertEquals(scenario.getWaitingOnPurchaseOrder(), ship.getStatus());
-        query.setParameter("service", scenario.getFee());
-        Job fee = query.getSingleResult();
-        jobModel.changeStatus(fee, scenario.getActive(), kernel.getCore(),
+        assertEquals(scenario.getWaitingOnPurchaseOrder()
+                             .getId(),
+                     ship.getStatus());
+        JobRecord fee = model.create()
+                             .selectFrom(JOB)
+                             .where(JOB.SERVICE.equal(scenario.getFee()
+                                                              .getId()))
+                             .fetchOne();
+        jobModel.changeStatus(fee, scenario.getActive(),
                               "transition during test");
-        em.flush();
-        jobModel.changeStatus(fee, scenario.getCompleted(), kernel.getCore(),
+        model.flush();
+        jobModel.changeStatus(fee, scenario.getCompleted(),
                               "transition during test");
-        em.flush();
-        query.setParameter("service", scenario.getPrintPurchaseOrder());
-        Job printPO = query.getSingleResult();
-        assertEquals(scenario.getAvailable(), printPO.getStatus());
-        jobModel.changeStatus(printPO, scenario.getActive(), kernel.getCore(),
+        model.flush();
+        JobRecord printPO = model.create()
+                                 .selectFrom(JOB)
+                                 .where(JOB.SERVICE.equal(scenario.getPrintPurchaseOrder()
+                                                                  .getId()))
+                                 .fetchOne();
+        assertEquals(scenario.getAvailable()
+                             .getId(),
+                     printPO.getStatus());
+        jobModel.changeStatus(printPO, scenario.getActive(),
                               "transition during test");
-        em.flush();
+        model.flush();
         jobModel.changeStatus(printPO, scenario.getCompleted(),
-                              kernel.getCore(), "transition during test");
-        em.flush();
-        query.setParameter("service", scenario.getShip());
-        ship = query.getSingleResult();
-        assertEquals(scenario.getAvailable(), ship.getStatus());
-        jobModel.changeStatus(ship, scenario.getActive(), kernel.getCore(),
                               "transition during test");
-        em.flush();
-        jobModel.changeStatus(ship, scenario.getCompleted(), kernel.getCore(),
+        model.flush();
+        ship = model.create()
+                    .selectFrom(JOB)
+                    .where(JOB.SERVICE.equal(scenario.getShip()
+                                                     .getId()))
+                    .fetchOne();
+        assertEquals(scenario.getAvailable()
+                             .getId(),
+                     ship.getStatus());
+        jobModel.changeStatus(ship, scenario.getActive(),
                               "transition during test");
-        em.flush();
-        query.setParameter("service", scenario.getDeliver());
-        Job deliver = query.getSingleResult();
+        model.flush();
+        jobModel.changeStatus(ship, scenario.getCompleted(),
+                              "transition during test");
+        model.flush();
+        JobRecord deliver = model.create()
+                                 .selectFrom(JOB)
+                                 .where(JOB.SERVICE.equal(scenario.getDeliver()
+                                                                  .getId()))
+                                 .fetchOne();
         assertEquals(scenario.getCompleted(), deliver.getStatus());
     }
 
