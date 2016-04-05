@@ -20,8 +20,8 @@
 
 package com.chiralbehaviors.northwind;
 
-import com.chiralbehaviors.CoRE.job.status.StatusCode;
-import com.chiralbehaviors.CoRE.product.Product;
+import com.chiralbehaviors.CoRE.domain.Product;
+import com.chiralbehaviors.CoRE.domain.StatusCode;
 
 /**
  * @author hhildebrand

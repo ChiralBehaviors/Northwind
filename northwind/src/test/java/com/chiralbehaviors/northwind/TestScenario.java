@@ -20,9 +20,9 @@
 
 package com.chiralbehaviors.northwind;
 
-import com.chiralbehaviors.CoRE.agency.Agency;
-import com.chiralbehaviors.CoRE.location.Location;
-import com.chiralbehaviors.CoRE.product.Product;
+import com.chiralbehaviors.CoRE.domain.Agency;
+import com.chiralbehaviors.CoRE.domain.Location;
+import com.chiralbehaviors.CoRE.domain.Product;
 
 /**
  * @author hhildebrand
