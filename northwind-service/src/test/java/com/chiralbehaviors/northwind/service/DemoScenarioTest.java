@@ -20,9 +20,7 @@
 
 package com.chiralbehaviors.northwind.service;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -34,9 +32,7 @@ import com.chiralbehaviors.CoRE.jooq.enums.ExistentialDomain;
 import com.chiralbehaviors.CoRE.json.CoREModule;
 import com.chiralbehaviors.CoRE.meta.Model;
 import com.chiralbehaviors.CoRE.meta.models.AbstractModelTest;
-import com.chiralbehaviors.CoRE.meta.models.ModelImpl;
 import com.chiralbehaviors.CoRE.meta.workspace.WorkspaceAccessor;
-import com.chiralbehaviors.CoRE.workspace.StateSnapshot;
 import com.chiralbehaviors.CoRE.workspace.WorkspaceSnapshot;
 import com.chiralbehaviors.northwind.agency.Customer;
 import com.chiralbehaviors.northwind.product.ItemDetail;
@@ -57,29 +53,18 @@ public class DemoScenarioTest extends AbstractModelTest {
 
     @Test
     public void loadScenario() throws Exception {
-        try (Model myModel = new ModelImpl(newConnection())) {
-            WorkspaceSnapshot.load(myModel.create(),
-                                   Arrays.asList(getClass().getResource("/northwind.1.json"),
-                                                 getClass().getResource("/scenario.1.json")));
-            testScenario = myModel.getWorkspaceModel()
-                                  .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
-                                  .getWorkspace()
-                                  .getAccessor(TestScenario.class);
-            loadState(myModel);
-            WorkspaceSnapshot snap = myModel.snapshot();
-            try (OutputStream os = new FileOutputStream(TARGET_CLASSES_DEMO_DATA_JSON)) {
-                new ObjectMapper().registerModule(new CoREModule())
-                                  .writeValue(os, snap);
-            }
-        }
-        try (Model myModel = new ModelImpl(newConnection())) {
-            StateSnapshot snapshot;
-            try (InputStream os = new FileInputStream(TARGET_CLASSES_DEMO_DATA_JSON)) {
-                snapshot = new ObjectMapper().registerModule(new CoREModule())
-                                             .readValue(os,
-                                                        StateSnapshot.class);
-            }
-            snapshot.load(myModel.create());
+        WorkspaceSnapshot.load(model.create(),
+                               Arrays.asList(getClass().getResource("/northwind.1.json"),
+                                             getClass().getResource("/scenario.1.json")));
+        testScenario = model.getWorkspaceModel()
+                            .getScoped(WorkspaceAccessor.uuidOf(TEST_SCENARIO_URI))
+                            .getWorkspace()
+                            .getAccessor(TestScenario.class);
+        loadState(model);
+        WorkspaceSnapshot snap = model.snapshot();
+        try (OutputStream os = new FileOutputStream(TARGET_CLASSES_DEMO_DATA_JSON)) {
+            new ObjectMapper().registerModule(new CoREModule())
+                              .writeValue(os, snap);
         }
     }
 
