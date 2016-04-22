@@ -23,6 +23,7 @@ package com.chiralbehaviors.northwind;
 import static com.chiralbehaviors.CoRE.jooq.Tables.JOB;
 import static com.chiralbehaviors.northwind.Northwind.NORTHWIND_WORKSPACE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -146,6 +147,7 @@ public class NorthwindTest extends AbstractModelTest {
         Map<ProtocolRecord, InferenceMap> protocols = jobModel.getProtocols(order);
         assertEquals(2, protocols.size());
         model.flush();
+        model.flush();
         jobModel.changeStatus(order, scenario.getAvailable(),
                               "transition during test");
         model.flush();
@@ -165,7 +167,6 @@ public class NorthwindTest extends AbstractModelTest {
                      creditCheck.getStatus());
         jobModel.changeStatus(creditCheck, scenario.getActive(),
                               "transition during test");
-        model.flush();
         jobModel.changeStatus(creditCheck, scenario.getCompleted(),
                               "transition during test");
         model.flush();
@@ -193,8 +194,12 @@ public class NorthwindTest extends AbstractModelTest {
                               .where(JOB.SERVICE.equal(scenario.getShip()
                                                                .getId()))
                               .fetchOne();
-        List<JobRecord> pickSiblings = jobModel.getActiveSubJobsForService(model.records()
-                                                                                .resolveJob(pick.getParent()),
+        JobRecord pickParent = model.create()
+                                    .selectFrom(JOB)
+                                    .where(JOB.ID.equal(pick.getParent()))
+                                    .fetchOne();
+        assertNotNull(pickParent);
+        List<JobRecord> pickSiblings = jobModel.getActiveSubJobsForService(pickParent,
                                                                            scenario.getShip());
         assertEquals(1, pickSiblings.size());
         assertEquals(scenario.getWaitingOnPurchaseOrder()
@@ -205,6 +210,7 @@ public class NorthwindTest extends AbstractModelTest {
                              .where(JOB.SERVICE.equal(scenario.getFee()
                                                               .getId()))
                              .fetchOne();
+        assertNotNull(fee);
         jobModel.changeStatus(fee, scenario.getActive(),
                               "transition during test");
         model.flush();
@@ -216,6 +222,7 @@ public class NorthwindTest extends AbstractModelTest {
                                  .where(JOB.SERVICE.equal(scenario.getPrintPurchaseOrder()
                                                                   .getId()))
                                  .fetchOne();
+        assertNotNull(printPO);
         assertEquals(scenario.getAvailable()
                              .getId(),
                      printPO.getStatus());
@@ -230,6 +237,7 @@ public class NorthwindTest extends AbstractModelTest {
                     .where(JOB.SERVICE.equal(scenario.getShip()
                                                      .getId()))
                     .fetchOne();
+        assertNotNull(ship);
         assertEquals(scenario.getAvailable()
                              .getId(),
                      ship.getStatus());
@@ -244,7 +252,10 @@ public class NorthwindTest extends AbstractModelTest {
                                  .where(JOB.SERVICE.equal(scenario.getDeliver()
                                                                   .getId()))
                                  .fetchOne();
-        assertEquals(scenario.getCompleted(), deliver.getStatus());
+        assertNotNull(deliver);
+        assertEquals(scenario.getCompleted()
+                             .getId(),
+                     deliver.getStatus());
     }
 
 }
